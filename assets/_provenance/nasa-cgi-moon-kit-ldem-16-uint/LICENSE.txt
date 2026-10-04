@@ -1,0 +1,18 @@
+Asset: CGI Moon Kit — LOLA displacement map, 16 px/deg (uint16)
+Asset ID: nasa-cgi-moon-kit-ldem-16-uint
+
+Source organization: NASA Goddard Scientific Visualization Studio
+Source title: CGI Moon Kit (SVS 4720) — displacement map derived from LOLA gridded data (LRO)
+Source URL: https://svs.gsfc.nasa.gov/4720
+Direct file URL: https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/ldem_16_uint.tif
+
+Credit (required attribution): NASA/GSFC/LOLA science team; NASA's Scientific Visualization Studio — Ernie Wright
+Upstream scientific data: LRO LOLA GDR (PDS Geosciences Node): https://pds-geosciences.wustl.edu/missions/lro/lola.htm
+
+License: NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)
+License URL: https://www.nasa.gov/nasa-brand-center/images-and-media/
+
+NASA content is generally not subject to copyright in the United States and may be used for
+educational or informational purposes without explicit permission. NASA requests attribution as
+given above. NASA does not endorse this project. The NASA insignia/logo may not be used.
+See the NASA Media Usage Guidelines for full terms.

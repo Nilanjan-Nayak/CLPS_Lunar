@@ -1,0 +1,25 @@
+{
+  "assetId": "nasa-trek-lroc-wac-mosaic-303ppd",
+  "name": "LROC WAC global mosaic, 100 m/px (303 ppd) — streamed WMTS tiles via NASA Solar System Treks",
+  "assetType": "imagery-tileset",
+  "category": "lunar",
+  "format": "wmts-jpeg",
+  "lod": 2,
+  "file": "lunar/imagery/lroc-wac-303ppd/index.json",
+  "projection": { "type": "equirectangular", "crs": "urn:ogc:def:crs:EPSG::104903", "tileMatrixSet": "default028mm", "tileSize": 256, "levels": 9, "maxPixelsPerDegree": 364, "nativePixelsPerDegree": 303 },
+  "scientificGrade": true,
+  "source": {
+    "organization": "NASA / Arizona State University (LROC) via NASA Solar System Treks (JPL)",
+    "title": "LRO_WAC_Mosaic_Global_303ppd_v02 (WMTS, Moon Trek)",
+    "url": "https://trek.nasa.gov/moon/",
+    "credit": "NASA/GSFC/Arizona State University (LROC WAC mosaic); served by NASA Solar System Treks",
+    "fileUrl": "https://trek.nasa.gov/tiles/Moon/EQ/LRO_WAC_Mosaic_Global_303ppd_v02/1.0.0/WMTSCapabilities.xml",
+    "missions": ["LRO"]
+  },
+  "credits": "NASA/GSFC/Arizona State University (LROC WAC global mosaic, 100 m/px); NASA Solar System Treks WMTS",
+  "license": {
+    "name": "NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)",
+    "url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+  },
+  "notes": "Tiles are fetched on demand by the backend (services/api ImageryService) and cached under assets/.cache; the frontend never talks to trek.nasa.gov directly. Grayscale mosaic — no color information."
+}

@@ -1,0 +1,17 @@
+Asset: Blue Marble: Clouds (2048x1024 TIFF, raw)
+Asset ID: nasa-blue-marble-clouds-2048-raw
+
+Source organization: NASA Earth Observatory / Visible Earth
+Source title: Blue Marble: Clouds
+Source URL: https://visibleearth.nasa.gov/images/57747/blue-marble-clouds
+Direct file URL: https://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57747/cloud_combined_2048.tif
+
+Credit (required attribution): NASA Goddard Space Flight Center Image by Reto Stöckli
+
+License: NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)
+License URL: https://www.nasa.gov/nasa-brand-center/images-and-media/
+
+NASA content is generally not subject to copyright in the United States and may be used for
+educational or informational purposes without explicit permission. NASA requests attribution as
+given above. NASA does not endorse this project. The NASA insignia/logo may not be used.
+See the NASA Media Usage Guidelines for full terms.

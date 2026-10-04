@@ -1,0 +1,17 @@
+Asset: Earth with Clouds — NASA 3D model (glTF)
+Asset ID: nasa-earth-clouds-glb
+
+Source organization: NASA Science (Solar System Exploration)
+Source title: Earth with Clouds 3D Model
+Source URL: https://science.nasa.gov/resource/earth-with-clouds-3d-model/
+Direct file URL: https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/e/EarthClouds_1_12756.glb
+
+Credit (required attribution): NASA Visualization Technology Applications and Development (VTAD)
+
+License: NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)
+License URL: https://www.nasa.gov/nasa-brand-center/images-and-media/
+
+NASA content is generally not subject to copyright in the United States and may be used for
+educational or informational purposes without explicit permission. NASA requests attribution as
+given above. NASA does not endorse this project. The NASA insignia/logo may not be used.
+See the NASA Media Usage Guidelines for full terms.

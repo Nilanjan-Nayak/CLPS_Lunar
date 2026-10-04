@@ -1,0 +1,18 @@
+import { chromium } from 'playwright';
+const browser = await chromium.launch({ args: ['--use-gl=swiftshader', '--enable-webgl', '--ignore-gpu-blocklist', '--enable-unsafe-swiftshader', '--no-sandbox'] });
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+const logs = [];
+page.on('pageerror', (e) => logs.push(`[pageerror] ${e.message.slice(0, 300)}`));
+page.on('console', (m) => { if (m.type() === 'error' && !/GL Driver|ReadPixels/.test(m.text())) logs.push('[error] ' + m.text().slice(0, 200)); });
+await page.goto('http://127.0.0.1:5173/plan?latitude=18.56&longitude=61.81&landerId=blue-ghost&transferId=phasing&run=1', { waitUntil: 'networkidle', timeout: 90000 });
+await page.waitForTimeout(6000);
+await page.screenshot({ path: '/tmp/pw/plan_page.png', fullPage: false });
+await page.goto('http://127.0.0.1:5173/moon?history=1', { waitUntil: 'networkidle', timeout: 90000 });
+await page.waitForTimeout(15000);
+await page.evaluate(async () => { const h = (await import('/src/state/historyStore.ts')).useHistoryStore.getState(); h.setCursor(19); });
+await page.waitForTimeout(20000);
+await page.screenshot({ path: '/tmp/pw/history.png' });
+console.log(await page.evaluate(async () => { const h = (await import('/src/state/historyStore.ts')).useHistoryStore.getState(); return `${h.missions.length} missions, cursor ${h.cursor}, current ${h.missions[h.cursor - 1]?.name}`; }));
+console.log(await page.evaluate(() => document.querySelector('.statusbar')?.textContent));
+console.log(logs.slice(0, 8).join('\n'));
+await browser.close();

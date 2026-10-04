@@ -1,0 +1,7 @@
+[
+  { "id": "astrobotic", "name": "Astrobotic Technology", "country": "USA", "headquarters": "Pittsburgh, PA", "landers": ["peregrine", "griffin"], "website": "https://www.astrobotic.com/", "sourceIds": ["src-nasa-clps-providers"] },
+  { "id": "intuitive-machines", "name": "Intuitive Machines", "country": "USA", "headquarters": "Houston, TX", "landers": ["nova-c"], "website": "https://www.intuitivemachines.com/", "sourceIds": ["src-nasa-clps-providers"] },
+  { "id": "firefly-aerospace", "name": "Firefly Aerospace", "country": "USA", "headquarters": "Cedar Park, TX", "landers": ["blue-ghost"], "website": "https://fireflyspace.com/", "sourceIds": ["src-nasa-clps-providers"] },
+  { "id": "draper", "name": "Draper (Team Draper)", "country": "USA", "headquarters": "Cambridge, MA", "landers": ["apex-1-0"], "website": "https://www.draper.com/", "sourceIds": ["src-nasa-clps-providers"] },
+  { "id": "blue-origin", "name": "Blue Origin", "country": "USA", "headquarters": "Kent, WA", "landers": ["blue-moon-mk1"], "website": "https://www.blueorigin.com/", "sourceIds": ["src-planetary-clps"] }
+]

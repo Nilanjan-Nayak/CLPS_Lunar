@@ -1,0 +1,17 @@
+[
+  { "id": "ev-peregrine-launch", "missionId": "peregrine-mission-one", "type": "launch", "date": "2024-01-08T07:18:00Z", "title": "Launch on Vulcan Centaur (inaugural flight)", "sourceIds": ["src-nasa-clps-main"] },
+  { "id": "ev-peregrine-anomaly", "missionId": "peregrine-mission-one", "type": "anomaly", "date": "2024-01-08", "title": "Propellant leak detected; landing ruled out", "sourceIds": ["src-nasa-clps-main"] },
+  { "id": "ev-peregrine-reentry", "missionId": "peregrine-mission-one", "type": "end", "date": "2024-01-18", "title": "Controlled re-entry over the South Pacific", "sourceIds": ["src-nasa-clps-main"] },
+  { "id": "ev-im1-launch", "missionId": "im-1", "type": "launch", "date": "2024-02-15T06:05:00Z", "title": "Launch on Falcon 9 from LC-39A", "sourceIds": ["src-nasa-clps-main"] },
+  { "id": "ev-im1-landing", "missionId": "im-1", "type": "landing", "date": "2024-02-22T23:23:00Z", "title": "Soft landing near Malapert A; lander tips over", "sourceIds": ["src-nasa-lro-odysseus"] },
+  { "id": "ev-im1-lro-image", "missionId": "im-1", "type": "observation", "date": "2024-02-24T18:57:00Z", "title": "LRO images Odysseus from ~90 km", "sourceIds": ["src-nasa-lro-odysseus"] },
+  { "id": "ev-im1-end", "missionId": "im-1", "type": "end", "date": "2024-02-29", "title": "Surface operations end at lunar sunset", "sourceIds": ["src-nasa-clps-main"] },
+  { "id": "ev-bgm1-launch", "missionId": "blue-ghost-mission-1", "type": "launch", "date": "2025-01-15T06:11:00Z", "title": "Launch on Falcon 9 (rideshare with ispace RESILIENCE)", "sourceIds": ["src-newspace-clps-2026"] },
+  { "id": "ev-bgm1-loi", "missionId": "blue-ghost-mission-1", "type": "orbit-insertion", "date": "2025-02-13", "title": "Lunar orbit insertion", "sourceIds": ["src-newspace-clps-2026"] },
+  { "id": "ev-bgm1-landing", "missionId": "blue-ghost-mission-1", "type": "landing", "date": "2025-03-02T08:34:00Z", "title": "Upright soft landing in Mare Crisium", "sourceIds": ["src-lroc-blue-ghost-region", "src-planetary-clps"] },
+  { "id": "ev-bgm1-end", "missionId": "blue-ghost-mission-1", "type": "end", "date": "2025-03-16", "title": "Mission ends ~5 hours into lunar night", "sourceIds": ["src-newspace-clps-2026"] },
+  { "id": "ev-im2-launch", "missionId": "im-2", "type": "launch", "date": "2025-02-27T00:16:30Z", "title": "Launch on Falcon 9 (with Lunar Trailblazer rideshare)", "sourceIds": ["src-wiki-im2"] },
+  { "id": "ev-im2-landing", "missionId": "im-2", "type": "landing", "date": "2025-03-06T17:28:50Z", "title": "Landing on Mons Mouton; lander on its side in a crater", "sourceIds": ["src-wiki-im2"] },
+  { "id": "ev-im2-end", "missionId": "im-2", "type": "end", "date": "2025-03-07", "title": "Mission declared over (insufficient power)", "sourceIds": ["src-planetary-clps"] },
+  { "id": "ev-cp12-cancel", "missionId": "draper-cp-12", "type": "cancellation", "date": "2026-07", "title": "Task order cancelled after lander development delays", "sourceIds": ["src-planetary-clps"] }
+]

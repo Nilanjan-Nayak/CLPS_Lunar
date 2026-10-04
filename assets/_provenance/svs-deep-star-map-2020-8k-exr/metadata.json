@@ -1,0 +1,52 @@
+{
+  "assetId": "svs-deep-star-map-2020-8k-exr",
+  "name": "Deep Star Maps 2020 — celestial (ICRF/J2000) star map, 8k OpenEXR (raw)",
+  "assetType": "sky-map-raw",
+  "textureRole": "sky-celestial",
+  "category": "environment",
+  "format": "exr",
+  "tier": "core",
+  "file": ".cache/raw/starmap_2020_8k.exr",
+  "sizeBytes": 130530278,
+  "sha256": "dc6c4f413e85707a29a25a9451148154554ecca2c996f84fa8f47b65ef9ff7c4",
+  "projection": {
+    "type": "equirectangular",
+    "frame": "ICRF/J2000 geocentric equatorial (RA, Dec)",
+    "centerRA_deg": 0,
+    "raIncreasesToward": "left",
+    "column_of_RA": "col = (W/2 - RA/360*W) mod W",
+    "row_of_Dec": "row = (90 - Dec)/180*H"
+  },
+  "scientificGrade": "derived",
+  "downloadedAt": "2026-09-28T16:10:41.542Z",
+  "source": {
+    "organization": "NASA Goddard Space Flight Center Scientific Visualization Studio",
+    "title": "Deep Star Maps 2020 (SVS 4851)",
+    "url": "https://svs.gsfc.nasa.gov/4851",
+    "credit": "NASA/Goddard Space Flight Center Scientific Visualization Studio. Gaia DR2: ESA/Gaia/DPAC.",
+    "author": "Ernie Wright (USRA)",
+    "released": "2020-09-09",
+    "fileUrl": "https://svs.gsfc.nasa.gov/vis/a000000/a004800/a004851/starmap_2020_8k.exr"
+  },
+  "license": {
+    "name": "NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)",
+    "url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+  },
+  "credits": "NASA/Goddard Space Flight Center Scientific Visualization Studio. Gaia DR2: ESA/Gaia/DPAC.",
+  "derive": [
+    {
+      "type": "exr-to-jpg",
+      "out": "environment/sky/svs-deep-star-map-2020/starmap_2020_8k.jpg",
+      "variants": [
+        {
+          "width": 4096,
+          "out": "environment/sky/svs-deep-star-map-2020/starmap_2020_4k.jpg",
+          "quality": "low"
+        }
+      ],
+      "toneMapK": 2.5,
+      "jpegQuality": 88
+    }
+  ],
+  "notes": "Hipparcos-2 / Tycho-2 / Gaia DR2 all-sky map, half-float linear. Tone-mapped to 8-bit JPEG for the sky sphere; not photometric. Requires `pip install OpenEXR` for the derive step."
+}

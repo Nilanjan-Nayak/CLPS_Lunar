@@ -1,0 +1,1402 @@
+{
+ "version": 1,
+ "scheme": {
+  "type": "equirectangular-grid",
+  "tileDeg": 22.5,
+  "cols": 16,
+  "rows": 8,
+  "origin": "north-west",
+  "centerLonDeg": 0
+ },
+ "encoding": {
+  "type": "rgb-uint16",
+  "formula": "value = R*256 + G; elevation_m = value*0.5 + 1727400 - 1737400",
+  "scale": 0.5,
+  "referenceRadiusM": 1727400,
+  "datumRadiusM": 1737400
+ },
+ "datum": {
+  "name": "Lunar sphere R=1737.4 km (LOLA)",
+  "radiusKm": 1737.4
+ },
+ "lods": {
+  "0": {
+   "source": "nasa-cgi-moon-kit-ldem-4-uint",
+   "pixelsPerDegree": 4,
+   "url": "/assets/lunar/elevation/ldem-4-global/ldem_4_rgb.png",
+   "width": 1440,
+   "height": 720
+  },
+  "1": {
+   "source": "nasa-cgi-moon-kit-ldem-16-uint",
+   "pixelsPerDegree": 16.0,
+   "tilePx": 360
+  }
+ },
+ "coverage": "landing-sites+south-polar-band (run derive.py --all-tiles for global)",
+ "tiles": [
+  {
+   "id": "lod1/5_1",
+   "lod": 1,
+   "x": 5,
+   "y": 1,
+   "bounds": {
+    "west": -67.5,
+    "east": -45.0,
+    "north": 67.5,
+    "south": 45.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/5_1.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4506.5,
+    "maxElevationM": 1382.0,
+    "meanElevationM": -1858.701886574074
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/5_1.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/6_1",
+   "lod": 1,
+   "x": 6,
+   "y": 1,
+   "bounds": {
+    "west": -45.0,
+    "east": -22.5,
+    "north": 67.5,
+    "south": 45.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/6_1.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4937.0,
+    "maxElevationM": 957.5,
+    "meanElevationM": -2203.2243788580245
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/6_1.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/7_1",
+   "lod": 1,
+   "x": 7,
+   "y": 1,
+   "bounds": {
+    "west": -22.5,
+    "east": 0.0,
+    "north": 67.5,
+    "south": 45.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/7_1.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4478.0,
+    "maxElevationM": 788.0,
+    "meanElevationM": -2357.33618441358
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/7_1.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/4_2",
+   "lod": 1,
+   "x": 4,
+   "y": 2,
+   "bounds": {
+    "west": -90.0,
+    "east": -67.5,
+    "north": 45.0,
+    "south": 22.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/4_2.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -5115.5,
+    "maxElevationM": 2000.0,
+    "meanElevationM": -1575.1157793209877
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/4_2.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/5_2",
+   "lod": 1,
+   "x": 5,
+   "y": 2,
+   "bounds": {
+    "west": -67.5,
+    "east": -45.0,
+    "north": 45.0,
+    "south": 22.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/5_2.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4002.0,
+    "maxElevationM": 1323.0,
+    "meanElevationM": -2191.294764660494
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/5_2.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/6_2",
+   "lod": 1,
+   "x": 6,
+   "y": 2,
+   "bounds": {
+    "west": -45.0,
+    "east": -22.5,
+    "north": 45.0,
+    "south": 22.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/6_2.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4083.0,
+    "maxElevationM": 1004.5,
+    "meanElevationM": -1923.5167283950618
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/6_2.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/7_2",
+   "lod": 1,
+   "x": 7,
+   "y": 2,
+   "bounds": {
+    "west": -22.5,
+    "east": 0.0,
+    "north": 45.0,
+    "south": 22.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/7_2.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4484.5,
+    "maxElevationM": 436.0,
+    "meanElevationM": -2297.3173456790123
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/7_2.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/9_2",
+   "lod": 1,
+   "x": 9,
+   "y": 2,
+   "bounds": {
+    "west": 22.5,
+    "east": 45.0,
+    "north": 45.0,
+    "south": 22.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/9_2.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4759.5,
+    "maxElevationM": 1968.5,
+    "meanElevationM": -1612.0753433641976
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/9_2.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/10_2",
+   "lod": 1,
+   "x": 10,
+   "y": 2,
+   "bounds": {
+    "west": 45.0,
+    "east": 67.5,
+    "north": 45.0,
+    "south": 22.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/10_2.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4970.0,
+    "maxElevationM": 2327.0,
+    "meanElevationM": -1278.0154899691358
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/10_2.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/11_2",
+   "lod": 1,
+   "x": 11,
+   "y": 2,
+   "bounds": {
+    "west": 67.5,
+    "east": 90.0,
+    "north": 45.0,
+    "south": 22.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/11_2.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4813.0,
+    "maxElevationM": 3013.0,
+    "meanElevationM": -966.3275
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/11_2.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/4_3",
+   "lod": 1,
+   "x": 4,
+   "y": 3,
+   "bounds": {
+    "west": -90.0,
+    "east": -67.5,
+    "north": 22.5,
+    "south": 0.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/4_3.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -5669.5,
+    "maxElevationM": 3534.0,
+    "meanElevationM": -797.2424845679012
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/4_3.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/5_3",
+   "lod": 1,
+   "x": 5,
+   "y": 3,
+   "bounds": {
+    "west": -67.5,
+    "east": -45.0,
+    "north": 22.5,
+    "south": 0.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/5_3.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4079.5,
+    "maxElevationM": 1177.5,
+    "meanElevationM": -1707.7262422839506
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/5_3.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/6_3",
+   "lod": 1,
+   "x": 6,
+   "y": 3,
+   "bounds": {
+    "west": -45.0,
+    "east": -22.5,
+    "north": 22.5,
+    "south": 0.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/6_3.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -3868.0,
+    "maxElevationM": 2170.5,
+    "meanElevationM": -1179.4048533950618
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/6_3.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/7_3",
+   "lod": 1,
+   "x": 7,
+   "y": 3,
+   "bounds": {
+    "west": -22.5,
+    "east": 0.0,
+    "north": 22.5,
+    "south": 0.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/7_3.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -3567.0,
+    "maxElevationM": 2973.0,
+    "meanElevationM": -1080.666500771605
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/7_3.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/9_3",
+   "lod": 1,
+   "x": 9,
+   "y": 3,
+   "bounds": {
+    "west": 22.5,
+    "east": 45.0,
+    "north": 22.5,
+    "south": 0.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/9_3.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -3855.5,
+    "maxElevationM": 1057.5,
+    "meanElevationM": -1353.1974189814814
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/9_3.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/10_3",
+   "lod": 1,
+   "x": 10,
+   "y": 3,
+   "bounds": {
+    "west": 45.0,
+    "east": 67.5,
+    "north": 22.5,
+    "south": 0.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/10_3.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -5449.5,
+    "maxElevationM": 3024.0,
+    "meanElevationM": -2159.8110918209877
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/10_3.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/11_3",
+   "lod": 1,
+   "x": 11,
+   "y": 3,
+   "bounds": {
+    "west": 67.5,
+    "east": 90.0,
+    "north": 22.5,
+    "south": 0.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/11_3.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -5465.5,
+    "maxElevationM": 2834.0,
+    "meanElevationM": -1517.0099845679013
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/11_3.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/4_4",
+   "lod": 1,
+   "x": 4,
+   "y": 4,
+   "bounds": {
+    "west": -90.0,
+    "east": -67.5,
+    "north": 0.0,
+    "south": -22.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/4_4.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4029.5,
+    "maxElevationM": 4498.0,
+    "meanElevationM": 311.62886959876545
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/4_4.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/5_4",
+   "lod": 1,
+   "x": 5,
+   "y": 4,
+   "bounds": {
+    "west": -67.5,
+    "east": -45.0,
+    "north": 0.0,
+    "south": -22.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/5_4.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -3859.5,
+    "maxElevationM": 3289.5,
+    "meanElevationM": -1230.4011805555556
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/5_4.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/6_4",
+   "lod": 1,
+   "x": 6,
+   "y": 4,
+   "bounds": {
+    "west": -45.0,
+    "east": -22.5,
+    "north": 0.0,
+    "south": -22.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/6_4.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4726.0,
+    "maxElevationM": 466.0,
+    "meanElevationM": -1791.0487384259259
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/6_4.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/9_4",
+   "lod": 1,
+   "x": 9,
+   "y": 4,
+   "bounds": {
+    "west": 22.5,
+    "east": 45.0,
+    "north": 0.0,
+    "south": -22.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/9_4.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4801.0,
+    "maxElevationM": 3217.5,
+    "meanElevationM": -1663.3826967592593
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/9_4.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/10_4",
+   "lod": 1,
+   "x": 10,
+   "y": 4,
+   "bounds": {
+    "west": 45.0,
+    "east": 67.5,
+    "north": 0.0,
+    "south": -22.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/10_4.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -5060.5,
+    "maxElevationM": 2300.5,
+    "meanElevationM": -1434.9660030864197
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/10_4.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/11_4",
+   "lod": 1,
+   "x": 11,
+   "y": 4,
+   "bounds": {
+    "west": 67.5,
+    "east": 90.0,
+    "north": 0.0,
+    "south": -22.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/11_4.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -5356.0,
+    "maxElevationM": 2801.0,
+    "meanElevationM": -1178.5415817901235
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/11_4.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/7_6",
+   "lod": 1,
+   "x": 7,
+   "y": 6,
+   "bounds": {
+    "west": -22.5,
+    "east": 0.0,
+    "north": -45.0,
+    "south": -67.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/7_6.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -5882.0,
+    "maxElevationM": 4429.0,
+    "meanElevationM": -768.9652662037037
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/7_6.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/8_6",
+   "lod": 1,
+   "x": 8,
+   "y": 6,
+   "bounds": {
+    "west": 0.0,
+    "east": 22.5,
+    "north": -45.0,
+    "south": -67.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/8_6.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4652.0,
+    "maxElevationM": 5370.5,
+    "meanElevationM": -901.4349035493827
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/8_6.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/9_6",
+   "lod": 1,
+   "x": 9,
+   "y": 6,
+   "bounds": {
+    "west": 22.5,
+    "east": 45.0,
+    "north": -45.0,
+    "south": -67.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/9_6.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -5087.0,
+    "maxElevationM": 3201.5,
+    "meanElevationM": -922.6103202160493
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/9_6.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/10_6",
+   "lod": 1,
+   "x": 10,
+   "y": 6,
+   "bounds": {
+    "west": 45.0,
+    "east": 67.5,
+    "north": -45.0,
+    "south": -67.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/10_6.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -5130.0,
+    "maxElevationM": 2707.5,
+    "meanElevationM": -895.5975462962963
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/10_6.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/11_6",
+   "lod": 1,
+   "x": 11,
+   "y": 6,
+   "bounds": {
+    "west": 67.5,
+    "east": 90.0,
+    "north": -45.0,
+    "south": -67.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/11_6.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4231.5,
+    "maxElevationM": 2549.0,
+    "meanElevationM": -914.4221913580247
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/11_6.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/12_6",
+   "lod": 1,
+   "x": 12,
+   "y": 6,
+   "bounds": {
+    "west": 90.0,
+    "east": 112.5,
+    "north": -45.0,
+    "south": -67.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/12_6.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -5891.5,
+    "maxElevationM": 5560.5,
+    "meanElevationM": -597.8245563271605
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/12_6.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/13_6",
+   "lod": 1,
+   "x": 13,
+   "y": 6,
+   "bounds": {
+    "west": 112.5,
+    "east": 135.0,
+    "north": -45.0,
+    "south": -67.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/13_6.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4977.5,
+    "maxElevationM": 6060.0,
+    "meanElevationM": -382.2875385802469
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/13_6.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/14_6",
+   "lod": 1,
+   "x": 14,
+   "y": 6,
+   "bounds": {
+    "west": 135.0,
+    "east": 157.5,
+    "north": -45.0,
+    "south": -67.5
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/14_6.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -6108.5,
+    "maxElevationM": 3530.0,
+    "meanElevationM": -2297.7566319444445
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/14_6.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/0_7",
+   "lod": 1,
+   "x": 0,
+   "y": 7,
+   "bounds": {
+    "west": -180.0,
+    "east": -157.5,
+    "north": -67.5,
+    "south": -90.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/0_7.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -8981.5,
+    "maxElevationM": 1629.0,
+    "meanElevationM": -3521.292924382716
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/0_7.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/1_7",
+   "lod": 1,
+   "x": 1,
+   "y": 7,
+   "bounds": {
+    "west": -157.5,
+    "east": -135.0,
+    "north": -67.5,
+    "south": -90.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/1_7.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -8008.5,
+    "maxElevationM": 2434.0,
+    "meanElevationM": -3045.2558834876545
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/1_7.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/2_7",
+   "lod": 1,
+   "x": 2,
+   "y": 7,
+   "bounds": {
+    "west": -135.0,
+    "east": -112.5,
+    "north": -67.5,
+    "south": -90.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/2_7.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -7511.5,
+    "maxElevationM": 3271.5,
+    "meanElevationM": -2660.4032445987655
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/2_7.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/3_7",
+   "lod": 1,
+   "x": 3,
+   "y": 7,
+   "bounds": {
+    "west": -112.5,
+    "east": -90.0,
+    "north": -67.5,
+    "south": -90.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/3_7.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -5404.5,
+    "maxElevationM": 6335.0,
+    "meanElevationM": -1378.817561728395
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/3_7.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/4_7",
+   "lod": 1,
+   "x": 4,
+   "y": 7,
+   "bounds": {
+    "west": -90.0,
+    "east": -67.5,
+    "north": -67.5,
+    "south": -90.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/4_7.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -5642.0,
+    "maxElevationM": 5493.0,
+    "meanElevationM": -945.6254475308642
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/4_7.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/5_7",
+   "lod": 1,
+   "x": 5,
+   "y": 7,
+   "bounds": {
+    "west": -67.5,
+    "east": -45.0,
+    "north": -67.5,
+    "south": -90.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/5_7.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4985.5,
+    "maxElevationM": 4727.5,
+    "meanElevationM": -603.1758217592593
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/5_7.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/6_7",
+   "lod": 1,
+   "x": 6,
+   "y": 7,
+   "bounds": {
+    "west": -45.0,
+    "east": -22.5,
+    "north": -67.5,
+    "south": -90.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/6_7.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4958.5,
+    "maxElevationM": 5479.0,
+    "meanElevationM": -517.6629089506173
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/6_7.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/7_7",
+   "lod": 1,
+   "x": 7,
+   "y": 7,
+   "bounds": {
+    "west": -22.5,
+    "east": 0.0,
+    "north": -67.5,
+    "south": -90.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/7_7.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4725.5,
+    "maxElevationM": 4808.5,
+    "meanElevationM": -427.3092669753086
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/7_7.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/8_7",
+   "lod": 1,
+   "x": 8,
+   "y": 7,
+   "bounds": {
+    "west": 0.0,
+    "east": 22.5,
+    "north": -67.5,
+    "south": -90.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/8_7.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -3892.0,
+    "maxElevationM": 5970.5,
+    "meanElevationM": 915.6041975308642
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/8_7.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/9_7",
+   "lod": 1,
+   "x": 9,
+   "y": 7,
+   "bounds": {
+    "west": 22.5,
+    "east": 45.0,
+    "north": -67.5,
+    "south": -90.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/9_7.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4015.5,
+    "maxElevationM": 6928.5,
+    "meanElevationM": 930.6625578703704
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/9_7.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/10_7",
+   "lod": 1,
+   "x": 10,
+   "y": 7,
+   "bounds": {
+    "west": 45.0,
+    "east": 67.5,
+    "north": -67.5,
+    "south": -90.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/10_7.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4758.0,
+    "maxElevationM": 5917.5,
+    "meanElevationM": -72.0844637345679
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/10_7.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/11_7",
+   "lod": 1,
+   "x": 11,
+   "y": 7,
+   "bounds": {
+    "west": 67.5,
+    "east": 90.0,
+    "north": -67.5,
+    "south": -90.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/11_7.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4594.5,
+    "maxElevationM": 4861.0,
+    "meanElevationM": -310.2413850308642
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/11_7.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/12_7",
+   "lod": 1,
+   "x": 12,
+   "y": 7,
+   "bounds": {
+    "west": 90.0,
+    "east": 112.5,
+    "north": -67.5,
+    "south": -90.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/12_7.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -4790.5,
+    "maxElevationM": 5125.0,
+    "meanElevationM": -769.7795563271605
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/12_7.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/13_7",
+   "lod": 1,
+   "x": 13,
+   "y": 7,
+   "bounds": {
+    "west": 112.5,
+    "east": 135.0,
+    "north": -67.5,
+    "south": -90.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/13_7.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -5733.0,
+    "maxElevationM": 2046.0,
+    "meanElevationM": -2300.680482253086
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/13_7.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/14_7",
+   "lod": 1,
+   "x": 14,
+   "y": 7,
+   "bounds": {
+    "west": 135.0,
+    "east": 157.5,
+    "north": -67.5,
+    "south": -90.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/14_7.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -6898.5,
+    "maxElevationM": 1846.5,
+    "meanElevationM": -2464.197962962963
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/14_7.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  },
+  {
+   "id": "lod1/15_7",
+   "lod": 1,
+   "x": 15,
+   "y": 7,
+   "bounds": {
+    "west": 157.5,
+    "east": 180.0,
+    "north": -67.5,
+    "south": -90.0
+   },
+   "elevation": {
+    "url": "/assets/lunar/terrain/tiles/lod1/15_7.png",
+    "width": 360,
+    "height": 360,
+    "pixelsPerDegree": 16.0
+   },
+   "stats": {
+    "minElevationM": -7810.0,
+    "maxElevationM": 1177.0,
+    "meanElevationM": -2559.265671296296
+   },
+   "color": {
+    "url": "/assets/lunar/terrain/tiles/lod1/15_7.jpg",
+    "width": 256,
+    "height": 256,
+    "source": "nasa-cgi-moon-kit-color-poles-4k"
+   }
+  }
+ ]
+}

@@ -1,0 +1,38 @@
+{
+  "assetId": "nasa-blue-marble-clouds-2048-raw",
+  "name": "Blue Marble: Clouds (2048x1024 TIFF, raw)",
+  "assetType": "planet-texture",
+  "textureRole": "earth-clouds",
+  "category": "solar-system",
+  "format": "tif",
+  "tier": "core",
+  "file": ".cache/raw/cloud_combined_2048.tif",
+  "sizeBytes": 2687040,
+  "sha256": "cf8624a20779435f70d32372f0ab0c43f2c781e527c1f902c6b3c894d2e0455c",
+  "projection": {
+    "type": "equirectangular",
+    "frame": "geographic (lon -180 left → +180 right, lat +90 top)"
+  },
+  "scientificGrade": false,
+  "downloadedAt": "2026-09-28T16:10:41.752Z",
+  "source": {
+    "organization": "NASA Earth Observatory / Visible Earth",
+    "title": "Blue Marble: Clouds",
+    "url": "https://visibleearth.nasa.gov/images/57747/blue-marble-clouds",
+    "credit": "NASA Goddard Space Flight Center Image by Reto Stöckli",
+    "fileUrl": "https://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57747/cloud_combined_2048.tif"
+  },
+  "license": {
+    "name": "NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)",
+    "url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+  },
+  "credits": "NASA Goddard Space Flight Center Image by Reto Stöckli",
+  "derive": [
+    {
+      "type": "earth-texture",
+      "out": "solar-system/earth/nasa-blue-marble-clouds/cloud_combined_2048.jpg",
+      "mode": "L"
+    }
+  ],
+  "notes": "Cloud cover / opacity (grayscale) for the oriented Earth globe."
+}

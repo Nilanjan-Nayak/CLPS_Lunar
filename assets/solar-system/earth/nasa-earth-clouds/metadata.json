@@ -1,0 +1,101 @@
+{
+  "assetId": "nasa-earth-clouds-glb",
+  "name": "Earth with Clouds \u2014 NASA 3D model (glTF)",
+  "assetType": "planet-model",
+  "category": "solar-system",
+  "format": "glb",
+  "tier": "core",
+  "file": "solar-system/earth/nasa-earth-clouds/EarthClouds_1_12756.glb",
+  "sizeBytes": 18928336,
+  "sha256": "f0989772fa9ab1aeee32911df9b5da4ee1a938580414357ace51c9e05b5f3929",
+  "normalize": {
+    "targetRadiusKm": 6371
+  },
+  "scientificGrade": null,
+  "downloadedAt": "2026-09-28T06:03:36.249Z",
+  "source": {
+    "organization": "NASA Science (Solar System Exploration)",
+    "title": "Earth with Clouds 3D Model",
+    "url": "https://science.nasa.gov/resource/earth-with-clouds-3d-model/",
+    "credit": "NASA Visualization Technology Applications and Development (VTAD)",
+    "released": "2019-04-22",
+    "fileUrl": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/e/EarthClouds_1_12756.glb"
+  },
+  "license": {
+    "name": "NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)",
+    "url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+  },
+  "credits": "NASA Visualization Technology Applications and Development (VTAD)",
+  "derive": [],
+  "notes": "Visualization model. Earth is a context/navigation layer; no Earth scientific datasets are attached yet (separate data layer per architecture).",
+  "frame": {
+    "inspectedAt": "2026-09-28T06:09:40.476Z",
+    "file": "EarthClouds_1_12756.glb",
+    "generator": "Khronos Blender glTF 2.0 I/O",
+    "meshName": "Cube.002",
+    "nodeName": "Cube.001",
+    "vertexCount": 1778,
+    "bboxMin": [
+      -499.9999694824219,
+      -498.3235168457031,
+      -500
+    ],
+    "bboxMax": [
+      500,
+      498.32342529296875,
+      500
+    ],
+    "center": [
+      1.52587890625e-05,
+      -4.57763671875e-05,
+      0
+    ],
+    "boundingRadius": 501.87292366111103,
+    "uvFrame": {
+      "lon0": [
+        0.7071067659622119,
+        -2.5280060285506323e-08,
+        0.7071067964108824
+      ],
+      "lon0UvError": 8.429369702178807e-08,
+      "lon90E": [
+        0.7071067659621969,
+        2.070082286172257e-07,
+        -0.7071067964108675
+      ],
+      "lon90EUvError": 0.002582490444871196,
+      "north": [
+        -0.5309612140551315,
+        0.5980920691844319,
+        0.6003049774471185
+      ],
+      "northUvError": 0.0057383584976196285,
+      "handedness": "matches-app-convention",
+      "appConvention": {
+        "lon0": [
+          1,
+          0,
+          0
+        ],
+        "north": [
+          0,
+          1,
+          0
+        ],
+        "lon90E": [
+          0,
+          0,
+          -1
+        ]
+      }
+    },
+    "rotationDeg": [
+      0.0,
+      -90.0,
+      0.0
+    ],
+    "rotationOrder": "XYZ",
+    "calibration": "image-matched: land/ocean agreement 89.2% vs Blue Marble NG over 96472 surface samples (tools/asset-pipeline/calibrate-earth-glb.py)",
+    "uvLayout": "baked-cube-projection"
+  }
+}

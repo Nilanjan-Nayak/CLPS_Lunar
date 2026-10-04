@@ -1,0 +1,10 @@
+[
+  {"id": "ksc-lc-39a", "name": "Kennedy Space Center LC-39A", "shortName": "KSC LC-39A", "operator": "NASA / SpaceX", "country": "USA", "latitude": 28.6083, "longitude": -80.6041, "altitudeM": 3, "vehicles": ["Falcon 9", "Falcon Heavy"], "sourceIds": ["src-nasa-clps-main"]},
+  {"id": "ccsfs-slc-41", "name": "Cape Canaveral SFS SLC-41", "shortName": "CCSFS SLC-41", "operator": "ULA", "country": "USA", "latitude": 28.5830, "longitude": -80.5832, "altitudeM": 3, "vehicles": ["Vulcan Centaur", "Atlas V"], "sourceIds": ["src-nasa-clps-main"]},
+  {"id": "ccsfs-slc-40", "name": "Cape Canaveral SFS SLC-40", "shortName": "CCSFS SLC-40", "operator": "SpaceX", "country": "USA", "latitude": 28.5619, "longitude": -80.5772, "altitudeM": 3, "vehicles": ["Falcon 9"], "sourceIds": ["src-nasa-clps-main"]},
+  {"id": "ccsfs-lc-36", "name": "Cape Canaveral SFS LC-36", "shortName": "CCSFS LC-36", "operator": "Blue Origin", "country": "USA", "latitude": 28.4705, "longitude": -80.5417, "altitudeM": 3, "vehicles": ["New Glenn"], "sourceIds": ["src-nasa-clps-main"]},
+  {"id": "vsfb-slc-4e", "name": "Vandenberg SFB SLC-4E", "shortName": "VSFB SLC-4E", "operator": "SpaceX", "country": "USA", "latitude": 34.6320, "longitude": -120.6107, "altitudeM": 110, "vehicles": ["Falcon 9"], "sourceIds": ["src-nasa-clps-main"]},
+  {"id": "sdsc-shar-slp", "name": "Satish Dhawan Space Centre, Second Launch Pad", "shortName": "SDSC SHAR SLP", "operator": "ISRO", "country": "India", "latitude": 13.7199, "longitude": 80.2304, "altitudeM": 12, "vehicles": ["LVM3", "PSLV", "GSLV"], "sourceIds": ["src-nasa-clps-main"]},
+  {"id": "tanegashima-yoshinobu", "name": "Tanegashima Space Center, Yoshinobu LC", "shortName": "Tanegashima", "operator": "JAXA / MHI", "country": "Japan", "latitude": 30.4010, "longitude": 130.9750, "altitudeM": 50, "vehicles": ["H3", "H-IIA"], "sourceIds": ["src-nasa-clps-main"]},
+  {"id": "wenchang-lc-101", "name": "Wenchang Space Launch Site LC-101", "shortName": "Wenchang LC-101", "operator": "CNSA", "country": "China", "latitude": 19.6145, "longitude": 110.9510, "altitudeM": 20, "vehicles": ["Long March 5"], "sourceIds": ["src-nasa-clps-main"]}
+]

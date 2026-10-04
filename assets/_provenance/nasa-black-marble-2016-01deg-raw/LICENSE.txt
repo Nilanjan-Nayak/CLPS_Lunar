@@ -1,0 +1,17 @@
+Asset: Earth at Night — Black Marble 2016 (0.1° colour map, raw 3600x1800)
+Asset ID: nasa-black-marble-2016-01deg-raw
+
+Source organization: NASA Earth Observatory / Visible Earth
+Source title: Earth at Night: Black Marble 2016 Color Maps
+Source URL: https://visibleearth.nasa.gov/images/144898/earth-at-night-black-marble-2016-color-maps
+Direct file URL: https://eoimages.gsfc.nasa.gov/images/imagerecords/144000/144898/BlackMarble_2016_01deg.jpg
+
+Credit (required attribution): NASA Earth Observatory images by Joshua Stevens, using Suomi NPP VIIRS data from Miguel Román, NASA GSFC
+
+License: NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)
+License URL: https://www.nasa.gov/nasa-brand-center/images-and-media/
+
+NASA content is generally not subject to copyright in the United States and may be used for
+educational or informational purposes without explicit permission. NASA requests attribution as
+given above. NASA does not endorse this project. The NASA insignia/logo may not be used.
+See the NASA Media Usage Guidelines for full terms.

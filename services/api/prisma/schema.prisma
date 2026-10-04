@@ -1,0 +1,203 @@
+// Phase 8 contract — PostgreSQL + PostGIS via Prisma. The JSON repository implements the same shape today.
+// Run: npx prisma migrate dev (requires DATABASE_URL). Landing-site geometry uses PostGIS `geography(Point)`.
+
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql"; url = env("DATABASE_URL"); extensions = [postgis] }
+
+model Provider {
+  id        String    @id
+  name      String
+  country   String
+  hq        String?
+  website   String?
+  missions  Mission[]
+  spacecraft Spacecraft[]
+  sources   SourceLink[]
+}
+
+model Spacecraft {
+  id          String   @id
+  name        String
+  type        String   // lander | rover | orbiter | hopper
+  class       String?
+  providerId  String?
+  provider    Provider? @relation(fields: [providerId], references: [id])
+  dimensions  Json?
+  payloadCapacityKg Float?
+  assetId     String?  // FK into Asset (nullable: no official NASA model → info-only marker)
+  asset       Asset?   @relation(fields: [assetId], references: [assetId])
+  assetStatus String   // official-nasa-asset | no-official-nasa-asset
+  assetNote   String?
+  missionLinks MissionSpacecraft[]
+}
+
+model Mission {
+  id            String   @id
+  name          String
+  shortName     String
+  taskOrder     String?
+  program       String   @default("NASA CLPS")
+  providerId    String
+  provider      Provider @relation(fields: [providerId], references: [id])
+  landerId      String
+  landingSiteId String?
+  landingSite   LandingSite? @relation(fields: [landingSiteId], references: [id])
+  status        String
+  statusDetail  String?
+  launchDate    DateTime?
+  launchNominal String?
+  launchVehicle String?
+  launchSite    String?
+  landingDate   DateTime?
+  landingAttempted Boolean @default(false)
+  landingOutcome String?
+  endOfMission  DateTime?
+  nasaPayloadCount Int?
+  trajectory    Trajectory?
+  trajectoryNote String?
+  verifiedAt    DateTime
+  payloads      MissionPayload[]
+  spacecraft    MissionSpacecraft[]
+  assets        MissionAsset[]
+  events        MissionEvent[]
+  sources       SourceLink[]
+}
+
+model MissionSpacecraft {
+  missionId    String
+  spacecraftId String
+  role         String   // lander | rover | orbiter | imaging-orbiter | hopper
+  note         String?
+  mission      Mission    @relation(fields: [missionId], references: [id])
+  spacecraft   Spacecraft @relation(fields: [spacecraftId], references: [id])
+  @@id([missionId, spacecraftId, role])
+}
+
+model Payload {
+  id               String @id
+  name             String
+  acronym          String?
+  type             String
+  leadOrganization String?
+  summary          String?
+  has3DModel       Boolean @default(false)
+  missions         MissionPayload[]
+}
+
+model MissionPayload {
+  missionId String
+  payloadId String
+  mission   Mission @relation(fields: [missionId], references: [id])
+  payload   Payload @relation(fields: [payloadId], references: [id])
+  @@id([missionId, payloadId])
+}
+
+model LandingSite {
+  id            String  @id
+  name          String
+  regionId      String?
+  region        Region? @relation(fields: [regionId], references: [id])
+  latitude      Float?
+  longitude     Float?
+  elevationM    Float?
+  /// PostGIS point (lon/lat on the lunar sphere, SRID 0 / custom lunar CRS)
+  geom          Unsupported("geography(Point,0)")?
+  precision     String  // measured | approx | region | unknown
+  precisionNote String?
+  featureName   String?
+  status        String?
+  missions      Mission[]
+  sources       SourceLink[]
+}
+
+model Region {
+  id            String @id
+  name          String
+  north         Float
+  south         Float
+  west          Float
+  east          Float
+  centerLat     Float
+  centerLon     Float
+  description   String?
+  scienceThemes String[]
+  landingSites  LandingSite[]
+}
+
+model Trajectory {
+  id        String  @id @default(cuid())
+  missionId String  @unique
+  mission   Mission @relation(fields: [missionId], references: [id])
+  frame     String  // moon-centric-km | earth-centric-km
+  sourceId  String
+  samples   Json    // [{t,x,y,z}] — verified ephemeris/telemetry only
+}
+
+model MissionEvent {
+  id        String   @id
+  missionId String
+  mission   Mission  @relation(fields: [missionId], references: [id])
+  type      String
+  date      DateTime
+  title     String
+  sources   SourceLink[]
+}
+
+/// Asset catalog (NASA visual assets) — separate from scientific data tables above.
+model Asset {
+  assetId     String  @id
+  name        String
+  assetType   String
+  category    String
+  format      String
+  url         String
+  localPath   String?
+  sizeBytes   Int?
+  sha256      String?
+  sourceOrg   String
+  sourceUrl   String
+  credits     String
+  licenseName String
+  licenseUrl  String
+  version     String  @default("1")
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  spacecraft  Spacecraft[]
+  missions    MissionAsset[]
+}
+
+model MissionAsset {
+  missionId String
+  assetId   String
+  role      String
+  mission   Mission @relation(fields: [missionId], references: [id])
+  asset     Asset   @relation(fields: [assetId], references: [assetId])
+  @@id([missionId, assetId, role])
+}
+
+model Source {
+  id          String @id
+  title       String
+  publisher   String
+  url         String
+  date        DateTime?
+  type        String // primary | secondary | asset | data
+  retrievedAt DateTime
+  claims      String[]
+  links       SourceLink[]
+}
+
+model SourceLink {
+  id            String @id @default(cuid())
+  sourceId      String
+  source        Source @relation(fields: [sourceId], references: [id])
+  missionId     String?
+  mission       Mission? @relation(fields: [missionId], references: [id])
+  providerId    String?
+  provider      Provider? @relation(fields: [providerId], references: [id])
+  landingSiteId String?
+  landingSite   LandingSite? @relation(fields: [landingSiteId], references: [id])
+  eventId       String?
+  event         MissionEvent? @relation(fields: [eventId], references: [id])
+}

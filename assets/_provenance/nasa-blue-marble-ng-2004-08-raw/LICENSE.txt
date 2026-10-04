@@ -1,0 +1,17 @@
+Asset: Blue Marble Next Generation, August 2004, with topography and bathymetry (raw 5400x2700)
+Asset ID: nasa-blue-marble-ng-2004-08-raw
+
+Source organization: NASA Earth Observatory / Visible Earth
+Source title: Blue Marble Next Generation w/ Topography and Bathymetry (August)
+Source URL: https://visibleearth.nasa.gov/images/73776/august-blue-marble-next-generation-w-topography-and-bathymetry
+Direct file URL: https://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73776/world.topo.bathy.200408.3x5400x2700.jpg
+
+Credit (required attribution): NASA Earth Observatory (Reto Stöckli, NASA GSFC) — MODIS, USGS, DMSP
+
+License: NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)
+License URL: https://www.nasa.gov/nasa-brand-center/images-and-media/
+
+NASA content is generally not subject to copyright in the United States and may be used for
+educational or informational purposes without explicit permission. NASA requests attribution as
+given above. NASA does not endorse this project. The NASA insignia/logo may not be used.
+See the NASA Media Usage Guidelines for full terms.

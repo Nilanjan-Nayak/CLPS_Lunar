@@ -1,0 +1,54 @@
+{
+  "assetId": "nasa-cgi-moon-kit-ldem-4-uint-rgb",
+  "name": "CGI Moon Kit \u2014 LOLA displacement map, 4 px/deg (uint16) (RGB-encoded PNG, LOD0 global)",
+  "assetType": "elevation",
+  "category": "lunar",
+  "format": "png",
+  "lod": 0,
+  "file": "lunar/elevation/ldem-4-global/ldem_4_rgb.png",
+  "sizeBytes": 1857964,
+  "projection": {
+    "type": "equirectangular",
+    "centerLonDeg": 0,
+    "width": 1440,
+    "height": 720,
+    "pixelsPerDegree": 4
+  },
+  "encoding": {
+    "type": "rgb-uint16",
+    "formula": "value = R*256 + G; elevation_m = value*0.5 + 1727400 - 1737400",
+    "scale": 0.5,
+    "referenceRadiusM": 1727400,
+    "datumRadiusM": 1737400
+  },
+  "stats": {
+    "minElevationM": -8878.5,
+    "maxElevationM": 10504.0,
+    "meanElevationM": -518.9744584297839
+  },
+  "scientificGrade": "derived",
+  "derivedFrom": {
+    "assetId": "nasa-cgi-moon-kit-ldem-4-uint",
+    "file": ".cache/raw/ldem_4_uint.tif",
+    "sha256": "e6668bec27fc9b8fbb02d198c7ddfb08eedeeb790167b494f95e6b34201da05e",
+    "source": {
+      "organization": "NASA Goddard Scientific Visualization Studio",
+      "title": "CGI Moon Kit (SVS 4720) \u2014 displacement map derived from LOLA gridded data (LRO)",
+      "url": "https://svs.gsfc.nasa.gov/4720",
+      "credit": "NASA/GSFC/LOLA science team; NASA's Scientific Visualization Studio \u2014 Ernie Wright",
+      "upstream": "LRO LOLA GDR (PDS Geosciences Node): https://pds-geosciences.wustl.edu/missions/lro/lola.htm",
+      "missions": [
+        "LRO"
+      ],
+      "fileUrl": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/ldem_4_uint.tif"
+    },
+    "license": {
+      "name": "NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)",
+      "url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+    },
+    "credits": "NASA/GSFC/LOLA science team; NASA's Scientific Visualization Studio \u2014 Ernie Wright",
+    "scientificGrade": "derived"
+  },
+  "derivedAt": "2026-09-28T06:08:36.510525Z",
+  "pipeline": "tools/asset-pipeline/derive.py"
+}

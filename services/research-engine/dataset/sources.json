@@ -1,0 +1,82 @@
+[
+ {
+  "id": "src-nssdca-nmc",
+  "title": "NSSDCA Master Catalog — lunar mission pages (dates, outcomes, landing coordinates)",
+  "publisher": "NASA Goddard / NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/",
+  "kind": "primary",
+  "retrieved": "2026-09-28"
+ },
+ {
+  "id": "src-nssdca-timeline",
+  "title": "NSSDCA Lunar Exploration Timeline",
+  "publisher": "NASA Goddard / NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunartimeline.html",
+  "kind": "primary",
+  "retrieved": "2026-09-28"
+ },
+ {
+  "id": "src-lroc-sites",
+  "title": "LROC featured images locating landers and impact sites (Apollo, Chang'e, Vikram, Hakuto-R, Luna 25, SLIM, IM-1/2, Blue Ghost)",
+  "publisher": "NASA / ASU LROC",
+  "url": "https://lroc.im-ldi.com/",
+  "kind": "primary",
+  "retrieved": "2026-09-28"
+ },
+ {
+  "id": "src-wiki-artificial-objects",
+  "title": "List of artificial objects on the Moon (compiled coordinates; secondary)",
+  "publisher": "Wikipedia",
+  "url": "https://en.wikipedia.org/wiki/List_of_artificial_objects_on_the_Moon",
+  "kind": "secondary",
+  "retrieved": "2026-09-28"
+ },
+ {
+  "id": "src-research-engine",
+  "title": "CLPS Lunar Mission Browser research engine — derived terrain features, statistical model and physics-based mission calculations (NOT flight data)",
+  "publisher": "this project",
+  "url": "services/research-engine",
+  "kind": "derived",
+  "retrieved": "2026-09-28"
+ },
+ {
+  "id": "src-firefly-bgm1",
+  "title": "Firefly Aerospace — Blue Ghost Mission 1 page (main engine >1,000 N; 8 Spectre RCS = 1,600 N total; descent description)",
+  "publisher": "Firefly Aerospace",
+  "url": "https://fireflyspace.com/missions/blue-ghost-mission-1/",
+  "kind": "primary",
+  "retrieved": "2026-09-28"
+ },
+ {
+  "id": "src-nsf-bgm1-im2-landings",
+  "title": "NASASpaceflight — Blue Ghost / IM-2 landings (BGM1 DOI T−63 min, 9-min PDI burn on all engines; IM-2 PDI at 13 km, T−14.5 min)",
+  "publisher": "NASASpaceFlight.com",
+  "url": "https://www.nasaspaceflight.com/2025/03/blue-ghost-im-2-landings/",
+  "kind": "secondary",
+  "retrieved": "2026-09-28"
+ },
+ {
+  "id": "src-pds-lola-gdr",
+  "title": "LRO LOLA Gridded Data Records — polar stereographic DEMs (ldem_75s_240m, ldem_75n_240m; 240 m/px, height vs 1737.4 km)",
+  "publisher": "NASA PDS Geosciences Node / LOLA team (Smith, Zuber et al.)",
+  "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/",
+  "kind": "primary",
+  "retrieved": "2026-09-28"
+ },
+ {
+  "id": "src-meeus",
+  "title": "Meeus, J. — Astronomical Algorithms (2nd ed.), ch. 25 (Sun) and ch. 47 (Moon, truncated ELP-2000/82 series)",
+  "publisher": "Willmann-Bell",
+  "url": "https://www.willbell.com/math/mc1.htm",
+  "kind": "reference",
+  "retrieved": "2026-09-28"
+ },
+ {
+  "id": "src-iau-wgccre-2009",
+  "title": "Archinal et al. — Report of the IAU WG on Cartographic Coordinates and Rotational Elements: 2009 (Moon pole/prime-meridian model)",
+  "publisher": "Celestial Mechanics and Dynamical Astronomy 109, 101–135 (2011)",
+  "url": "https://doi.org/10.1007/s10569-010-9320-4",
+  "kind": "reference",
+  "retrieved": "2026-09-28"
+ }
+]

@@ -1,0 +1,49 @@
+{
+  "assetId": "nasa-cgi-moon-kit-ldem-4-uint",
+  "name": "CGI Moon Kit — LOLA displacement map, 4 px/deg (uint16)",
+  "assetType": "elevation",
+  "category": "lunar",
+  "format": "tif",
+  "tier": "core",
+  "file": ".cache/raw/ldem_4_uint.tif",
+  "sizeBytes": 2076866,
+  "sha256": "e6668bec27fc9b8fbb02d198c7ddfb08eedeeb790167b494f95e6b34201da05e",
+  "projection": {
+    "type": "equirectangular",
+    "centerLonDeg": 0,
+    "width": 1440,
+    "height": 720,
+    "pixelsPerDegree": 4
+  },
+  "encoding": {
+    "type": "uint16",
+    "unit": "half-meters",
+    "referenceRadiusM": 1727400,
+    "datumRadiusM": 1737400
+  },
+  "scientificGrade": "derived",
+  "downloadedAt": "2026-09-28T06:03:37.127Z",
+  "source": {
+    "organization": "NASA Goddard Scientific Visualization Studio",
+    "title": "CGI Moon Kit (SVS 4720) — displacement map derived from LOLA gridded data (LRO)",
+    "url": "https://svs.gsfc.nasa.gov/4720",
+    "credit": "NASA/GSFC/LOLA science team; NASA's Scientific Visualization Studio — Ernie Wright",
+    "upstream": "LRO LOLA GDR (PDS Geosciences Node): https://pds-geosciences.wustl.edu/missions/lro/lola.htm",
+    "missions": [
+      "LRO"
+    ],
+    "fileUrl": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/ldem_4_uint.tif"
+  },
+  "license": {
+    "name": "NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)",
+    "url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+  },
+  "credits": "NASA/GSFC/LOLA science team; NASA's Scientific Visualization Studio — Ernie Wright",
+  "derive": [
+    {
+      "type": "dem-to-rgb-png",
+      "out": "lunar/elevation/ldem-4-global/ldem_4_rgb.png"
+    }
+  ],
+  "notes": "Elevation values are LOLA-derived (via CGI Moon Kit resampling). For science-grade analysis use the PDS LOLA GDR products directly (see upstream)."
+}

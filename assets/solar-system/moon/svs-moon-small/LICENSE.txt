@@ -1,0 +1,17 @@
+Asset: Moon — NASA SVS web model (LRO color map, smooth sphere)
+Asset ID: nasa-svs-moon-small-glb
+
+Source organization: NASA Goddard Scientific Visualization Studio
+Source title: Moon 3D Models for Web, AR, and Animation (SVS 14959)
+Source URL: https://svs.gsfc.nasa.gov/14959
+Direct file URL: https://svs.gsfc.nasa.gov/vis/a010000/a014900/a014959/moon_small.glb
+
+Credit (required attribution): NASA's Scientific Visualization Studio — Produced by Dan Gallagher (eMITS); data provider Ernie Wright (USRA); imagery NASA/GSFC/Arizona State University (LROC WAC); topography LOLA
+
+License: NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)
+License URL: https://www.nasa.gov/nasa-brand-center/images-and-media/
+
+NASA content is generally not subject to copyright in the United States and may be used for
+educational or informational purposes without explicit permission. NASA requests attribution as
+given above. NASA does not endorse this project. The NASA insignia/logo may not be used.
+See the NASA Media Usage Guidelines for full terms.

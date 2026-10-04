@@ -1,0 +1,10 @@
+{
+  "organization": "NASA Goddard Scientific Visualization Studio",
+  "title": "CGI Moon Kit (SVS 4720)",
+  "url": "https://svs.gsfc.nasa.gov/4720",
+  "credit": "NASA's Scientific Visualization Studio — Ernie Wright; NASA/GSFC/Arizona State University (LROC WAC); LOLA LDAM polar fill",
+  "missions": [
+    "LRO"
+  ],
+  "fileUrl": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_poles_4k.tif"
+}

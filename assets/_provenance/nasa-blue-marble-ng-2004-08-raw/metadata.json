@@ -1,0 +1,45 @@
+{
+  "assetId": "nasa-blue-marble-ng-2004-08-raw",
+  "name": "Blue Marble Next Generation, August 2004, with topography and bathymetry (raw 5400x2700)",
+  "assetType": "planet-texture",
+  "textureRole": "earth-day",
+  "category": "solar-system",
+  "format": "jpg",
+  "tier": "core",
+  "file": ".cache/raw/world.topo.bathy.200408.3x5400x2700.jpg",
+  "sizeBytes": 2308163,
+  "sha256": "f76d7b94445e8975a755c849ddaa93ed07b7e01118fb0b7e6bc5546a68c18d5c",
+  "projection": {
+    "type": "equirectangular",
+    "frame": "geographic (lon -180 left → +180 right, lat +90 top)"
+  },
+  "scientificGrade": false,
+  "downloadedAt": "2026-09-28T16:10:41.616Z",
+  "source": {
+    "organization": "NASA Earth Observatory / Visible Earth",
+    "title": "Blue Marble Next Generation w/ Topography and Bathymetry (August)",
+    "url": "https://visibleearth.nasa.gov/images/73776/august-blue-marble-next-generation-w-topography-and-bathymetry",
+    "credit": "NASA Earth Observatory (Reto Stöckli, NASA GSFC) — MODIS, USGS, DMSP",
+    "fileUrl": "https://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73776/world.topo.bathy.200408.3x5400x2700.jpg"
+  },
+  "license": {
+    "name": "NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)",
+    "url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+  },
+  "credits": "NASA Earth Observatory (Reto Stöckli, NASA GSFC) — MODIS, USGS, DMSP",
+  "derive": [
+    {
+      "type": "earth-texture",
+      "out": "solar-system/earth/nasa-blue-marble-ng/world.topo.bathy.200408.5400x2700.jpg",
+      "mode": "RGB",
+      "variants": [
+        {
+          "width": 2048,
+          "out": "solar-system/earth/nasa-blue-marble-ng/world.topo.bathy.200408.2048x1024.jpg",
+          "quality": "low"
+        }
+      ]
+    }
+  ],
+  "notes": "Day-side colour map for the oriented Earth globe."
+}

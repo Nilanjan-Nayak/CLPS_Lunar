@@ -1,0 +1,49 @@
+{
+  "assetId": "nasa-cgi-moon-kit-color-poles-4k",
+  "name": "CGI Moon Kit — 2019 color map with poles (4k)",
+  "assetType": "texture",
+  "textureRole": "albedo",
+  "category": "lunar",
+  "format": "tif",
+  "tier": "core",
+  "file": ".cache/raw/lroc_color_poles_4k.tif",
+  "sizeBytes": 13095388,
+  "sha256": "918649a7f8ed2f1329b2cd95bb0d25483befdcb60ae1a66db681a637cc21344f",
+  "projection": {
+    "type": "equirectangular",
+    "centerLonDeg": 0,
+    "width": 4096,
+    "height": 2048
+  },
+  "scientificGrade": false,
+  "downloadedAt": "2026-09-28T06:03:37.002Z",
+  "source": {
+    "organization": "NASA Goddard Scientific Visualization Studio",
+    "title": "CGI Moon Kit (SVS 4720)",
+    "url": "https://svs.gsfc.nasa.gov/4720",
+    "credit": "NASA's Scientific Visualization Studio — Ernie Wright; NASA/GSFC/Arizona State University (LROC WAC); LOLA LDAM polar fill",
+    "missions": [
+      "LRO"
+    ],
+    "fileUrl": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_poles_4k.tif"
+  },
+  "license": {
+    "name": "NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)",
+    "url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+  },
+  "credits": "NASA's Scientific Visualization Studio — Ernie Wright; NASA/GSFC/Arizona State University (LROC WAC); LOLA LDAM polar fill",
+  "derive": [
+    {
+      "type": "tif-to-jpg",
+      "out": "lunar/textures/cgi-moon-kit-color-poles-4k/lroc_color_poles_4k.jpg",
+      "quality": 88
+    },
+    {
+      "type": "color-tiles",
+      "out": "lunar/terrain/tiles",
+      "tileDeg": 22.5,
+      "tilePx": 512
+    }
+  ],
+  "notes": "Raw TIFF is kept in the (non-persisted) cache; web JPEG + terrain color tiles are derived."
+}

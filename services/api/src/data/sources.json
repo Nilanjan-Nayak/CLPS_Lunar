@@ -1,0 +1,253 @@
+[
+ {
+  "id": "src-nasa-lro-odysseus",
+  "title": "NASA's LRO Images Intuitive Machine's Odysseus Lander",
+  "publisher": "NASA",
+  "url": "https://www.nasa.gov/missions/lro/nasas-lro-images-intuitive-machines-odysseus-lander/",
+  "date": "2024-02-26",
+  "type": "primary",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "IM-1 landed 80.13°S, 1.44°E at 2,579 m elevation",
+   "12° local slope",
+   "LRO imaged the site on 2024-02-24 from ~90 km"
+  ]
+ },
+ {
+  "id": "src-lroc-blue-ghost-region",
+  "title": "Firefly Blue Ghost Landing Region (LROC featured image 1400)",
+  "publisher": "LROC / Arizona State University",
+  "url": "https://lroc.im-ldi.com/images/1400",
+  "date": "2025-02-21",
+  "type": "primary",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "Landing region centered at 18.56°N, 61.81°E in eastern Mare Crisium near Mons Latreille"
+  ]
+ },
+ {
+  "id": "src-nasa-clps-providers",
+  "title": "Commercial Lunar Payload Services Providers",
+  "publisher": "NASA",
+  "url": "https://www.nasa.gov/commercial-lunar-payload-services/clps-providers/",
+  "date": "2025-02-18",
+  "type": "primary",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "Task order names, landers, landing sites for Draper CP-12, Firefly 19D/CS-3, IM-2 PRIME-1, IM-3"
+  ]
+ },
+ {
+  "id": "src-nasa-clps-main",
+  "title": "Commercial Lunar Payload Services (CLPS)",
+  "publisher": "NASA",
+  "url": "https://www.nasa.gov/commercial-lunar-payload-services/",
+  "date": null,
+  "type": "primary",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "Program overview; Peregrine and IM-1 mission summaries"
+  ]
+ },
+ {
+  "id": "src-wiki-im2",
+  "title": "IM-2 (Wikipedia)",
+  "publisher": "Wikipedia (secondary; cites LROC)",
+  "url": "https://en.wikipedia.org/wiki/IM-2",
+  "date": "2026-08-27",
+  "type": "secondary",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "Launch 2025-02-27 00:16:30 UTC",
+   "Landing 2025-03-06 17:28:50 UTC at 84.7906°S 29.1957°E (Mons Mouton)"
+  ]
+ },
+ {
+  "id": "src-wiki-griffin",
+  "title": "Griffin Mission One (Wikipedia)",
+  "publisher": "Wikipedia (secondary)",
+  "url": "https://en.wikipedia.org/wiki/Griffin_Mission_One",
+  "date": "2026-08-08",
+  "type": "secondary",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "Launch NET November 2026 on Falcon Heavy",
+   "Nobile crater region target",
+   "FLIP rover payload"
+  ]
+ },
+ {
+  "id": "src-wiki-artemis-list",
+  "title": "List of Artemis missions — CLPS surface missions table (Wikipedia)",
+  "publisher": "Wikipedia (secondary)",
+  "url": "https://en.wikipedia.org/wiki/List_of_Artemis_missions",
+  "date": "2026-09-11",
+  "type": "secondary",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "Blue Moon Pathfinder Mission 1 NET Q3 2026 on New Glenn"
+  ]
+ },
+ {
+  "id": "src-planetary-clps",
+  "title": "CLPS: NASA's commercial Moon landing missions",
+  "publisher": "The Planetary Society",
+  "url": "https://www.planetary.org/space-missions/clps",
+  "date": "2026-07-20",
+  "type": "secondary",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "Draper CP-12 contract cancelled July 2026",
+   "2026 manifest: Blue Moon MK1, Griffin-1, IM-3, Blue Ghost M2"
+  ]
+ },
+ {
+  "id": "src-newspace-clps-2026",
+  "title": "Commercial Lunar Payload Services (CLPS) Missions 2024 to 2027+",
+  "publisher": "New Space Economy",
+  "url": "https://newspaceeconomy.ca/2026/01/16/commercial-lunar-payload-services-clps-missions-2024-to-2027/",
+  "date": "2026-01-16",
+  "type": "secondary",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "Blue Ghost M1 timeline and payload count",
+   "2026 schedule snapshot"
+  ]
+ },
+ {
+  "id": "src-svs-14959",
+  "title": "Moon 3D Models for Web, AR, and Animation (SVS 14959)",
+  "publisher": "NASA SVS",
+  "url": "https://svs.gsfc.nasa.gov/14959",
+  "date": "2026-01-29",
+  "type": "asset",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "moon_small.glb / moon.glb web models from LRO data"
+  ]
+ },
+ {
+  "id": "src-svs-4720",
+  "title": "CGI Moon Kit (SVS 4720)",
+  "publisher": "NASA SVS",
+  "url": "https://svs.gsfc.nasa.gov/4720",
+  "date": "2019-09-06",
+  "type": "asset",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "LROC color maps and LOLA displacement maps; 'optimized for aesthetics, not science'"
+  ]
+ },
+ {
+  "id": "src-nasa-earth-glb",
+  "title": "Earth with Clouds 3D Model",
+  "publisher": "NASA Science / VTAD",
+  "url": "https://science.nasa.gov/resource/earth-with-clouds-3d-model/",
+  "date": "2019-04-22",
+  "type": "asset",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "glTF Earth model"
+  ]
+ },
+ {
+  "id": "src-nasa-lro-glb",
+  "title": "Lunar Reconnaissance Orbiter (A) — NASA 3D Resources",
+  "publisher": "NASA 3D Resources",
+  "url": "https://science.nasa.gov/3d-resources/lunar-reconnaissance-orbiter-a/",
+  "date": "2025-04-09",
+  "type": "asset",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "Official LRO GLB model, credit NASA/Christopher R. Meaney"
+  ]
+ },
+ {
+  "id": "src-lola-pds",
+  "title": "LRO LOLA data archive (PDS Geosciences Node)",
+  "publisher": "NASA PDS",
+  "url": "https://pds-geosciences.wustl.edu/missions/lro/lola.htm",
+  "date": null,
+  "type": "data",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "Science-grade gridded elevation products (GDR) at multiple resolutions"
+  ]
+ },
+ {
+  "id": "src-nasa-trek-wac",
+  "title": "LRO_WAC_Mosaic_Global_303ppd_v02 — LROC WAC global mosaic (Moon Trek WMTS)",
+  "publisher": "NASA Solar System Treks (JPL) / LROC (ASU)",
+  "url": "https://trek.nasa.gov/moon/",
+  "date": null,
+  "type": "asset",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "LROC Wide Angle Camera global mosaic at 303 pixels per degree (~100 m/px)",
+   "Served as WMTS tiles (default028mm tile matrix set, 256 px, levels 0-8)",
+   "Grayscale mosaic; used here as LOD2 surface imagery, proxied and cached by the backend"
+  ]
+ },
+ {
+  "id": "src-nssdca-nmc",
+  "title": "NSSDCA Master Catalog — lunar mission pages",
+  "publisher": "NASA Goddard / NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/nmc/",
+  "date": null,
+  "type": "primary",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "Launch/landing dates, outcomes and landing coordinates of historical lunar missions"
+  ]
+ },
+ {
+  "id": "src-nssdca-timeline",
+  "title": "NSSDCA Lunar Exploration Timeline",
+  "publisher": "NASA Goddard / NSSDCA",
+  "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunartimeline.html",
+  "date": null,
+  "type": "primary",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "Chronology of all lunar missions with outcome summaries"
+  ]
+ },
+ {
+  "id": "src-lroc-sites",
+  "title": "LROC featured images locating landers and impact sites",
+  "publisher": "NASA / ASU LROC",
+  "url": "https://lroc.im-ldi.com/",
+  "date": null,
+  "type": "primary",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "LROC NAC-located coordinates for Apollo, Chang'e, Vikram, Hakuto-R, Luna 25, SLIM, IM-1/2 and Blue Ghost sites"
+  ]
+ },
+ {
+  "id": "src-wiki-artificial-objects",
+  "title": "List of artificial objects on the Moon (compiled coordinates)",
+  "publisher": "Wikipedia (secondary)",
+  "url": "https://en.wikipedia.org/wiki/List_of_artificial_objects_on_the_Moon",
+  "date": null,
+  "type": "secondary",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "Approximate crash-site coordinates for early Luna/Surveyor failures (flagged 'approx' in the catalogue)"
+  ]
+ },
+ {
+  "id": "src-research-engine",
+  "title": "Research engine — derived terrain features, exploratory outcome model and physics-based mission calculations",
+  "publisher": "CLPS Lunar Mission Browser (this project)",
+  "url": "services/research-engine",
+  "date": "2026-09-28",
+  "type": "derived",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "Model output / simulation — NOT NASA flight data",
+   "Terrain features from the LOLA-derived CGI Moon Kit DEM (16 px/deg)",
+   "Logistic-regression outcome model over 40 historical landing attempts with leave-one-out CV"
+  ]
+ }
+]

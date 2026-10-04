@@ -1,0 +1,27 @@
+import { chromium } from 'playwright';
+const browser = await chromium.launch({ args: ['--use-gl=swiftshader', '--enable-webgl', '--ignore-gpu-blocklist', '--enable-unsafe-swiftshader', '--no-sandbox'] });
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+const logs = [];
+page.on('pageerror', (e) => logs.push(`[pageerror] ${e.message.slice(0, 300)}`));
+page.on('console', (m) => { if (m.type() === 'error' && !/GL Driver|ReadPixels/.test(m.text())) logs.push('[error] ' + m.text().slice(0, 200)); });
+const grab = async (url, tag) => {
+  await page.goto(url, { waitUntil: 'networkidle', timeout: 90000 });
+  await page.waitForTimeout(6000);
+  const txt = await page.evaluate(() => document.body.innerText);
+  const cal = txt.match(/Calendar \(ephemeris\)\s*([^\n]+)/)?.[1];
+  const atL = txt.match(/At landing\s*([^\n]+)/)?.[1];
+  const ops = txt.match(/Landing opportunities[^\n]*/)?.[0];
+  const rows = await page.evaluate(() => [...document.querySelectorAll('.table.small tbody tr')].map((r) => r.children[0].textContent + ' | ' + r.children[1].textContent));
+  console.log(`\n[${tag}]`, '\n calendar:', cal, '\n at landing:', atL, '\n', ops, '\n', rows.join('\n '));
+  const right = await page.$('.plan-grid > div:nth-child(2)');
+  const box = await right.boundingBox();
+  await page.setViewportSize({ width: 1440, height: Math.min(4000, Math.ceil(box.height + 200)) });
+  await page.waitForTimeout(600);
+  await right.screenshot({ path: `/tmp/pw/${tag}.png` });
+  await page.setViewportSize({ width: 1440, height: 900 });
+};
+await grab('http://127.0.0.1:5173/plan?latitude=-84.7906&longitude=29.1957&landerId=nova-c&run=1', 'im2');
+await grab('http://127.0.0.1:5173/plan?latitude=18.56&longitude=61.81&landerId=blue-ghost&transferId=phasing&payloadKg=150&landingDate=2027-03-10&run=1', 'bg_crisium');
+await grab('http://127.0.0.1:5173/plan?latitude=-89.5&longitude=-140&landerId=griffin&run=1', 'polar');
+console.log(logs.slice(0, 6).join('\n') || '\nno page errors');
+await browser.close();

@@ -1,0 +1,37 @@
+{
+  "assetId": "nasa-cgi-moon-kit-color-2k",
+  "name": "CGI Moon Kit — 2025 color map (2k JPEG)",
+  "assetType": "texture",
+  "textureRole": "albedo",
+  "category": "lunar",
+  "format": "jpg",
+  "tier": "core",
+  "file": "lunar/textures/cgi-moon-kit-color-2k/lroc_color_2k.jpg",
+  "sizeBytes": 457942,
+  "sha256": "f7130a1822681fa7512d7dcfd40db8c10b9ba4f06777910348698260ed7a2170",
+  "projection": {
+    "type": "equirectangular",
+    "centerLonDeg": 0,
+    "width": 2048,
+    "height": 1024
+  },
+  "scientificGrade": false,
+  "downloadedAt": "2026-09-28T06:03:36.522Z",
+  "source": {
+    "organization": "NASA Goddard Scientific Visualization Studio",
+    "title": "CGI Moon Kit (SVS 4720)",
+    "url": "https://svs.gsfc.nasa.gov/4720",
+    "credit": "NASA's Scientific Visualization Studio — Ernie Wright; source mosaic NASA/GSFC/Arizona State University (LROC WAC Hapke-normalized mosaic)",
+    "missions": [
+      "LRO"
+    ],
+    "fileUrl": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_2k.jpg"
+  },
+  "license": {
+    "name": "NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)",
+    "url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+  },
+  "credits": "NASA's Scientific Visualization Studio — Ernie Wright; source mosaic NASA/GSFC/Arizona State University (LROC WAC Hapke-normalized mosaic)",
+  "derive": [],
+  "notes": "NASA: 'optimized for aesthetics, not science'. Visual layer only."
+}

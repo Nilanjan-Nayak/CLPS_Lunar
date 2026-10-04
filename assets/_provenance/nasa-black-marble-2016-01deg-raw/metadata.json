@@ -1,0 +1,38 @@
+{
+  "assetId": "nasa-black-marble-2016-01deg-raw",
+  "name": "Earth at Night — Black Marble 2016 (0.1° colour map, raw 3600x1800)",
+  "assetType": "planet-texture",
+  "textureRole": "earth-night",
+  "category": "solar-system",
+  "format": "jpg",
+  "tier": "core",
+  "file": ".cache/raw/BlackMarble_2016_01deg.jpg",
+  "sizeBytes": 779638,
+  "sha256": "d87de751a264e4f8ff69c68de5dab9606daee87a6f15ae743c93200743bd7ec1",
+  "projection": {
+    "type": "equirectangular",
+    "frame": "geographic (lon -180 left → +180 right, lat +90 top)"
+  },
+  "scientificGrade": false,
+  "downloadedAt": "2026-09-28T16:10:41.681Z",
+  "source": {
+    "organization": "NASA Earth Observatory / Visible Earth",
+    "title": "Earth at Night: Black Marble 2016 Color Maps",
+    "url": "https://visibleearth.nasa.gov/images/144898/earth-at-night-black-marble-2016-color-maps",
+    "credit": "NASA Earth Observatory images by Joshua Stevens, using Suomi NPP VIIRS data from Miguel Román, NASA GSFC",
+    "fileUrl": "https://eoimages.gsfc.nasa.gov/images/imagerecords/144000/144898/BlackMarble_2016_01deg.jpg"
+  },
+  "license": {
+    "name": "NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)",
+    "url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+  },
+  "credits": "NASA Earth Observatory images by Joshua Stevens, using Suomi NPP VIIRS data from Miguel Román, NASA GSFC",
+  "derive": [
+    {
+      "type": "earth-texture",
+      "out": "solar-system/earth/nasa-black-marble-2016/BlackMarble_2016_01deg.jpg",
+      "mode": "RGB"
+    }
+  ],
+  "notes": "Night-side city lights for the oriented Earth globe."
+}

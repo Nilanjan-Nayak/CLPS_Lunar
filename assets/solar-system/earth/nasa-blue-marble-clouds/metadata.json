@@ -1,0 +1,44 @@
+{
+  "assetId": "nasa-blue-marble-clouds-2048",
+  "name": "Blue Marble: Clouds (combined) \u2014 2048\u00d71024, converted TIFF\u2192JPEG grayscale",
+  "assetType": "planet-texture",
+  "textureRole": "earth-clouds",
+  "category": "solar-system",
+  "format": "jpg",
+  "tier": "core",
+  "file": "solar-system/earth/nasa-blue-marble-clouds/cloud_combined_2048.jpg",
+  "sizeBytes": 727644,
+  "sha256": "0dd5b96c9a92222bcd9c628197182b007a0b0829b8dafafc3d1e27b9a99e3b08",
+  "width": 2048,
+  "height": 1024,
+  "projection": {
+    "type": "equirectangular",
+    "frame": "geographic (WGS84-like), lon \u2212180 at left edge \u2192 +180 at right, lat +90 at top",
+    "centerLon_deg": 0,
+    "note": "three.js SphereGeometry maps u=0.5 (lon 0) to the local +X axis, lon 90E to \u2212Z, north to +Y \u2014 same convention as the Moon frame"
+  },
+  "scientificGrade": null,
+  "downloadedAt": "2026-09-28T15:36:38Z",
+  "source": {
+    "organization": "NASA Earth Observatory / Visible Earth",
+    "title": "Blue Marble: Clouds",
+    "url": "https://visibleearth.nasa.gov/images/57747/blue-marble-clouds",
+    "fileUrl": "https://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57747/cloud_combined_2048.tif",
+    "released": "2002",
+    "credit": "NASA Goddard Space Flight Center Image by Reto St\u00f6ckli (land surface, shallow water, clouds); MODIS data"
+  },
+  "license": {
+    "name": "NASA Media Usage Guidelines / Visible Earth: images are in the public domain (US Government work); attribution requested",
+    "url": "https://visibleearth.nasa.gov/image-use-policy"
+  },
+  "credits": "NASA Goddard Space Flight Center Image by Reto St\u00f6ckli (land surface, shallow water, clouds); MODIS data",
+  "rawSha256": "cf8624a20779435f70d32372f0ab0c43f2c781e527c1f902c6b3c894d2e0455c",
+  "derive": [],
+  "notes": "Static cloud layer (not live weather) used as alpha over the day texture; slowly rotated for life, which is visualization only. Earth remains a context/navigation layer: no Earth science datasets are attached.",
+  "encoding": {
+    "from": "RGB TIFF (white clouds on black)",
+    "to": "8-bit grayscale JPEG q90 (luminance = cloud opacity)",
+    "colorSpace": "linear",
+    "note": "Single-channel cloud-cover/opacity map: sample as data (no sRGB decode)."
+  }
+}

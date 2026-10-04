@@ -1,0 +1,84 @@
+{
+ "version": 1,
+ "trainedAt": "2026-09-28T09:23:34.119207Z",
+ "algorithm": "sklearn LogisticRegression(C=0.5, class_weight=balanced) on standardized features",
+ "target": "nominal landing (outcome == success) vs partial/failure",
+ "n": 40,
+ "positives": 24,
+ "majorityBaselineAccuracy": 0.6,
+ "featureNames": [
+  "absLat",
+  "slopeDeg",
+  "roughnessM",
+  "reliefM",
+  "elevationKm",
+  "hazardAvoidance",
+  "crewed",
+  "commercial",
+  "era"
+ ],
+ "scaler": {
+  "mean": [
+   25.425545,
+   1.3925000000000003,
+   65.8575,
+   556.975,
+   -1.6573674999999999,
+   0.4,
+   0.15,
+   0.15,
+   2.150000000000001
+  ],
+  "scale": [
+   24.128008757871005,
+   2.140548703019859,
+   97.3434817733062,
+   680.8648264339995,
+   1.9006418995154637,
+   0.48989794855663565,
+   0.3570714214271425,
+   0.3570714214271425,
+   2.5401771591761073
+  ]
+ },
+ "coef": [
+  -0.1577362647361337,
+  -0.2637672423473174,
+  -0.06801086217755507,
+  -0.021382745874298587,
+  -0.5079766764333317,
+  0.6521261527891521,
+  0.5047892349022949,
+  -0.4311497610732871,
+  -0.2447281093791102
+ ],
+ "intercept": 0.17037847390642805,
+ "coefficientsStandardized": {
+  "absLat": -0.158,
+  "slopeDeg": -0.264,
+  "roughnessM": -0.068,
+  "reliefM": -0.021,
+  "elevationKm": -0.508,
+  "hazardAvoidance": 0.652,
+  "crewed": 0.505,
+  "commercial": -0.431,
+  "era": -0.245
+ },
+ "looCv": {
+  "accuracy": 0.575,
+  "balancedAccuracy": 0.562,
+  "brier": 0.217,
+  "confusion": {
+   "tp": 15,
+   "tn": 8,
+   "fp": 8,
+   "fn": 9
+  }
+ },
+ "demSource": "nasa-cgi-moon-kit-ldem-16-uint (16 px/deg)",
+ "caveats": [
+  "Exploratory model on ~40 historical attempts spanning 1965\u20132025; technology and programmes differ enormously.",
+  "Terrain features are sampled from a 16 px/deg (\u22481.9 km) LOLA-derived DEM, far coarser than landing-hazard scales (metres).",
+  "Probabilities are not calibrated mission-success predictions; use the neighbour comparison and the physics budgets for engineering judgement."
+ ]
+}

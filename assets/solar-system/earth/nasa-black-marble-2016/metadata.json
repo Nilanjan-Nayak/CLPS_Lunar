@@ -1,0 +1,38 @@
+{
+  "assetId": "nasa-black-marble-2016-01deg",
+  "name": "Earth at Night 2016 (Black Marble), 0.1\u00b0 grid \u2014 3600\u00d71800",
+  "assetType": "planet-texture",
+  "textureRole": "earth-night",
+  "category": "solar-system",
+  "format": "jpg",
+  "tier": "core",
+  "file": "solar-system/earth/nasa-black-marble-2016/BlackMarble_2016_01deg.jpg",
+  "sizeBytes": 779638,
+  "sha256": "d87de751a264e4f8ff69c68de5dab9606daee87a6f15ae743c93200743bd7ec1",
+  "width": 3600,
+  "height": 1800,
+  "projection": {
+    "type": "equirectangular",
+    "frame": "geographic (WGS84-like), lon \u2212180 at left edge \u2192 +180 at right, lat +90 at top",
+    "centerLon_deg": 0,
+    "note": "three.js SphereGeometry maps u=0.5 (lon 0) to the local +X axis, lon 90E to \u2212Z, north to +Y \u2014 same convention as the Moon frame"
+  },
+  "scientificGrade": null,
+  "downloadedAt": "2026-09-28T15:36:38Z",
+  "source": {
+    "organization": "NASA Earth Observatory / Visible Earth",
+    "title": "Earth at Night: Black Marble 2016 Color Maps",
+    "url": "https://visibleearth.nasa.gov/images/144898/earth-at-night-black-marble-2016-color-maps",
+    "fileUrl": "https://eoimages.gsfc.nasa.gov/images/imagerecords/144000/144898/BlackMarble_2016_01deg.jpg",
+    "released": "2017-04-12",
+    "credit": "NASA Earth Observatory images by Joshua Stevens, using Suomi NPP VIIRS data from Miguel Rom\u00e1n, NASA GSFC"
+  },
+  "license": {
+    "name": "NASA Media Usage Guidelines / Visible Earth: images are in the public domain (US Government work); attribution requested",
+    "url": "https://visibleearth.nasa.gov/image-use-policy"
+  },
+  "credits": "NASA Earth Observatory images by Joshua Stevens, using Suomi NPP VIIRS data from Miguel Rom\u00e1n, NASA GSFC",
+  "rawSha256": "d87de751a264e4f8ff69c68de5dab9606daee87a6f15ae743c93200743bd7ec1",
+  "derive": [],
+  "notes": "Night-side city lights blended in where the Sun is below the local horizon (visualization). Earth remains a context/navigation layer: no Earth science datasets are attached."
+}

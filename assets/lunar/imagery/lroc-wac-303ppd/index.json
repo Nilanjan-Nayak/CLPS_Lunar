@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "layers": [
+    {
+      "id": "lroc-wac",
+      "assetId": "nasa-trek-lroc-wac-mosaic-303ppd",
+      "name": "LROC WAC global mosaic (100 m/px)",
+      "scheme": { "type": "wmts-equirectangular", "tileMatrixSet": "default028mm", "tileSize": 256, "minLevel": 0, "maxLevel": 8, "originLon": -180, "originLat": 90, "degPerTile": "180 / 2^level", "cols": "2^(level+1)", "rows": "2^level" },
+      "urlTemplate": "/api/v1/lunar/imagery/lroc-wac/{z}/{y}/{x}.jpg",
+      "grayscale": true,
+      "nativePixelsPerDegree": 303,
+      "credit": "NASA/GSFC/Arizona State University (LROC WAC mosaic) — via NASA Solar System Treks",
+      "sourceId": "src-nasa-trek-wac"
+    }
+  ]
+}

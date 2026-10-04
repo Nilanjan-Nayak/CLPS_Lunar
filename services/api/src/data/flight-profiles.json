@@ -1,0 +1,66 @@
+[
+  {
+    "missionId": "peregrine-mission-one", "fidelity": "reconstructed", "profile": "earth-return", "launchSiteId": "ccsfs-slc-41",
+    "launchUtc": "2024-01-08T07:18:38Z", "tliUtc": "2024-01-08T08:08:00Z", "parkingAltKm": 185,
+    "earthReturn": {"apogeeKm": 390000, "reentryUtc": "2024-01-18T21:04:00Z", "reentryTitle": "Controlled re-entry over the South Pacific (≈21:04 UTC)", "note": "Peregrine was injected onto a lunar-distance ellipse; the propellant leak ~7 h after separation ruled out landing, the spacecraft reached ~390,000 km (lunar distance) around Jan 12–13 and Astrobotic steered it to burn up over the South Pacific on Jan 18. One Kepler loop is drawn between the published injection and re-entry times — the real trajectory included several small burns during the loop."},
+    "extraEvents": [{"id": "anomaly", "type": "anomaly", "utc": "2024-01-08T14:30:00Z", "title": "Propellant leak detected — landing ruled out (≈T+7 h)", "source": "published (approx. time)"}, {"id": "apogee", "type": "note", "utc": "2024-01-13T04:00:00Z", "title": "Lunar distance reached (≈390,000 km; the Moon was elsewhere on its orbit)", "source": "published (approx. time)"}],
+    "notes": ["Injection time ≈ Centaur second burn (T+≈50 min); re-entry time from Astrobotic's final update (≈21:04 UTC, South Pacific)."],
+    "sourceIds": ["src-nasa-clps-main", "src-planetary-clps"]
+  },
+  {
+    "missionId": "im-1", "fidelity": "reconstructed", "profile": "direct", "launchSiteId": "ksc-lc-39a",
+    "launchUtc": "2024-02-15T06:05:37Z", "tliUtc": "2024-02-15T06:46:00Z", "parkingAltKm": 185,
+    "loiUtc": "2024-02-21T15:00:00Z", "loiSource": "published date (Feb 21, US morning); hour approximate", "lunarOrbitAltKm": 92,
+    "doiUtc": "2024-02-22T22:10:00Z", "pdiUtc": "2024-02-22T23:11:00Z", "landingUtc": "2024-02-22T23:23:00Z",
+    "descent": {"pdiAltKm": 15, "durationS": 720},
+    "extraEvents": [{"id": "cm", "type": "burn", "utc": "2024-02-16T20:00:00Z", "title": "Commissioning maneuver (21 s main-engine test, 21 m/s)", "source": "published date; hour approximate"}, {"id": "tcm1", "type": "burn", "utc": "2024-02-18T12:00:00Z", "title": "Trajectory correction maneuver 1", "source": "published date"}, {"id": "tcm2", "type": "burn", "utc": "2024-02-20T12:00:00Z", "title": "Trajectory correction maneuver 2 (TCM-3 waived)", "source": "published date"}],
+    "notes": ["Anchors: launch 06:05:37 UTC (KSC LC-39A), Falcon 9 second-stage TLI ≈T+40 min, LOI Feb 21 (408 s burn, 800 m/s, 92 km circular), DOI/PDI Feb 22 evening UTC, touchdown 23:23 UTC near Malapert A. Hours marked ≈ are approximate.", "Lander stats for the descent model: Nova-C class (4 kN VR900, Isp 340 s, ≈1,500 kg at PDI)."],
+    "sourceIds": ["src-nasa-clps-main", "src-planetary-clps"]
+  },
+  {
+    "missionId": "blue-ghost-mission-1", "fidelity": "reconstructed", "profile": "phasing", "launchSiteId": "ksc-lc-39a",
+    "launchUtc": "2025-01-15T06:11:39Z", "parkingAltKm": 185,
+    "phasing": {"injectionUtc": "2025-01-15T07:10:00Z", "injectionApogeeKm": 70000, "burns": [{"utc": "2025-01-19T12:00:00Z", "apogeeKm": 120000, "title": "Earth-orbit maneuver 1 (apogee raise)", "source": "published week-1 update; apogee modeled"}, {"utc": "2025-01-30T12:00:00Z", "apogeeKm": 250000, "title": "Earth-orbit maneuver 2 (apogee raise; maneuver 3 skipped)", "source": "published; apogee modeled"}]},
+    "tliUtc": "2025-02-08T12:00:00Z", "tliSource": "published date (Feb 8); hour approximate", "loiUtc": "2025-02-14T01:51:00Z", "lunarOrbitAltKm": 100,
+    "captureOrbitKm": [150, 5673], "doiUtc": "2025-03-02T07:50:00Z", "pdiUtc": "2025-03-02T08:23:00Z", "landingUtc": "2025-03-02T08:34:00Z",
+    "descent": {"pdiAltKm": 20, "durationS": 660},
+    "notes": ["Anchors: launch 06:11:39 UTC (KSC LC-39A, Falcon 9, rideshare with ispace Resilience); ~25 days of Earth-orbit phasing with two burns; TLI Feb 8; LOI Feb 13 8:51 pm EST (= Feb 14 01:51 UTC, 4 min 15 s) into ~150 × 5,673 km; circularised to ~100 km by Feb 24; DOI → ~30 min coast → 9-min PDI → touchdown Mar 2 08:34 UTC in Mare Crisium.", "The capture orbit was elliptical and lowered over 16 days; the model draws a circular ~100 km orbit for that period."],
+    "sourceIds": ["src-nasa-clps-main", "src-planetary-clps"]
+  },
+  {
+    "missionId": "im-2", "fidelity": "reconstructed", "profile": "direct", "launchSiteId": "ksc-lc-39a",
+    "launchUtc": "2025-02-27T00:16:30Z", "tliUtc": "2025-02-27T00:58:00Z", "parkingAltKm": 185,
+    "loiUtc": "2025-03-03T12:45:00Z", "loiSource": "published date (Mar 3, 492 s burn); hour from the 39-orbit count", "lunarOrbitAltKm": 100,
+    "doiUtc": "2025-03-06T10:33:00Z", "pdiUtc": "2025-03-06T17:17:00Z", "landingUtc": "2025-03-06T17:28:50Z",
+    "descent": {"pdiAltKm": 10, "durationS": 720},
+    "notes": ["Anchors: launch 00:16:30 UTC (KSC LC-39A), orbit reached ≈T+44 min, LOI Mar 3 (492 s burn, ~100 km circular, 39 orbits), DOI 4:33 am CST (10:33 UTC), 12-min PDI, touchdown 17:28:50 UTC inside a crater near Mons Mouton (lander on its side)."],
+    "sourceIds": ["src-nasa-clps-main", "src-planetary-clps"]
+  },
+  {
+    "missionId": "griffin-mission-one", "fidelity": "projected", "profile": "direct", "launchSiteId": "ksc-lc-39a", "illustrativeDate": true,
+    "launchUtc": "2026-11-15T05:00:00Z", "parkingCoastMin": 45, "orbitDays": 2.0, "lunarOrbitAltKm": 100,
+    "landingUtc": "2026-11-22T10:00:00Z", "descent": {"pdiAltKm": 15, "durationS": 720},
+    "notes": ["Griffin Mission One is NET November 2026 (Falcon Heavy, KSC LC-39A). No launch date is scheduled: the route is drawn for an illustrative mid-window date with a direct ~5-day transfer and ~2 days in lunar orbit before landing near Nobile."],
+    "sourceIds": ["src-nasa-clps-main"]
+  },
+  {
+    "missionId": "im-3", "fidelity": "projected", "profile": "direct", "launchSiteId": "ksc-lc-39a", "illustrativeDate": true,
+    "launchUtc": "2026-10-20T04:00:00Z", "parkingCoastMin": 45, "orbitDays": 1.5, "lunarOrbitAltKm": 100,
+    "landingUtc": "2026-10-28T12:00:00Z", "descent": {"pdiAltKm": 15, "durationS": 720},
+    "notes": ["IM-3 (Reiner Gamma) is planned for the second half of 2026 on a Falcon 9 from KSC LC-39A. Route projected from the IM-1/IM-2 profile (direct ~6.5-day transfer, ~1–3 days in lunar orbit) on an illustrative date."],
+    "sourceIds": ["src-nasa-clps-main"]
+  },
+  {
+    "missionId": "blue-ghost-mission-2", "fidelity": "projected", "profile": "phasing", "launchSiteId": "ksc-lc-39a", "illustrativeDate": true,
+    "launchUtc": "2026-11-10T06:00:00Z", "phasing": {"injectionUtc": "2026-11-10T07:00:00Z", "injectionApogeeKm": 70000, "burns": [{"utc": "2026-11-15T12:00:00Z", "apogeeKm": 120000, "title": "Earth-orbit maneuver 1", "source": "projected"}, {"utc": "2026-11-25T12:00:00Z", "apogeeKm": 250000, "title": "Earth-orbit maneuver 2", "source": "projected"}]},
+    "transitDays": 5.5, "orbitDays": 16, "lunarOrbitAltKm": 100, "landingUtc": "2026-12-25T08:00:00Z", "orbitStayS": 1382400,
+    "notes": ["Blue Ghost Mission 2 (far side, with ESA's Lunar Pathfinder relay) is NET late 2026. Route projected from Mission 1's profile (≈25 days of Earth-orbit phasing, ~5-day transit, ~16 days in lunar orbit) on an illustrative date; the far-side landing coordinates are not yet published, so the route ends in lunar orbit."],
+    "sourceIds": ["src-nasa-clps-main"]
+  },
+  {
+    "missionId": "blue-moon-mk1-pathfinder", "fidelity": "projected", "profile": "direct", "launchSiteId": "ccsfs-lc-36", "illustrativeDate": true,
+    "launchUtc": "2026-10-15T07:00:00Z", "parkingCoastMin": 40, "orbitDays": 1.0, "lunarOrbitAltKm": 100, "landingUtc": "2026-10-21T12:00:00Z", "orbitStayS": 86400,
+    "notes": ["Blue Moon Mk1 Pathfinder (Blue Origin, New Glenn from LC-36) is NET 2026; the south-polar landing coordinates are not published, so the projected route ends in lunar orbit. Direct transfer assumed."],
+    "sourceIds": ["src-nasa-clps-main"]
+  }
+]

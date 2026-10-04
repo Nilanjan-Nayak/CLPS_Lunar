@@ -1,0 +1,36 @@
+{
+  "assetId": "nasa-cgi-moon-kit-ldem-3-8bit",
+  "name": "CGI Moon Kit — displacement preview (8-bit JPEG)",
+  "assetType": "elevation-preview",
+  "category": "lunar",
+  "format": "jpg",
+  "tier": "core",
+  "file": "lunar/elevation/ldem-3-preview/ldem_3_8bit.jpg",
+  "sizeBytes": 111552,
+  "sha256": "6d93f887e7d8bedfe35ab89ba785e5e3ca12381bd092a5e6abe2c707dda8bb98",
+  "projection": {
+    "type": "equirectangular",
+    "centerLonDeg": 0,
+    "width": 1024,
+    "height": 512
+  },
+  "scientificGrade": false,
+  "downloadedAt": "2026-09-28T06:03:38.040Z",
+  "source": {
+    "organization": "NASA Goddard Scientific Visualization Studio",
+    "title": "CGI Moon Kit (SVS 4720)",
+    "url": "https://svs.gsfc.nasa.gov/4720",
+    "credit": "NASA/GSFC/LOLA; NASA's Scientific Visualization Studio — Ernie Wright",
+    "missions": [
+      "LRO"
+    ],
+    "fileUrl": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/ldem_3_8bit.jpg"
+  },
+  "license": {
+    "name": "NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)",
+    "url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+  },
+  "credits": "NASA/GSFC/LOLA; NASA's Scientific Visualization Studio — Ernie Wright",
+  "derive": [],
+  "notes": "8-bit preview only — used for the 2D map page elevation layer, never for placement."
+}

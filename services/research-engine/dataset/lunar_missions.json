@@ -1,0 +1,1253 @@
+{
+ "version": 1,
+ "generatedAt": "2026-09-28",
+ "note": "Historical lunar impact/landing attempts compiled from NSSDCA (primary) with LROC-located coordinates where available; 'approx' = crash-site or early estimates. Used for context and for the exploratory outcome model; not an official NASA dataset.",
+ "missions": [
+  {
+   "id": "luna-2",
+   "name": "Luna 2",
+   "agency": "OKB-1 / USSR",
+   "country": "USSR",
+   "missionType": "impact",
+   "launchDate": "1959-09-12",
+   "eventDate": "1959-09-13",
+   "site": {
+    "latitude": 29.1,
+    "longitude": 0.0,
+    "precision": "approx"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "First spacecraft to reach the Moon; intentional hard impact in Palus Putredinis.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 390,
+   "massNote": "Impact mission (not a landing attempt).",
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-wiki-artificial-objects"
+   ]
+  },
+  {
+   "id": "ranger-4",
+   "name": "Ranger 4",
+   "agency": "NASA JPL",
+   "country": "USA",
+   "missionType": "impact",
+   "launchDate": "1962-04-23",
+   "eventDate": "1962-04-26",
+   "site": {
+    "latitude": -15.5,
+    "longitude": -130.7,
+    "precision": "approx"
+   },
+   "outcome": "failure",
+   "failureCategory": "onboard-computer",
+   "summary": "Timer/computer failure; impacted the far side with no data returned.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 331,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-wiki-artificial-objects"
+   ]
+  },
+  {
+   "id": "ranger-6",
+   "name": "Ranger 6",
+   "agency": "NASA JPL",
+   "country": "USA",
+   "missionType": "impact",
+   "launchDate": "1964-01-30",
+   "eventDate": "1964-02-02",
+   "site": {
+    "latitude": 9.39,
+    "longitude": 21.48,
+    "precision": "published"
+   },
+   "outcome": "partial",
+   "failureCategory": "camera",
+   "summary": "Reached the Moon on target but the TV cameras failed to switch on.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 381,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "ranger-7",
+   "name": "Ranger 7",
+   "agency": "NASA JPL",
+   "country": "USA",
+   "missionType": "impact",
+   "launchDate": "1964-07-28",
+   "eventDate": "1964-07-31",
+   "site": {
+    "latitude": -10.63,
+    "longitude": -20.68,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "First close-up images of the Moon (4,308 pictures) before impact in Mare Cognitum.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 366,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "ranger-8",
+   "name": "Ranger 8",
+   "agency": "NASA JPL",
+   "country": "USA",
+   "missionType": "impact",
+   "launchDate": "1965-02-17",
+   "eventDate": "1965-02-20",
+   "site": {
+    "latitude": 2.64,
+    "longitude": 24.79,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "7,137 images of Mare Tranquillitatis before impact.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 367,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "ranger-9",
+   "name": "Ranger 9",
+   "agency": "NASA JPL",
+   "country": "USA",
+   "missionType": "impact",
+   "launchDate": "1965-03-21",
+   "eventDate": "1965-03-24",
+   "site": {
+    "latitude": -12.83,
+    "longitude": -2.39,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "Live TV images of Alphonsus crater before impact.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 367,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "luna-5",
+   "name": "Luna 5",
+   "agency": "OKB-1 / USSR",
+   "country": "USSR",
+   "missionType": "lander",
+   "launchDate": "1965-05-09",
+   "eventDate": "1965-05-12",
+   "site": {
+    "latitude": -31.0,
+    "longitude": -8.0,
+    "precision": "approx"
+   },
+   "outcome": "failure",
+   "failureCategory": "propulsion-control",
+   "summary": "Retro-rocket control failed during descent; crashed in Mare Nubium.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 1476,
+   "massNote": "First Soviet soft-landing attempt.",
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-wiki-artificial-objects"
+   ]
+  },
+  {
+   "id": "luna-7",
+   "name": "Luna 7",
+   "agency": "OKB-1 / USSR",
+   "country": "USSR",
+   "missionType": "lander",
+   "launchDate": "1965-10-04",
+   "eventDate": "1965-10-07",
+   "site": {
+    "latitude": 9.8,
+    "longitude": -47.8,
+    "precision": "approx"
+   },
+   "outcome": "failure",
+   "failureCategory": "attitude-control",
+   "summary": "Attitude control lost before the retro burn; crashed in Oceanus Procellarum.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 1506,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-wiki-artificial-objects"
+   ]
+  },
+  {
+   "id": "luna-8",
+   "name": "Luna 8",
+   "agency": "OKB-1 / USSR",
+   "country": "USSR",
+   "missionType": "lander",
+   "launchDate": "1965-12-03",
+   "eventDate": "1965-12-06",
+   "site": {
+    "latitude": 9.1,
+    "longitude": -63.3,
+    "precision": "approx"
+   },
+   "outcome": "failure",
+   "failureCategory": "attitude-control",
+   "summary": "Airbag puncture spun the craft; retro fired too late; crashed.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 1552,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-wiki-artificial-objects"
+   ]
+  },
+  {
+   "id": "luna-9",
+   "name": "Luna 9",
+   "agency": "Lavochkin / USSR",
+   "country": "USSR",
+   "missionType": "lander",
+   "launchDate": "1966-01-31",
+   "eventDate": "1966-02-03",
+   "site": {
+    "latitude": 7.08,
+    "longitude": -64.37,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "First soft landing on another world; returned panoramas from Oceanus Procellarum.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 99,
+   "massNote": "Landed capsule mass.",
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "surveyor-1",
+   "name": "Surveyor 1",
+   "agency": "NASA JPL",
+   "country": "USA",
+   "missionType": "lander",
+   "launchDate": "1966-05-30",
+   "eventDate": "1966-06-02",
+   "site": {
+    "latitude": -2.474,
+    "longitude": -43.339,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "First US soft landing; 11,237 images from Flamsteed P.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 294,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "surveyor-2",
+   "name": "Surveyor 2",
+   "agency": "NASA JPL",
+   "country": "USA",
+   "missionType": "lander",
+   "launchDate": "1966-09-20",
+   "eventDate": "1966-09-23",
+   "site": {
+    "latitude": 5.5,
+    "longitude": -12.0,
+    "precision": "approx"
+   },
+   "outcome": "failure",
+   "failureCategory": "propulsion",
+   "summary": "One vernier engine failed to ignite during midcourse correction; tumbling craft crashed SE of Copernicus.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 292,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-wiki-artificial-objects"
+   ]
+  },
+  {
+   "id": "luna-13",
+   "name": "Luna 13",
+   "agency": "Lavochkin / USSR",
+   "country": "USSR",
+   "missionType": "lander",
+   "launchDate": "1966-12-21",
+   "eventDate": "1966-12-24",
+   "site": {
+    "latitude": 18.87,
+    "longitude": -62.05,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "Second Soviet soft landing; soil mechanics penetrometer.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 112,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "surveyor-3",
+   "name": "Surveyor 3",
+   "agency": "NASA JPL",
+   "country": "USA",
+   "missionType": "lander",
+   "launchDate": "1967-04-17",
+   "eventDate": "1967-04-20",
+   "site": {
+    "latitude": -3.016,
+    "longitude": -23.418,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "Bounced twice (radar confused near touchdown) but landed safely; later visited by Apollo 12.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 296,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "surveyor-4",
+   "name": "Surveyor 4",
+   "agency": "NASA JPL",
+   "country": "USA",
+   "missionType": "lander",
+   "launchDate": "1967-07-14",
+   "eventDate": "1967-07-17",
+   "site": {
+    "latitude": 0.4,
+    "longitude": -1.33,
+    "precision": "approx"
+   },
+   "outcome": "failure",
+   "failureCategory": "propulsion",
+   "summary": "Telemetry lost ~2.5 min before touchdown, probably a solid retro-motor failure; Sinus Medii.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 283,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-wiki-artificial-objects"
+   ]
+  },
+  {
+   "id": "surveyor-5",
+   "name": "Surveyor 5",
+   "agency": "NASA JPL",
+   "country": "USA",
+   "missionType": "lander",
+   "launchDate": "1967-09-08",
+   "eventDate": "1967-09-11",
+   "site": {
+    "latitude": 1.461,
+    "longitude": 23.195,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "Landed on a ~20\u00b0 slope inside a small crater despite a helium leak; first alpha-scattering soil analysis.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 303,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "surveyor-6",
+   "name": "Surveyor 6",
+   "agency": "NASA JPL",
+   "country": "USA",
+   "missionType": "lander",
+   "launchDate": "1967-11-07",
+   "eventDate": "1967-11-10",
+   "site": {
+    "latitude": 0.473,
+    "longitude": -1.427,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "Sinus Medii; first lift-off hop from the Moon.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 299,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "surveyor-7",
+   "name": "Surveyor 7",
+   "agency": "NASA JPL",
+   "country": "USA",
+   "missionType": "lander",
+   "launchDate": "1968-01-07",
+   "eventDate": "1968-01-10",
+   "site": {
+    "latitude": -40.97,
+    "longitude": -11.44,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "Only Surveyor in the highlands (Tycho ejecta blanket).",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 306,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "apollo-11",
+   "name": "Apollo 11 (Eagle)",
+   "agency": "NASA",
+   "country": "USA",
+   "missionType": "lander",
+   "launchDate": "1969-07-16",
+   "eventDate": "1969-07-20",
+   "site": {
+    "latitude": 0.67408,
+    "longitude": 23.47297,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "First crewed landing; manual redesignation avoided a boulder field (West crater).",
+   "hazardAvoidance": true,
+   "crewed": true,
+   "commercial": false,
+   "massKg": 7300,
+   "massNote": "LM landed mass approx.",
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "luna-15",
+   "name": "Luna 15",
+   "agency": "Lavochkin / USSR",
+   "country": "USSR",
+   "missionType": "sample-return",
+   "launchDate": "1969-07-13",
+   "eventDate": "1969-07-21",
+   "site": {
+    "latitude": 17.0,
+    "longitude": 60.0,
+    "precision": "approx"
+   },
+   "outcome": "failure",
+   "failureCategory": "terrain",
+   "summary": "Struck a mountainside during descent in Mare Crisium while Apollo 11 was on the surface.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 2718,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-wiki-artificial-objects"
+   ]
+  },
+  {
+   "id": "apollo-12",
+   "name": "Apollo 12 (Intrepid)",
+   "agency": "NASA",
+   "country": "USA",
+   "missionType": "lander",
+   "launchDate": "1969-11-14",
+   "eventDate": "1969-11-19",
+   "site": {
+    "latitude": -3.01239,
+    "longitude": -23.42157,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "Pinpoint landing ~160 m from Surveyor 3.",
+   "hazardAvoidance": true,
+   "crewed": true,
+   "commercial": false,
+   "massKg": 7300,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "luna-16",
+   "name": "Luna 16",
+   "agency": "Lavochkin / USSR",
+   "country": "USSR",
+   "missionType": "sample-return",
+   "launchDate": "1970-09-12",
+   "eventDate": "1970-09-20",
+   "site": {
+    "latitude": -0.68,
+    "longitude": 56.3,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "First robotic sample return (101 g) from Mare Fecunditatis.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 1880,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "luna-17",
+   "name": "Luna 17 / Lunokhod 1",
+   "agency": "Lavochkin / USSR",
+   "country": "USSR",
+   "missionType": "rover",
+   "launchDate": "1970-11-10",
+   "eventDate": "1970-11-17",
+   "site": {
+    "latitude": 38.28,
+    "longitude": -35.0,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "Delivered Lunokhod 1, the first rover, to Mare Imbrium.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 1900,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "apollo-14",
+   "name": "Apollo 14 (Antares)",
+   "agency": "NASA",
+   "country": "USA",
+   "missionType": "lander",
+   "launchDate": "1971-01-31",
+   "eventDate": "1971-02-05",
+   "site": {
+    "latitude": -3.6453,
+    "longitude": -17.47136,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "Fra Mauro; landing radar acquired late, abort-switch fault patched in software.",
+   "hazardAvoidance": true,
+   "crewed": true,
+   "commercial": false,
+   "massKg": 7500,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "apollo-15",
+   "name": "Apollo 15 (Falcon)",
+   "agency": "NASA",
+   "country": "USA",
+   "missionType": "lander",
+   "launchDate": "1971-07-26",
+   "eventDate": "1971-07-30",
+   "site": {
+    "latitude": 26.13222,
+    "longitude": 3.63386,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "Hadley\u2013Apennine; landed with a footpad in a small crater (~10\u00b0 tilt).",
+   "hazardAvoidance": true,
+   "crewed": true,
+   "commercial": false,
+   "massKg": 8200,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "luna-18",
+   "name": "Luna 18",
+   "agency": "Lavochkin / USSR",
+   "country": "USSR",
+   "missionType": "sample-return",
+   "launchDate": "1971-09-02",
+   "eventDate": "1971-09-11",
+   "site": {
+    "latitude": 3.57,
+    "longitude": 56.5,
+    "precision": "approx"
+   },
+   "outcome": "failure",
+   "failureCategory": "terrain",
+   "summary": "Signal lost at touchdown in rugged highland terrain near Mare Fecunditatis.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 2718,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-wiki-artificial-objects"
+   ]
+  },
+  {
+   "id": "luna-20",
+   "name": "Luna 20",
+   "agency": "Lavochkin / USSR",
+   "country": "USSR",
+   "missionType": "sample-return",
+   "launchDate": "1972-02-14",
+   "eventDate": "1972-02-21",
+   "site": {
+    "latitude": 3.57,
+    "longitude": 56.5,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "Highland sample return (55 g) near the Luna 18 site.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 1880,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "apollo-16",
+   "name": "Apollo 16 (Orion)",
+   "agency": "NASA",
+   "country": "USA",
+   "missionType": "lander",
+   "launchDate": "1972-04-16",
+   "eventDate": "1972-04-21",
+   "site": {
+    "latitude": -8.97301,
+    "longitude": 15.50019,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "Descartes highlands.",
+   "hazardAvoidance": true,
+   "crewed": true,
+   "commercial": false,
+   "massKg": 8200,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "apollo-17",
+   "name": "Apollo 17 (Challenger)",
+   "agency": "NASA",
+   "country": "USA",
+   "missionType": "lander",
+   "launchDate": "1972-12-07",
+   "eventDate": "1972-12-11",
+   "site": {
+    "latitude": 20.1908,
+    "longitude": 30.77168,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "Taurus\u2013Littrow valley; last crewed landing.",
+   "hazardAvoidance": true,
+   "crewed": true,
+   "commercial": false,
+   "massKg": 8200,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "luna-21",
+   "name": "Luna 21 / Lunokhod 2",
+   "agency": "Lavochkin / USSR",
+   "country": "USSR",
+   "missionType": "rover",
+   "launchDate": "1973-01-08",
+   "eventDate": "1973-01-15",
+   "site": {
+    "latitude": 25.85,
+    "longitude": 30.45,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "Le Monnier crater; Lunokhod 2 drove ~39 km.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 1836,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "luna-23",
+   "name": "Luna 23",
+   "agency": "Lavochkin / USSR",
+   "country": "USSR",
+   "missionType": "sample-return",
+   "launchDate": "1974-10-28",
+   "eventDate": "1974-11-06",
+   "site": {
+    "latitude": 12.7,
+    "longitude": 62.2,
+    "precision": "approx"
+   },
+   "outcome": "partial",
+   "failureCategory": "hard-landing",
+   "summary": "Landed on unfavourable terrain; drill damaged, no sample returned.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 1880,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-wiki-artificial-objects"
+   ]
+  },
+  {
+   "id": "luna-24",
+   "name": "Luna 24",
+   "agency": "Lavochkin / USSR",
+   "country": "USSR",
+   "missionType": "sample-return",
+   "launchDate": "1976-08-09",
+   "eventDate": "1976-08-18",
+   "site": {
+    "latitude": 12.71,
+    "longitude": 62.21,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "Last Soviet lunar mission; 170 g returned from Mare Crisium.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 1880,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline"
+   ]
+  },
+  {
+   "id": "change-3",
+   "name": "Chang'e 3 / Yutu",
+   "agency": "CNSA",
+   "country": "China",
+   "missionType": "rover",
+   "launchDate": "2013-12-01",
+   "eventDate": "2013-12-14",
+   "site": {
+    "latitude": 44.12,
+    "longitude": -19.51,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "First soft landing since 1976; autonomous hazard-avoidance hover before touchdown in Mare Imbrium.",
+   "hazardAvoidance": true,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 1200,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-lroc-sites"
+   ]
+  },
+  {
+   "id": "change-4",
+   "name": "Chang'e 4 / Yutu-2",
+   "agency": "CNSA",
+   "country": "China",
+   "missionType": "rover",
+   "launchDate": "2018-12-07",
+   "eventDate": "2019-01-03",
+   "site": {
+    "latitude": -45.44,
+    "longitude": 177.6,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "First far-side landing (Von K\u00e1rm\u00e1n crater) via the Queqiao relay.",
+   "hazardAvoidance": true,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 1200,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-lroc-sites"
+   ]
+  },
+  {
+   "id": "beresheet",
+   "name": "Beresheet",
+   "agency": "SpaceIL / IAI",
+   "country": "Israel",
+   "missionType": "lander",
+   "launchDate": "2019-02-22",
+   "eventDate": "2019-04-11",
+   "site": {
+    "latitude": 32.6,
+    "longitude": 19.4,
+    "precision": "approx"
+   },
+   "outcome": "failure",
+   "failureCategory": "imu-engine-chain",
+   "summary": "IMU fault led to a main-engine shutdown; crashed in Mare Serenitatis.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": true,
+   "massKg": 150,
+   "massNote": "Dry mass; first privately funded attempt.",
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-wiki-artificial-objects",
+    "src-lroc-sites"
+   ]
+  },
+  {
+   "id": "chandrayaan-2-vikram",
+   "name": "Chandrayaan-2 Vikram",
+   "agency": "ISRO",
+   "country": "India",
+   "missionType": "lander",
+   "launchDate": "2019-07-22",
+   "eventDate": "2019-09-06",
+   "site": {
+    "latitude": -70.88,
+    "longitude": 22.78,
+    "precision": "published"
+   },
+   "outcome": "failure",
+   "failureCategory": "guidance-software",
+   "summary": "Thrust dispersion during fine-braking exceeded software limits; crashed ~500 m from target.",
+   "hazardAvoidance": true,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 1471,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-lroc-sites"
+   ]
+  },
+  {
+   "id": "change-5",
+   "name": "Chang'e 5",
+   "agency": "CNSA",
+   "country": "China",
+   "missionType": "sample-return",
+   "launchDate": "2020-11-23",
+   "eventDate": "2020-12-01",
+   "site": {
+    "latitude": 43.06,
+    "longitude": -51.92,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "1,731 g sample return from Mons R\u00fcmker region, Oceanus Procellarum.",
+   "hazardAvoidance": true,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 3200,
+   "massNote": "Lander+ascender stack approx.",
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-lroc-sites"
+   ]
+  },
+  {
+   "id": "hakuto-r-m1",
+   "name": "Hakuto-R Mission 1",
+   "agency": "ispace",
+   "country": "Japan",
+   "missionType": "lander",
+   "launchDate": "2022-12-11",
+   "eventDate": "2023-04-25",
+   "site": {
+    "latitude": 47.58,
+    "longitude": 44.09,
+    "precision": "published"
+   },
+   "outcome": "failure",
+   "failureCategory": "altitude-estimation",
+   "summary": "Software rejected valid altimeter data after passing a crater rim; ran out of propellant above the surface (Atlas crater).",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": true,
+   "massKg": 340,
+   "massNote": "Dry mass.",
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-lroc-sites"
+   ]
+  },
+  {
+   "id": "luna-25",
+   "name": "Luna 25",
+   "agency": "Roscosmos",
+   "country": "Russia",
+   "missionType": "lander",
+   "launchDate": "2023-08-10",
+   "eventDate": "2023-08-19",
+   "site": {
+    "latitude": -57.9,
+    "longitude": 61.4,
+    "precision": "approx"
+   },
+   "outcome": "failure",
+   "failureCategory": "propulsion-control",
+   "summary": "Pre-landing orbit burn ran 127 s instead of 84 s; impacted near Pont\u00e9coulant G.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 800,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-wiki-artificial-objects",
+    "src-lroc-sites"
+   ]
+  },
+  {
+   "id": "chandrayaan-3-vikram",
+   "name": "Chandrayaan-3 Vikram / Pragyan",
+   "agency": "ISRO",
+   "country": "India",
+   "missionType": "rover",
+   "launchDate": "2023-07-14",
+   "eventDate": "2023-08-23",
+   "site": {
+    "latitude": -69.37,
+    "longitude": 32.32,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "First landing in the south polar region; hazard detection and avoidance cameras.",
+   "hazardAvoidance": true,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 1752,
+   "massNote": "Lander module incl. rover, launch mass.",
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-lroc-sites"
+   ]
+  },
+  {
+   "id": "slim",
+   "name": "SLIM",
+   "agency": "JAXA",
+   "country": "Japan",
+   "missionType": "lander",
+   "launchDate": "2023-09-06",
+   "eventDate": "2024-01-19",
+   "site": {
+    "latitude": -13.32,
+    "longitude": 25.25,
+    "precision": "published"
+   },
+   "outcome": "partial",
+   "failureCategory": "engine-nozzle",
+   "summary": "Pinpoint landing (~55 m) achieved but an engine nozzle detached; came to rest nose-down.",
+   "hazardAvoidance": true,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 200,
+   "massNote": "Dry mass.",
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-lroc-sites"
+   ]
+  },
+  {
+   "id": "peregrine-m1",
+   "name": "Peregrine Mission One",
+   "agency": "Astrobotic (NASA CLPS)",
+   "country": "USA",
+   "missionType": "lander",
+   "launchDate": "2024-01-08",
+   "eventDate": "2024-01-18",
+   "site": null,
+   "outcome": "failure",
+   "failureCategory": "propulsion",
+   "summary": "Propellant leak hours after launch; never attempted landing (target Sinus Viscositatis).",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": true,
+   "massKg": 1283,
+   "massNote": "Wet mass approx.",
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-lroc-sites"
+   ]
+  },
+  {
+   "id": "im-1",
+   "name": "IM-1 Nova-C Odysseus",
+   "agency": "Intuitive Machines (NASA CLPS)",
+   "country": "USA",
+   "missionType": "lander",
+   "launchDate": "2024-02-15",
+   "eventDate": "2024-02-22",
+   "site": {
+    "latitude": -80.13,
+    "longitude": 1.44,
+    "precision": "published"
+   },
+   "outcome": "partial",
+   "failureCategory": "altimeter-slope",
+   "summary": "Laser altimeter disabled by a safety switch; landed fast on a ~12\u00b0 slope and tipped over; operated ~7 days.",
+   "hazardAvoidance": true,
+   "crewed": false,
+   "commercial": true,
+   "massKg": 675,
+   "massNote": "Dry mass approx.",
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-lroc-sites"
+   ]
+  },
+  {
+   "id": "change-6",
+   "name": "Chang'e 6",
+   "agency": "CNSA",
+   "country": "China",
+   "missionType": "sample-return",
+   "launchDate": "2024-05-03",
+   "eventDate": "2024-06-01",
+   "site": {
+    "latitude": -41.64,
+    "longitude": -153.99,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "First far-side sample return (Apollo basin, South Pole\u2013Aitken).",
+   "hazardAvoidance": true,
+   "crewed": false,
+   "commercial": false,
+   "massKg": 3200,
+   "massNote": "Approx.",
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-lroc-sites"
+   ]
+  },
+  {
+   "id": "blue-ghost-m1",
+   "name": "Blue Ghost Mission 1",
+   "agency": "Firefly Aerospace (NASA CLPS)",
+   "country": "USA",
+   "missionType": "lander",
+   "launchDate": "2025-01-15",
+   "eventDate": "2025-03-02",
+   "site": {
+    "latitude": 18.56,
+    "longitude": 61.81,
+    "precision": "published"
+   },
+   "outcome": "success",
+   "failureCategory": null,
+   "summary": "Fully successful upright landing in Mare Crisium; 10 NASA payloads operated through the lunar day.",
+   "hazardAvoidance": true,
+   "crewed": false,
+   "commercial": true,
+   "massKg": null,
+   "massNote": null,
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-lroc-sites"
+   ]
+  },
+  {
+   "id": "im-2",
+   "name": "IM-2 Nova-C Athena",
+   "agency": "Intuitive Machines (NASA CLPS)",
+   "country": "USA",
+   "missionType": "lander",
+   "launchDate": "2025-02-27",
+   "eventDate": "2025-03-06",
+   "site": {
+    "latitude": -84.79,
+    "longitude": 29.2,
+    "precision": "published"
+   },
+   "outcome": "partial",
+   "failureCategory": "altimeter-lighting",
+   "summary": "Landed on its side inside a crater near Mons Mouton; low sun and altimeter noise; mission ended the next day.",
+   "hazardAvoidance": true,
+   "crewed": false,
+   "commercial": true,
+   "massKg": 675,
+   "massNote": "Dry mass approx.",
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-lroc-sites"
+   ]
+  },
+  {
+   "id": "hakuto-r-m2",
+   "name": "Hakuto-R Mission 2 Resilience",
+   "agency": "ispace",
+   "country": "Japan",
+   "missionType": "lander",
+   "launchDate": "2025-01-15",
+   "eventDate": "2025-06-05",
+   "site": {
+    "latitude": 60.5,
+    "longitude": -4.6,
+    "precision": "approx"
+   },
+   "outcome": "failure",
+   "failureCategory": "rangefinder",
+   "summary": "Laser rangefinder returned valid data too late; hard landing in Mare Frigoris.",
+   "hazardAvoidance": false,
+   "crewed": false,
+   "commercial": true,
+   "massKg": 340,
+   "massNote": "Dry mass.",
+   "sourceIds": [
+    "src-nssdca-nmc",
+    "src-nssdca-timeline",
+    "src-wiki-artificial-objects",
+    "src-lroc-sites"
+   ]
+  }
+ ]
+}

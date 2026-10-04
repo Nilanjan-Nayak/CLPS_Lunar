@@ -1,0 +1,64 @@
+{
+  "assetId": "svs-deep-star-map-2020-8k",
+  "name": "Deep Star Maps 2020 \u2014 celestial (ICRF/J2000) equirectangular star map, 8k, tone-mapped",
+  "assetType": "sky-map",
+  "textureRole": "sky-celestial",
+  "category": "environment",
+  "format": "jpg",
+  "tier": "core",
+  "file": "environment/sky/svs-deep-star-map-2020/starmap_2020_8k.jpg",
+  "sizeBytes": 10881478,
+  "sha256": "be5ef0a8c6ef77be5a14a9fd55aae13f5c908aadf4c51562bee93a63e099f244",
+  "variants": [
+    {
+      "file": "environment/sky/svs-deep-star-map-2020/starmap_2020_4k.jpg",
+      "width": 4096,
+      "height": 2048,
+      "sizeBytes": 2145159,
+      "sha256": "de7d8f117f7ca6cc18cec1d1b15aa26e2b24ead9bb6b78a9b546631bcdc0ad44",
+      "quality": "low"
+    }
+  ],
+  "width": 8192,
+  "height": 4096,
+  "projection": {
+    "type": "equirectangular",
+    "frame": "ICRF/J2000 geocentric equatorial (right ascension, declination)",
+    "centerRA_deg": 0,
+    "raIncreasesToward": "left",
+    "column_of_RA": "col = (W/2 - RA/360*W) mod W",
+    "row_of_Dec": "row = (90 - Dec)/180*H",
+    "verifiedWith": "15 bright stars (Sirius, Canopus, Arcturus, Vega, Capella, Rigel, Procyon, Achernar, Betelgeuse, Altair, Aldebaran, Antares, Spica, Fomalhaut, Deneb) all land on saturated pixels; the mirrored hypothesis scores ~0"
+  },
+  "encoding": {
+    "from": "OpenEXR half-float linear RGB (starmap_2020_8k.exr, 130.5 MB)",
+    "toneMap": "v' = 1 - exp(-2.5*v), then sRGB transfer; 8-bit JPEG q88 4:4:4",
+    "note": "Relative star brightness is NOT photometric after tone mapping; bright stars saturate as in the source."
+  },
+  "scientificGrade": "derived",
+  "downloadedAt": "2026-09-28T15:36:01Z",
+  "source": {
+    "organization": "NASA Goddard Space Flight Center Scientific Visualization Studio",
+    "title": "Deep Star Maps 2020 (SVS 4851)",
+    "url": "https://svs.gsfc.nasa.gov/4851",
+    "fileUrl": "https://svs.gsfc.nasa.gov/vis/a000000/a004800/a004851/starmap_2020_8k.exr",
+    "released": "2020-09-09",
+    "author": "Ernie Wright (USRA)",
+    "dataCatalogs": [
+      "Hipparcos-2",
+      "Tycho-2",
+      "Gaia DR2",
+      "Yale Bright Star Catalog",
+      "UCAC3",
+      "XHIP"
+    ],
+    "credit": "NASA/Goddard Space Flight Center Scientific Visualization Studio. Gaia DR2: ESA/Gaia/DPAC."
+  },
+  "license": {
+    "name": "NASA Media Usage Guidelines (US Government work; attribution requested). Gaia DR2 data: ESA/Gaia/DPAC credit required.",
+    "url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+  },
+  "credits": "NASA/GSFC Scientific Visualization Studio (Ernie Wright); Gaia DR2: ESA/Gaia/DPAC",
+  "rawSha256": "dc6c4f413e85707a29a25a9451148154554ecca2c996f84fa8f47b65ef9ff7c4",
+  "notes": "Sky background rendered on the inside of a sphere in the J2000 equatorial frame and rotated into the Moon-fixed scene frame with the IAU WGCCRE 2009 Moon orientation, so stars, Sun and Earth share one ephemeris. Not used for any scientific computation."
+}

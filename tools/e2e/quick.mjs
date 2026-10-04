@@ -1,0 +1,22 @@
+import { chromium } from 'playwright';
+const [url, out, state, extraWait = '12000'] = process.argv.slice(2);
+const browser = await chromium.launch({ args: ['--use-gl=swiftshader', '--enable-webgl', '--ignore-gpu-blocklist', '--enable-unsafe-swiftshader', '--no-sandbox'] });
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+const logs = [];
+page.on('console', (m) => { const t = m.text(); if (!/GL Driver|React Router|DevTools|vite|ReadPixels/.test(t)) logs.push(`[${m.type()}] ${t.slice(0, 220)}`); });
+page.on('pageerror', (e) => logs.push(`[pageerror] ${e.message.slice(0, 300)}`));
+await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 }).catch((e) => logs.push('[goto] ' + e.message));
+await page.waitForTimeout(4000);
+const info = await page.evaluate(async (state) => {
+  const cam = (await import('/src/state/cameraStore.ts')).useCameraStore;
+  const scene = (await import('/src/state/sceneStore.ts')).useSceneStore.getState();
+  const cfg = scene.config;
+  if (state) cam.getState().requestFlight([state], cam.getState().focus, 0.25);
+  return { title: cfg?.title, objects: cfg?.objects.map((o) => `${o.kind}:${o.label}:${o.resolution}:${o.assetId ?? '-'}:x${o.displayScale ?? 1}`), notes: cfg?.notes, lighting: cfg?.lighting, focus: cam.getState().focus };
+}, state || null);
+console.log(JSON.stringify(info, null, 1));
+await page.waitForTimeout(Number(extraWait));
+await page.screenshot({ path: out });
+const text = await page.evaluate(() => document.querySelector('.statusbar')?.textContent ?? '');
+console.log('STATUS:', text, '\n  ', logs.slice(0, 12).join('\n   '));
+await browser.close();

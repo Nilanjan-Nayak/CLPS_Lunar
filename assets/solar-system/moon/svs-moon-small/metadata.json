@@ -1,0 +1,96 @@
+{
+  "assetId": "nasa-svs-moon-small-glb",
+  "name": "Moon — NASA SVS web model (LRO color map, smooth sphere)",
+  "assetType": "moon-model",
+  "category": "solar-system",
+  "format": "glb",
+  "tier": "core",
+  "file": "solar-system/moon/svs-moon-small/moon_small.glb",
+  "sizeBytes": 13799876,
+  "sha256": "12d3b0bb7fe214903f51447d1bc61710f442e92a11c703fcaca6d4e7ff8e67d4",
+  "normalize": {
+    "targetRadiusKm": 1737.4
+  },
+  "scientificGrade": null,
+  "downloadedAt": "2026-09-28T06:03:34.728Z",
+  "source": {
+    "organization": "NASA Goddard Scientific Visualization Studio",
+    "title": "Moon 3D Models for Web, AR, and Animation (SVS 14959)",
+    "url": "https://svs.gsfc.nasa.gov/14959",
+    "credit": "NASA's Scientific Visualization Studio — Produced by Dan Gallagher (eMITS); data provider Ernie Wright (USRA); imagery NASA/GSFC/Arizona State University (LROC WAC); topography LOLA",
+    "released": "2026-01-29",
+    "missions": [
+      "LRO"
+    ],
+    "fileUrl": "https://svs.gsfc.nasa.gov/vis/a010000/a014900/a014959/moon_small.glb"
+  },
+  "license": {
+    "name": "NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)",
+    "url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+  },
+  "credits": "NASA's Scientific Visualization Studio — Produced by Dan Gallagher (eMITS); data provider Ernie Wright (USRA); imagery NASA/GSFC/Arizona State University (LROC WAC); topography LOLA",
+  "derive": [],
+  "notes": "Color map wrapped on a smooth sphere (no topography). Used for the Solar-System context layer (far views). Lunar World uses the DEM-displaced scientific globe instead.",
+  "frame": {
+    "inspectedAt": "2026-09-28T06:09:40.394Z",
+    "file": "moon_small.glb",
+    "generator": "Khronos glTF Blender I/O v5.0.21",
+    "meshName": "Cube.001",
+    "nodeName": "Cube",
+    "vertexCount": 46464,
+    "bboxMin": [
+      -1.2718640565872192,
+      -1.2718640565872192,
+      -1.2718640565872192
+    ],
+    "bboxMax": [
+      1.2718640565872192,
+      1.2718640565872192,
+      1.2718640565872192
+    ],
+    "center": [
+      0,
+      0,
+      0
+    ],
+    "boundingRadius": 1.282231258940614,
+    "uvFrame": {
+      "lon0": [
+        0.7071067346129135,
+        -1.6612975811965267e-8,
+        -0.7071068277601782
+      ],
+      "lon0UvError": 1.3328003749250113e-7,
+      "lon90E": [
+        1.5744744905078008e-8,
+        0.7071067811865475,
+        -0.7071067811865475
+      ],
+      "lon90EUvError": 1.3328003749250113e-7,
+      "north": [
+        -0.6307670742662448,
+        1.690844818272363e-8,
+        0.7759722276097265
+      ],
+      "northUvError": 0.0027273106575012203,
+      "handedness": "matches-app-convention",
+      "appConvention": {
+        "lon0": [
+          1,
+          0,
+          0
+        ],
+        "north": [
+          0,
+          1,
+          0
+        ],
+        "lon90E": [
+          0,
+          0,
+          -1
+        ]
+      }
+    }
+  }
+}

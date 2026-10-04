@@ -1,0 +1,11 @@
+{
+  "fetchedAt": "2026-09-28T16:10:41.754Z",
+  "results": [
+    {
+      "assetId": "nasa-blue-marble-clouds-2048-raw",
+      "file": ".cache/raw/cloud_combined_2048.tif",
+      "bytes": 2687040,
+      "sha256": "cf8624a20779435f70d32372f0ab0c43f2c781e527c1f902c6b3c894d2e0455c"
+    }
+  ]
+}

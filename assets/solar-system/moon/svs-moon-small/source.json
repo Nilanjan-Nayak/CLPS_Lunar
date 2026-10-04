@@ -1,0 +1,11 @@
+{
+  "organization": "NASA Goddard Scientific Visualization Studio",
+  "title": "Moon 3D Models for Web, AR, and Animation (SVS 14959)",
+  "url": "https://svs.gsfc.nasa.gov/14959",
+  "credit": "NASA's Scientific Visualization Studio — Produced by Dan Gallagher (eMITS); data provider Ernie Wright (USRA); imagery NASA/GSFC/Arizona State University (LROC WAC); topography LOLA",
+  "released": "2026-01-29",
+  "missions": [
+    "LRO"
+  ],
+  "fileUrl": "https://svs.gsfc.nasa.gov/vis/a010000/a014900/a014959/moon_small.glb"
+}

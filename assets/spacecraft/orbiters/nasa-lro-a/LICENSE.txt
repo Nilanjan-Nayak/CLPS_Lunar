@@ -1,0 +1,17 @@
+Asset: Lunar Reconnaissance Orbiter (A) — NASA 3D Resources
+Asset ID: nasa-lro-spacecraft-glb
+
+Source organization: NASA 3D Resources
+Source title: Lunar Reconnaissance Orbiter (A)
+Source URL: https://science.nasa.gov/3d-resources/lunar-reconnaissance-orbiter-a/
+Direct file URL: https://assets.science.nasa.gov/content/dam/science/cds/3d/resources/model/lunar-reconnaissance-orbiter-(a)/Lunar%20Reconnaissance%20Orbiter%20(A).glb
+
+Credit (required attribution): NASA/Christopher R. Meaney
+
+License: NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)
+License URL: https://www.nasa.gov/nasa-brand-center/images-and-media/
+
+NASA content is generally not subject to copyright in the United States and may be used for
+educational or informational purposes without explicit permission. NASA requests attribution as
+given above. NASA does not endorse this project. The NASA insignia/logo may not be used.
+See the NASA Media Usage Guidelines for full terms.

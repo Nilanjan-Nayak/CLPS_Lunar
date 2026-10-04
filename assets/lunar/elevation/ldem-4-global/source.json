@@ -1,0 +1,11 @@
+{
+  "organization": "NASA Goddard Scientific Visualization Studio",
+  "title": "CGI Moon Kit (SVS 4720) — displacement map derived from LOLA gridded data (LRO)",
+  "url": "https://svs.gsfc.nasa.gov/4720",
+  "credit": "NASA/GSFC/LOLA science team; NASA's Scientific Visualization Studio — Ernie Wright",
+  "upstream": "LRO LOLA GDR (PDS Geosciences Node): https://pds-geosciences.wustl.edu/missions/lro/lola.htm",
+  "missions": [
+    "LRO"
+  ],
+  "fileUrl": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/ldem_4_uint.tif"
+}

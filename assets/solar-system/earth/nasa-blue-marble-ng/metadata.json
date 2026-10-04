@@ -1,0 +1,49 @@
+{
+  "assetId": "nasa-blue-marble-ng-2004-08",
+  "name": "Blue Marble Next Generation (August 2004) with topography and bathymetry \u2014 5400\u00d72700",
+  "assetType": "planet-texture",
+  "textureRole": "earth-day",
+  "category": "solar-system",
+  "format": "jpg",
+  "tier": "core",
+  "file": "solar-system/earth/nasa-blue-marble-ng/world.topo.bathy.200408.5400x2700.jpg",
+  "sizeBytes": 2308163,
+  "sha256": "f76d7b94445e8975a755c849ddaa93ed07b7e01118fb0b7e6bc5546a68c18d5c",
+  "width": 5400,
+  "height": 2700,
+  "projection": {
+    "type": "equirectangular",
+    "frame": "geographic (WGS84-like), lon \u2212180 at left edge \u2192 +180 at right, lat +90 at top",
+    "centerLon_deg": 0,
+    "note": "three.js SphereGeometry maps u=0.5 (lon 0) to the local +X axis, lon 90E to \u2212Z, north to +Y \u2014 same convention as the Moon frame"
+  },
+  "scientificGrade": null,
+  "downloadedAt": "2026-09-28T15:36:38Z",
+  "source": {
+    "organization": "NASA Earth Observatory / Visible Earth",
+    "title": "August, Blue Marble Next Generation w/ Topography and Bathymetry",
+    "url": "https://visibleearth.nasa.gov/images/73776/august-blue-marble-next-generation-w-topography-and-bathymetry",
+    "fileUrl": "https://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73776/world.topo.bathy.200408.3x5400x2700.jpg",
+    "released": "2005",
+    "credit": "NASA Earth Observatory (Reto St\u00f6ckli, NASA GSFC) \u2014 MODIS/Terra data; topography: USGS/SRTM30; bathymetry: NOAA/GEBCO"
+  },
+  "license": {
+    "name": "NASA Media Usage Guidelines / Visible Earth: images are in the public domain (US Government work); attribution requested",
+    "url": "https://visibleearth.nasa.gov/image-use-policy"
+  },
+  "credits": "NASA Earth Observatory (Reto St\u00f6ckli, NASA GSFC) \u2014 MODIS/Terra data; topography: USGS/SRTM30; bathymetry: NOAA/GEBCO",
+  "rawSha256": "f76d7b94445e8975a755c849ddaa93ed07b7e01118fb0b7e6bc5546a68c18d5c",
+  "derive": [],
+  "notes": "Day-side albedo texture for the ephemeris-oriented Earth renderer (visualization; monthly composite, no clouds). Earth remains a context/navigation layer: no Earth science datasets are attached.",
+  "variants": [
+    {
+      "file": "solar-system/earth/nasa-blue-marble-ng/world.topo.bathy.200408.2048x1024.jpg",
+      "width": 2048,
+      "height": 1024,
+      "sizeBytes": 486716,
+      "sha256": "bd39bb9c29bb91799435787e5bcba3191c63528f228d6f394e753d74339373f9",
+      "quality": "low",
+      "note": "Lanczos downsample of the 5400x2700 original (derived, for the low quality tier)"
+    }
+  ]
+}

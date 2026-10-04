@@ -1,0 +1,17 @@
+Asset: Deep Star Maps 2020 — celestial (ICRF/J2000) star map, 8k OpenEXR (raw)
+Asset ID: svs-deep-star-map-2020-8k-exr
+
+Source organization: NASA Goddard Space Flight Center Scientific Visualization Studio
+Source title: Deep Star Maps 2020 (SVS 4851)
+Source URL: https://svs.gsfc.nasa.gov/4851
+Direct file URL: https://svs.gsfc.nasa.gov/vis/a000000/a004800/a004851/starmap_2020_8k.exr
+
+Credit (required attribution): NASA/Goddard Space Flight Center Scientific Visualization Studio. Gaia DR2: ESA/Gaia/DPAC.
+
+License: NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)
+License URL: https://www.nasa.gov/nasa-brand-center/images-and-media/
+
+NASA content is generally not subject to copyright in the United States and may be used for
+educational or informational purposes without explicit permission. NASA requests attribution as
+given above. NASA does not endorse this project. The NASA insignia/logo may not be used.
+See the NASA Media Usage Guidelines for full terms.

@@ -1,0 +1,34 @@
+{
+  "assetId": "nasa-lro-spacecraft-glb",
+  "name": "Lunar Reconnaissance Orbiter (A) — NASA 3D Resources",
+  "assetType": "spacecraft-model",
+  "spacecraftType": "orbiter",
+  "category": "spacecraft",
+  "format": "glb",
+  "tier": "core",
+  "file": "spacecraft/orbiters/nasa-lro-a/Lunar_Reconnaissance_Orbiter_A.glb",
+  "sizeBytes": 654500,
+  "sha256": "b9547bc7c8c37c44675a80c3c3e27b647a9ff1293cf40030ef36f806b9c616b1",
+  "normalize": {
+    "targetLongestAxisM": 4
+  },
+  "scientificGrade": null,
+  "downloadedAt": "2026-09-28T06:03:36.320Z",
+  "source": {
+    "organization": "NASA 3D Resources",
+    "title": "Lunar Reconnaissance Orbiter (A)",
+    "url": "https://science.nasa.gov/3d-resources/lunar-reconnaissance-orbiter-a/",
+    "credit": "NASA/Christopher R. Meaney",
+    "missions": [
+      "LRO"
+    ],
+    "fileUrl": "https://assets.science.nasa.gov/content/dam/science/cds/3d/resources/model/lunar-reconnaissance-orbiter-(a)/Lunar%20Reconnaissance%20Orbiter%20(A).glb"
+  },
+  "license": {
+    "name": "NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)",
+    "url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+  },
+  "credits": "NASA/Christopher R. Meaney",
+  "derive": [],
+  "notes": "Only official NASA spacecraft model currently relevant to the lunar environment. No official NASA models exist for CLPS commercial landers (Nova-C, Blue Ghost, Peregrine, Griffin) — those resolve to information-only markers."
+}

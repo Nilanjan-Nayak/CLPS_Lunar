@@ -1,0 +1,438 @@
+{
+  "$schema": "./nasa-sources.schema.json",
+  "version": 1,
+  "description": "Controlled NASA asset discovery manifest. Every entry is an official NASA public resource. The pipeline downloads, verifies (sha256), and writes metadata/source/LICENSE alongside every asset so provenance is never lost.",
+  "defaultLicense": {
+    "name": "NASA Media Usage Guidelines (US Government work, generally not subject to copyright; attribution requested)",
+    "url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+  },
+  "assets": [
+    {
+      "assetId": "nasa-svs-moon-small-glb",
+      "name": "Moon — NASA SVS web model (LRO color map, smooth sphere)",
+      "assetType": "moon-model",
+      "category": "solar-system",
+      "format": "glb",
+      "tier": "core",
+      "url": "https://svs.gsfc.nasa.gov/vis/a010000/a014900/a014959/moon_small.glb",
+      "dest": "solar-system/moon/svs-moon-small/moon_small.glb",
+      "expectedBytes": 13799876,
+      "source": {
+        "organization": "NASA Goddard Scientific Visualization Studio",
+        "title": "Moon 3D Models for Web, AR, and Animation (SVS 14959)",
+        "url": "https://svs.gsfc.nasa.gov/14959",
+        "credit": "NASA's Scientific Visualization Studio — Produced by Dan Gallagher (eMITS); data provider Ernie Wright (USRA); imagery NASA/GSFC/Arizona State University (LROC WAC); topography LOLA",
+        "released": "2026-01-29",
+        "missions": [
+          "LRO"
+        ]
+      },
+      "normalize": {
+        "targetRadiusKm": 1737.4
+      },
+      "notes": "Color map wrapped on a smooth sphere (no topography). Used for the Solar-System context layer (far views). Lunar World uses the DEM-displaced scientific globe instead."
+    },
+    {
+      "assetId": "nasa-svs-moon-8k-topo-small-glb",
+      "name": "Moon — NASA SVS web model with height map (8k topo, small)",
+      "assetType": "moon-model",
+      "category": "solar-system",
+      "format": "glb",
+      "tier": "optional",
+      "fetchByDefault": false,
+      "url": "https://svs.gsfc.nasa.gov/vis/a010000/a014900/a014959/Moon_NASA_LRO_8k_Topo_Small.glb",
+      "dest": "solar-system/moon/svs-moon-8k-topo-small/Moon_NASA_LRO_8k_Topo_Small.glb",
+      "expectedBytes": 81505784,
+      "source": {
+        "organization": "NASA Goddard Scientific Visualization Studio",
+        "title": "Moon 3D Models for Web, AR, and Animation (SVS 14959)",
+        "url": "https://svs.gsfc.nasa.gov/14959",
+        "credit": "NASA's Scientific Visualization Studio — Produced by Dan Gallagher (eMITS); data provider Ernie Wright (USRA)",
+        "released": "2026-01-29",
+        "missions": [
+          "LRO"
+        ]
+      },
+      "normalize": {
+        "targetRadiusKm": 1737.4
+      },
+      "notes": "81 MB — not fetched by default (run `npm run assets:fetch -- --all`)."
+    },
+    {
+      "assetId": "nasa-earth-clouds-glb",
+      "name": "Earth with Clouds — NASA 3D model (glTF)",
+      "assetType": "planet-model",
+      "category": "solar-system",
+      "format": "glb",
+      "tier": "core",
+      "url": "https://assets.science.nasa.gov/content/dam/science/psd/solar/2023/09/e/EarthClouds_1_12756.glb",
+      "dest": "solar-system/earth/nasa-earth-clouds/EarthClouds_1_12756.glb",
+      "expectedBytes": 18928336,
+      "source": {
+        "organization": "NASA Science (Solar System Exploration)",
+        "title": "Earth with Clouds 3D Model",
+        "url": "https://science.nasa.gov/resource/earth-with-clouds-3d-model/",
+        "credit": "NASA Visualization Technology Applications and Development (VTAD)",
+        "released": "2019-04-22"
+      },
+      "normalize": {
+        "targetRadiusKm": 6371.0
+      },
+      "notes": "Visualization model. Earth is a context/navigation layer; no Earth scientific datasets are attached yet (separate data layer per architecture)."
+    },
+    {
+      "assetId": "nasa-lro-spacecraft-glb",
+      "name": "Lunar Reconnaissance Orbiter (A) — NASA 3D Resources",
+      "assetType": "spacecraft-model",
+      "spacecraftType": "orbiter",
+      "category": "spacecraft",
+      "format": "glb",
+      "tier": "core",
+      "url": "https://assets.science.nasa.gov/content/dam/science/cds/3d/resources/model/lunar-reconnaissance-orbiter-(a)/Lunar%20Reconnaissance%20Orbiter%20(A).glb",
+      "dest": "spacecraft/orbiters/nasa-lro-a/Lunar_Reconnaissance_Orbiter_A.glb",
+      "expectedBytes": 654500,
+      "source": {
+        "organization": "NASA 3D Resources",
+        "title": "Lunar Reconnaissance Orbiter (A)",
+        "url": "https://science.nasa.gov/3d-resources/lunar-reconnaissance-orbiter-a/",
+        "credit": "NASA/Christopher R. Meaney",
+        "missions": [
+          "LRO"
+        ]
+      },
+      "normalize": {
+        "targetLongestAxisM": 4.0
+      },
+      "notes": "Only official NASA spacecraft model currently relevant to the lunar environment. No official NASA models exist for CLPS commercial landers (Nova-C, Blue Ghost, Peregrine, Griffin) — those resolve to information-only markers."
+    },
+    {
+      "assetId": "nasa-cgi-moon-kit-color-2k",
+      "name": "CGI Moon Kit — 2025 color map (2k JPEG)",
+      "assetType": "texture",
+      "textureRole": "albedo",
+      "category": "lunar",
+      "format": "jpg",
+      "tier": "core",
+      "url": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_2k.jpg",
+      "dest": "lunar/textures/cgi-moon-kit-color-2k/lroc_color_2k.jpg",
+      "expectedBytes": 457942,
+      "projection": {
+        "type": "equirectangular",
+        "centerLonDeg": 0,
+        "width": 2048,
+        "height": 1024
+      },
+      "source": {
+        "organization": "NASA Goddard Scientific Visualization Studio",
+        "title": "CGI Moon Kit (SVS 4720)",
+        "url": "https://svs.gsfc.nasa.gov/4720",
+        "credit": "NASA's Scientific Visualization Studio — Ernie Wright; source mosaic NASA/GSFC/Arizona State University (LROC WAC Hapke-normalized mosaic)",
+        "missions": [
+          "LRO"
+        ]
+      },
+      "scientificGrade": false,
+      "notes": "NASA: 'optimized for aesthetics, not science'. Visual layer only."
+    },
+    {
+      "assetId": "nasa-cgi-moon-kit-color-poles-4k",
+      "name": "CGI Moon Kit — 2019 color map with poles (4k)",
+      "assetType": "texture",
+      "textureRole": "albedo",
+      "category": "lunar",
+      "format": "tif",
+      "tier": "core",
+      "url": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_poles_4k.tif",
+      "dest": ".cache/raw/lroc_color_poles_4k.tif",
+      "expectedBytes": 13095388,
+      "projection": {
+        "type": "equirectangular",
+        "centerLonDeg": 0,
+        "width": 4096,
+        "height": 2048
+      },
+      "source": {
+        "organization": "NASA Goddard Scientific Visualization Studio",
+        "title": "CGI Moon Kit (SVS 4720)",
+        "url": "https://svs.gsfc.nasa.gov/4720",
+        "credit": "NASA's Scientific Visualization Studio — Ernie Wright; NASA/GSFC/Arizona State University (LROC WAC); LOLA LDAM polar fill",
+        "missions": [
+          "LRO"
+        ]
+      },
+      "derive": [
+        {
+          "type": "tif-to-jpg",
+          "out": "lunar/textures/cgi-moon-kit-color-poles-4k/lroc_color_poles_4k.jpg",
+          "quality": 88
+        },
+        {
+          "type": "color-tiles",
+          "out": "lunar/terrain/tiles",
+          "tileDeg": 22.5,
+          "tilePx": 512
+        }
+      ],
+      "scientificGrade": false,
+      "notes": "Raw TIFF is kept in the (non-persisted) cache; web JPEG + terrain color tiles are derived."
+    },
+    {
+      "assetId": "nasa-cgi-moon-kit-ldem-4-uint",
+      "name": "CGI Moon Kit — LOLA displacement map, 4 px/deg (uint16)",
+      "assetType": "elevation",
+      "category": "lunar",
+      "format": "tif",
+      "tier": "core",
+      "url": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/ldem_4_uint.tif",
+      "dest": ".cache/raw/ldem_4_uint.tif",
+      "expectedBytes": 2076866,
+      "projection": {
+        "type": "equirectangular",
+        "centerLonDeg": 0,
+        "width": 1440,
+        "height": 720,
+        "pixelsPerDegree": 4
+      },
+      "encoding": {
+        "type": "uint16",
+        "unit": "half-meters",
+        "referenceRadiusM": 1727400,
+        "datumRadiusM": 1737400
+      },
+      "source": {
+        "organization": "NASA Goddard Scientific Visualization Studio",
+        "title": "CGI Moon Kit (SVS 4720) — displacement map derived from LOLA gridded data (LRO)",
+        "url": "https://svs.gsfc.nasa.gov/4720",
+        "credit": "NASA/GSFC/LOLA science team; NASA's Scientific Visualization Studio — Ernie Wright",
+        "upstream": "LRO LOLA GDR (PDS Geosciences Node): https://pds-geosciences.wustl.edu/missions/lro/lola.htm",
+        "missions": [
+          "LRO"
+        ]
+      },
+      "derive": [
+        {
+          "type": "dem-to-rgb-png",
+          "out": "lunar/elevation/ldem-4-global/ldem_4_rgb.png"
+        }
+      ],
+      "scientificGrade": "derived",
+      "notes": "Elevation values are LOLA-derived (via CGI Moon Kit resampling). For science-grade analysis use the PDS LOLA GDR products directly (see upstream)."
+    },
+    {
+      "assetId": "nasa-cgi-moon-kit-ldem-16-uint",
+      "name": "CGI Moon Kit — LOLA displacement map, 16 px/deg (uint16)",
+      "assetType": "elevation",
+      "category": "lunar",
+      "format": "tif",
+      "tier": "core",
+      "url": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/ldem_16_uint.tif",
+      "dest": ".cache/raw/ldem_16_uint.tif",
+      "expectedBytes": 33201026,
+      "projection": {
+        "type": "equirectangular",
+        "centerLonDeg": 0,
+        "width": 5760,
+        "height": 2880,
+        "pixelsPerDegree": 16
+      },
+      "encoding": {
+        "type": "uint16",
+        "unit": "half-meters",
+        "referenceRadiusM": 1727400,
+        "datumRadiusM": 1737400
+      },
+      "source": {
+        "organization": "NASA Goddard Scientific Visualization Studio",
+        "title": "CGI Moon Kit (SVS 4720) — displacement map derived from LOLA gridded data (LRO)",
+        "url": "https://svs.gsfc.nasa.gov/4720",
+        "credit": "NASA/GSFC/LOLA science team; NASA's Scientific Visualization Studio — Ernie Wright",
+        "upstream": "LRO LOLA GDR (PDS Geosciences Node): https://pds-geosciences.wustl.edu/missions/lro/lola.htm",
+        "missions": [
+          "LRO"
+        ]
+      },
+      "derive": [
+        {
+          "type": "dem-tiles",
+          "out": "lunar/terrain/tiles",
+          "tileDeg": 22.5
+        }
+      ],
+      "scientificGrade": "derived",
+      "notes": "Tiled into 22.5° x 22.5° elevation tiles (LOD1, 360x360 px, RGB-encoded 16-bit). Only tiles intersecting known landing sites/regions are generated by default; run derive with --all-tiles for global coverage."
+    },
+    {
+      "assetId": "nasa-cgi-moon-kit-ldem-3-8bit",
+      "name": "CGI Moon Kit — displacement preview (8-bit JPEG)",
+      "assetType": "elevation-preview",
+      "category": "lunar",
+      "format": "jpg",
+      "tier": "core",
+      "url": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/ldem_3_8bit.jpg",
+      "dest": "lunar/elevation/ldem-3-preview/ldem_3_8bit.jpg",
+      "expectedBytes": 111552,
+      "projection": {
+        "type": "equirectangular",
+        "centerLonDeg": 0,
+        "width": 1024,
+        "height": 512
+      },
+      "source": {
+        "organization": "NASA Goddard Scientific Visualization Studio",
+        "title": "CGI Moon Kit (SVS 4720)",
+        "url": "https://svs.gsfc.nasa.gov/4720",
+        "credit": "NASA/GSFC/LOLA; NASA's Scientific Visualization Studio — Ernie Wright",
+        "missions": [
+          "LRO"
+        ]
+      },
+      "scientificGrade": false,
+      "notes": "8-bit preview only — used for the 2D map page elevation layer, never for placement."
+    },
+    {
+      "assetId": "svs-deep-star-map-2020-8k-exr",
+      "name": "Deep Star Maps 2020 — celestial (ICRF/J2000) star map, 8k OpenEXR (raw)",
+      "assetType": "sky-map-raw",
+      "textureRole": "sky-celestial",
+      "category": "environment",
+      "format": "exr",
+      "tier": "core",
+      "url": "https://svs.gsfc.nasa.gov/vis/a000000/a004800/a004851/starmap_2020_8k.exr",
+      "dest": ".cache/raw/starmap_2020_8k.exr",
+      "expectedBytes": 130530278,
+      "projection": {
+        "type": "equirectangular",
+        "frame": "ICRF/J2000 geocentric equatorial (RA, Dec)",
+        "centerRA_deg": 0,
+        "raIncreasesToward": "left",
+        "column_of_RA": "col = (W/2 - RA/360*W) mod W",
+        "row_of_Dec": "row = (90 - Dec)/180*H"
+      },
+      "source": {
+        "organization": "NASA Goddard Space Flight Center Scientific Visualization Studio",
+        "title": "Deep Star Maps 2020 (SVS 4851)",
+        "url": "https://svs.gsfc.nasa.gov/4851",
+        "credit": "NASA/Goddard Space Flight Center Scientific Visualization Studio. Gaia DR2: ESA/Gaia/DPAC.",
+        "author": "Ernie Wright (USRA)",
+        "released": "2020-09-09"
+      },
+      "derive": [
+        {
+          "type": "exr-to-jpg",
+          "out": "environment/sky/svs-deep-star-map-2020/starmap_2020_8k.jpg",
+          "variants": [
+            {
+              "width": 4096,
+              "out": "environment/sky/svs-deep-star-map-2020/starmap_2020_4k.jpg",
+              "quality": "low"
+            }
+          ],
+          "toneMapK": 2.5,
+          "jpegQuality": 88
+        }
+      ],
+      "scientificGrade": "derived",
+      "notes": "Hipparcos-2 / Tycho-2 / Gaia DR2 all-sky map, half-float linear. Tone-mapped to 8-bit JPEG for the sky sphere; not photometric. Requires `pip install OpenEXR` for the derive step."
+    },
+    {
+      "assetId": "nasa-blue-marble-ng-2004-08-raw",
+      "name": "Blue Marble Next Generation, August 2004, with topography and bathymetry (raw 5400x2700)",
+      "assetType": "planet-texture",
+      "textureRole": "earth-day",
+      "category": "solar-system",
+      "format": "jpg",
+      "tier": "core",
+      "url": "https://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73776/world.topo.bathy.200408.3x5400x2700.jpg",
+      "dest": ".cache/raw/world.topo.bathy.200408.3x5400x2700.jpg",
+      "expectedBytes": 2308163,
+      "projection": {
+        "type": "equirectangular",
+        "frame": "geographic (lon -180 left → +180 right, lat +90 top)"
+      },
+      "source": {
+        "organization": "NASA Earth Observatory / Visible Earth",
+        "title": "Blue Marble Next Generation w/ Topography and Bathymetry (August)",
+        "url": "https://visibleearth.nasa.gov/images/73776/august-blue-marble-next-generation-w-topography-and-bathymetry",
+        "credit": "NASA Earth Observatory (Reto Stöckli, NASA GSFC) — MODIS, USGS, DMSP"
+      },
+      "derive": [
+        {
+          "type": "earth-texture",
+          "out": "solar-system/earth/nasa-blue-marble-ng/world.topo.bathy.200408.5400x2700.jpg",
+          "mode": "RGB",
+          "variants": [
+            {
+              "width": 2048,
+              "out": "solar-system/earth/nasa-blue-marble-ng/world.topo.bathy.200408.2048x1024.jpg",
+              "quality": "low"
+            }
+          ]
+        }
+      ],
+      "scientificGrade": false,
+      "notes": "Day-side colour map for the oriented Earth globe."
+    },
+    {
+      "assetId": "nasa-black-marble-2016-01deg-raw",
+      "name": "Earth at Night — Black Marble 2016 (0.1° colour map, raw 3600x1800)",
+      "assetType": "planet-texture",
+      "textureRole": "earth-night",
+      "category": "solar-system",
+      "format": "jpg",
+      "tier": "core",
+      "url": "https://eoimages.gsfc.nasa.gov/images/imagerecords/144000/144898/BlackMarble_2016_01deg.jpg",
+      "dest": ".cache/raw/BlackMarble_2016_01deg.jpg",
+      "expectedBytes": 779638,
+      "projection": {
+        "type": "equirectangular",
+        "frame": "geographic (lon -180 left → +180 right, lat +90 top)"
+      },
+      "source": {
+        "organization": "NASA Earth Observatory / Visible Earth",
+        "title": "Earth at Night: Black Marble 2016 Color Maps",
+        "url": "https://visibleearth.nasa.gov/images/144898/earth-at-night-black-marble-2016-color-maps",
+        "credit": "NASA Earth Observatory images by Joshua Stevens, using Suomi NPP VIIRS data from Miguel Román, NASA GSFC"
+      },
+      "derive": [
+        {
+          "type": "earth-texture",
+          "out": "solar-system/earth/nasa-black-marble-2016/BlackMarble_2016_01deg.jpg",
+          "mode": "RGB"
+        }
+      ],
+      "scientificGrade": false,
+      "notes": "Night-side city lights for the oriented Earth globe."
+    },
+    {
+      "assetId": "nasa-blue-marble-clouds-2048-raw",
+      "name": "Blue Marble: Clouds (2048x1024 TIFF, raw)",
+      "assetType": "planet-texture",
+      "textureRole": "earth-clouds",
+      "category": "solar-system",
+      "format": "tif",
+      "tier": "core",
+      "url": "https://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57747/cloud_combined_2048.tif",
+      "dest": ".cache/raw/cloud_combined_2048.tif",
+      "expectedBytes": 2687040,
+      "projection": {
+        "type": "equirectangular",
+        "frame": "geographic (lon -180 left → +180 right, lat +90 top)"
+      },
+      "source": {
+        "organization": "NASA Earth Observatory / Visible Earth",
+        "title": "Blue Marble: Clouds",
+        "url": "https://visibleearth.nasa.gov/images/57747/blue-marble-clouds",
+        "credit": "NASA Goddard Space Flight Center Image by Reto Stöckli"
+      },
+      "derive": [
+        {
+          "type": "earth-texture",
+          "out": "solar-system/earth/nasa-blue-marble-clouds/cloud_combined_2048.jpg",
+          "mode": "L"
+        }
+      ],
+      "scientificGrade": false,
+      "notes": "Cloud cover / opacity (grayscale) for the oriented Earth globe."
+    }
+  ]
+}
