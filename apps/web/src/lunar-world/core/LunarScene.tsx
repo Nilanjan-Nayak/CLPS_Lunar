@@ -28,6 +28,7 @@ export function LunarScene() {
   const gridSetting = useWorldStore((s) => s.showCoordinateGrid);
   const layers = config?.layers ?? defaultLayers();
   const objects = config?.objects ?? [];
+  const hasMissionSimulation = objects.some((o) => o.kind === 'simulation');
   const { clear } = useSceneInteraction();
   return (
     <>
@@ -40,7 +41,7 @@ export function LunarScene() {
       {layers.regions && objects.filter((o) => o.kind === 'region').map((o) => <LunarRegion key={o.id} object={o} />)}
       {layers.landingSites && objects.filter((o) => o.kind === 'landing-site').map((o) => <LandingSite key={o.id} object={o} />)}
       {layers.landingSites && objects.filter((o) => o.kind === 'historic-landing').map((o) => <HistoricLanding key={o.id} object={o} />)}
-      {objects.filter((o) => o.kind === 'plan-site').map((o) => <PlanSite key={o.id} object={o} />)}
+      {objects.filter((o) => o.kind === 'plan-site' && !hasMissionSimulation).map((o) => <PlanSite key={o.id} object={o} />)}
       {layers.overlays.science !== false && objects.filter((o) => o.kind === 'analysis-grid').map((o) => <AnalysisGrid key={o.id} object={o} />)}
       {layers.trajectories && objects.filter((o) => o.kind === 'simulation').map((o) => <MissionSimulation key={o.id} object={o} />)}
       {layers.trajectories && objects.filter((o) => o.kind === 'journey').map((o) => <Journey key={o.id} object={o} />)}

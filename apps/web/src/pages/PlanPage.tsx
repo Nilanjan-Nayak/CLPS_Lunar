@@ -81,6 +81,23 @@ export function PlanPage() {
           {history ? ` ${history.missions.filter((m) => m.missionType !== 'impact').length}` : ''} historical landing attempts (NSSDCA), and runs a powered-descent simulation.
         </p>
       </div>
+      <section className="mission-plan-intro" data-tour-target="plan-intro" aria-label="How to create a mission plan">
+        <div className="mission-plan-intro-head">
+          <div>
+            <span className="mono mission-plan-kicker">BEGINNER-FRIENDLY MISSION PLANNER</span>
+            <h2>Build your plan in five clear steps</h2>
+            <p>Choose where to land, configure the vehicle, describe the mission, run the analysis, then execute it in 3D.</p>
+          </div>
+          <span className="mission-plan-status mono">INPUT → CHECK → DECIDE → EXECUTE</span>
+        </div>
+        <div className="mission-plan-checklist">
+          <div><span>01</span><strong>Choose a site</strong><small>Coordinates or a known lunar location</small></div>
+          <div><span>02</span><strong>Configure vehicle</strong><small>Lander, launcher and transfer</small></div>
+          <div><span>03</span><strong>Set the mission</strong><small>Days, data and communications</small></div>
+          <div><span>04</span><strong>Check the result</strong><small>Safety, power and timing</small></div>
+          <div><span>05</span><strong>Execute in 3D</strong><small>Navigator, journey or simulation</small></div>
+        </div>
+      </section>
       <SpaceAppsResourceBar
         input={activeInput}
         plan={plan}
@@ -96,7 +113,7 @@ export function PlanPage() {
         <div>
           <Panel title="1 · Landing site">
             <div className="panel-body form-grid">
-              <label className="wide">Preset site
+              <label className="wide" data-tour-target="plan-site">Preset site
                 <select value="" onChange={(e) => { const p = sitePresets.find((s) => s.id === e.target.value); if (p) setForm((f) => ({ ...f, latitude: p.lat, longitude: p.lon })); }}>
                   <option value="">— choose a catalogued site or type coordinates —</option>
                   {sitePresets.map((p) => <option key={p.id} value={p.id}>{p.name} ({p.lat.toFixed(2)}, {p.lon.toFixed(2)})</option>)}
@@ -108,7 +125,7 @@ export function PlanPage() {
           </Panel>
           <Panel title="2 · Lander & launch">
             <div className="panel-body form-grid">
-              <label className="wide">Lander class (editable approximate figures)
+              <label className="wide" data-tour-target="plan-vehicle">Lander class (editable approximate figures)
                 <select value={form.landerId} onChange={(e) => applyPreset(e.target.value)}>
                   {options?.landers.map((l) => <option key={l.id} value={l.id}>{l.name}</option>)}
                 </select>
@@ -138,7 +155,7 @@ export function PlanPage() {
             </div>
           </Panel>
           <Panel title="3 · Operations & Constraints">
-            <div className="panel-body form-grid">
+            <div className="panel-body form-grid" data-tour-target="plan-ops">
               <label>Days in lunar orbit<input type="number" step="0.5" min={0.2} max={60} value={form.orbitDays} onChange={(e) => set('orbitDays', e.target.value)} /></label>
               <label>Surface operations (days)<input type="number" step="1" min={1} max={60} value={form.surfaceDays} onChange={(e) => set('surfaceDays', e.target.value)} /></label>
               <label>Science data volume (GB)<input type="number" step="1" value={form.dataVolumeGb} onChange={(e) => set('dataVolumeGb', e.target.value)} /></label>
@@ -146,7 +163,7 @@ export function PlanPage() {
               <label className="wide">Landing date (UTC, optional — default: next terrain-masked sunrise window)
                 <input type="text" placeholder="YYYY-MM-DD or YYYY-MM-DDTHH:MMZ" value={form.landingDate ?? ''} onChange={(e) => set('landingDate', e.target.value)} />
               </label>
-              <div className="wide btn-row">
+              <div className="wide btn-row" data-tour-target="plan-actions">
                 <button className="btn primary" onClick={run} disabled={isFetching}>{isFetching ? 'Computing…' : 'Run analysis'}</button>
                 {plan && <Link className="btn primary" to={navUrl}>⚡ Hybrid 3D Navigator</Link>}
                 {plan && <Link className="btn" to={sceneUrl}>▶ Simulate in 3D</Link>}
@@ -172,6 +189,7 @@ export function PlanPage() {
           {!plan && <Panel title="Results"><div className="panel-body"><Note>Run the analysis to see the mission calculation, terrain analysis, power budget, constraints, and descent profile.</Note></div></Panel>}
           {plan && (
             <>
+              <div data-tour-target="plan-results">
               <Panel
                 title={
                   <>
@@ -220,6 +238,7 @@ export function PlanPage() {
                   </div>
                 </div>
               </Panel>
+              </div>
 
               <Panel title={<>Terrain &amp; 360° Horizon Analysis <Badge tone={plan.site.terrain.grade?.startsWith('science') ? 'ok' : 'warn'}>{plan.site.terrain.grade?.startsWith('science') ? `LOLA GDR ${plan.site.terrain.resolutionM} m` : 'regional 16 px/deg'}</Badge></>}>
                 <div className="panel-body">

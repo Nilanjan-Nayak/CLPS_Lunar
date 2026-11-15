@@ -48,6 +48,7 @@ export function LocationMarker({ anchor, label, sublabel, color = '#8fd3ff', sel
   const showLabels = useWorldStore((s) => s.showLabels);
   // In animated flights, even selected landing-site labels must not obscure the trajectory.
   const inFlightScene = useSceneStore((s) => !!s.config?.panels.some((p) => p === 'journey' || p === 'simulation'));
+  const journeyScene = useSceneStore((s) => s.config?.intent.type === 'SHOW_JOURNEY' || s.config?.intent.type === 'PLAN_JOURNEY');
   const [hovered, setHovered] = useState(false);
   const vis = useMarkerVisibility(anchor.position, anchor.up, labelMaxDistanceKm, !!selected || hovered);
   useFrame(({ camera }) => {
@@ -76,7 +77,7 @@ export function LocationMarker({ anchor, label, sublabel, color = '#8fd3ff', sel
           <cylinderGeometry args={[0.02, 0.02, 2.8, 6]} />
           <meshBasicMaterial color={color} transparent opacity={0.6} depthWrite={false} />
         </mesh>
-        {showLabels && vis.label && (inFlightScene ? (
+        {showLabels && vis.label && !(journeyScene && inFlightScene) && (inFlightScene ? (
           <FlightMarker
             markerType="site" position={[0, 0.3, 0]} category="Lunar landing site" title={label}
             badge={approximate ? 'APPROXIMATE' : 'SURFACE'} color={color}

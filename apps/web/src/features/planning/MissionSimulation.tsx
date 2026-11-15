@@ -162,14 +162,20 @@ function syncEarthGeometry(g: Geometry, earthPos: readonly [number, number, numb
     bezier(g.L2, g.C, g.A, i / 96, g.transferArc[i]);
   }
 
+  // A communications link terminates at the Earth-facing limb, not at the
+  // Earth's centre. Ending at the centre makes the line pass through the
+  // globe and visually resembles an impossible launch path.
+  const earthLinkPoint = g.P.clone().sub(g.earthCenter).normalize()
+    .multiplyScalar(EARTH_RADIUS_KM + 40)
+    .add(g.earthCenter);
   if (g.relayDirect) {
     g.relayPoints[0].copy(g.P);
-    g.relayPoints[1].copy(g.earthCenter);
+    g.relayPoints[1].copy(earthLinkPoint);
   } else {
     const relay = g.P.clone().multiplyScalar((g.rSite + 3000) / g.rSite);
     g.relayPoints[0].copy(g.P);
     g.relayPoints[1].copy(relay);
-    g.relayPoints[2].copy(g.earthCenter);
+    g.relayPoints[2].copy(earthLinkPoint);
   }
 }
 

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -15,6 +15,54 @@ interface TourStep {
 }
 
 const TOUR_STEPS: TourStep[] = [
+  {
+    target: 'plan-intro',
+    targetPath: '/plan?latitude=-84.79&longitude=29.2&landerId=nova-c&surfaceDays=14&run=1&tour=1',
+    label: 'Mission plan · Start',
+    title: 'Build your own mission plan',
+    description: 'This planner turns your idea into a clear mission sequence. Follow the five cards from left to right; you do not need to understand every engineering number first.',
+    tip: 'Start with a known site, keep the suggested vehicle values, and change only the mission details you know.',
+  },
+  {
+    target: 'plan-site',
+    targetPath: '/plan?latitude=-84.79&longitude=29.2&landerId=nova-c&surfaceDays=14&run=1&tour=1',
+    label: 'Mission plan · 1 of 5',
+    title: 'Choose where you want to land',
+    description: 'Pick a catalogued site from the list, or enter your own latitude and longitude. The site controls the terrain, sunlight, horizon, and communication checks.',
+    tip: 'For a first plan, choose a preset site. Use coordinates only when you already have a target location.',
+  },
+  {
+    target: 'plan-vehicle',
+    targetPath: '/plan?latitude=-84.79&longitude=29.2&landerId=nova-c&surfaceDays=14&run=1&tour=1',
+    label: 'Mission plan · 2 of 5',
+    title: 'Choose the vehicle profile',
+    description: 'Select a lander class. The planner fills in realistic reference values for mass, thrust, propellant, and payload so a normal user can begin without manual engineering data.',
+    tip: 'Keep the preset values unless you are testing a specific vehicle configuration.',
+  },
+  {
+    target: 'plan-ops',
+    targetPath: '/plan?latitude=-84.79&longitude=29.2&landerId=nova-c&surfaceDays=14&run=1&tour=1',
+    label: 'Mission plan · 3 of 5',
+    title: 'Describe what the mission must do',
+    description: 'Set time in orbit, surface days, science data, and downlink speed. These values tell the engine how long the lander must survive and how much it must communicate.',
+    tip: 'Use a longer surface duration for more science, but expect higher power and communication requirements.',
+  },
+  {
+    target: 'plan-actions',
+    targetPath: '/plan?latitude=-84.79&longitude=29.2&landerId=nova-c&surfaceDays=14&run=1&tour=1',
+    label: 'Mission plan · 4 of 5',
+    title: 'Run the mission analysis',
+    description: 'Click Run analysis. The research engine checks terrain safety, 360° horizon, sunlight, power balance, launch timing, communications, and descent feasibility.',
+    tip: 'Change one group of inputs at a time, then run again so you can understand what changed.',
+  },
+  {
+    target: 'plan-results',
+    targetPath: '/plan?latitude=-84.79&longitude=29.2&landerId=nova-c&surfaceDays=14&run=1&tour=1',
+    label: 'Mission plan · 5 of 5',
+    title: 'Read the decision before executing',
+    description: 'Start with Viability, Propellant margin, landing time, constraints, and the phase rail. Green is a good starting signal; warnings show what needs to be changed or reviewed.',
+    tip: 'If the result is weak, return to the matching input step instead of guessing. Then run the analysis again.',
+  },
   {
     target: 'brand',
     label: 'Start here',
@@ -101,7 +149,8 @@ function getTargetRect(target: string): TargetRect | null {
 function getCalloutPosition(rect: TargetRect | null) {
   if (!rect) return { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
   const below = rect.top + rect.height + 18;
-  const top = below + 220 < window.innerHeight ? below : Math.max(18, rect.top - 220);
+  const preferred = below + 260 < window.innerHeight ? below : rect.top - 260;
+  const top = Math.min(Math.max(18, preferred), Math.max(18, window.innerHeight - 330));
   const left = Math.min(Math.max(18, rect.left + rect.width / 2 - 190), window.innerWidth - 398);
   return { top: `${top}px`, left: `${left}px` };
 }
@@ -130,7 +179,13 @@ export function GuidedTour({ open, onClose }: { open: boolean; onClose: () => vo
   }, [idx, open]);
 
   const refreshTarget = useCallback(() => {
-    setTargetRect(getTargetRect(cur.target));
+    const rect = getTargetRect(cur.target);
+    if (!rect && window.matchMedia('(max-width: 1275px)').matches && cur.target !== 'mobile-menu') {
+      window.dispatchEvent(new CustomEvent('selenara-tour-open-mobile-nav'));
+      window.setTimeout(() => setTargetRect(getTargetRect(cur.target)), 120);
+      return;
+    }
+    setTargetRect(rect);
   }, [cur.target]);
 
   useEffect(() => {
@@ -225,19 +280,17 @@ export function GuidedTour({ open, onClose }: { open: boolean; onClose: () => vo
 export function useGuidedTourState() {
   const { search } = useLocation();
   const [open, setOpen] = useState(false);
+  const previousTourParam = useRef<string | null>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(search);
-    if (params.get('tour') === '1') {
+    const tourParam = params.get('tour');
+    if (tourParam === '1' && previousTourParam.current !== '1') {
       setOpen(true);
-      return;
+    } else if (tourParam === '0') {
+      setOpen(false);
     }
-    if (params.get('tour') === '0' || params.get('quality') === 'low' || params.get('run') === '1') return;
-    try {
-      if (localStorage.getItem(STORAGE_KEY) !== '1') setOpen(true);
-    } catch {
-      setOpen(true);
-    }
+    previousTourParam.current = tourParam;
   }, [search]);
 
   const close = () => {

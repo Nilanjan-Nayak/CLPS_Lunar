@@ -10,7 +10,7 @@ import { GuidedTour, useGuidedTourState } from './GuidedTour';
 /**
  * TopBar — clean, high-tech aerospace mission-control navigation bar:
  * 1. Brand identity + SELENARA X tag
- * 2. [3D WORLD: Space · Moon · History] segmented viewport capsule
+ * 2. [3D Navigation] interactive Space/Moon view switcher + separate [History] archive
  * 3. [⚡ 3D Navigator] primary hybrid workbench CTA
  * 4. [Mission Studio ▾] 4-step engineering intelligence dropdown (01 Plan → 02 MRI → 03 Pareto → 04 Report)
  * 5. [Missions] + [Atlas & Data ▾] + [✦ Copilot]
@@ -23,7 +23,7 @@ export function TopBar({ compact = false }: { compact?: boolean }) {
   const clockMode = useClockStore((s) => s.mode);
   const epochMs = useClockStore((s) => s.epochMs);
   const { pathname, search } = useLocation();
-  const [openMenu, setOpenMenu] = useState<'studio' | 'data' | null>(null);
+  const [openMenu, setOpenMenu] = useState<'views' | 'studio' | 'data' | null>(null);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
   const tour = useGuidedTourState();
@@ -58,7 +58,15 @@ export function TopBar({ compact = false }: { compact?: boolean }) {
     return () => window.removeEventListener('keydown', esc);
   }, [mobileNavOpen]);
 
+  useEffect(() => {
+    const openForTour = () => setMobileNavOpen(true);
+    window.addEventListener('selenara-tour-open-mobile-nav', openForTour);
+    return () => window.removeEventListener('selenara-tour-open-mobile-nav', openForTour);
+  }, []);
+
   const explore = NAV_LINKS.filter((l) => l.group === 'explore');
+  const viewLinks = explore.filter((l) => l.to !== '/moon?history=1');
+  const historyItem = explore.find((l) => l.to === '/moon?history=1')!;
   const navigatorItem = NAV_LINKS.find((l) => l.group === 'navigator')!;
   const studio = NAV_LINKS.filter((l) => l.group === 'studio');
   const missionsItem = NAV_LINKS.find((l) => l.to === '/missions')!;
@@ -103,6 +111,7 @@ export function TopBar({ compact = false }: { compact?: boolean }) {
       <button
         type="button"
         className="nav-mobile-toggle"
+        data-tour-target="mobile-menu"
         aria-label={mobileNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
         aria-expanded={mobileNavOpen}
         aria-controls="primary-nav"
@@ -112,23 +121,49 @@ export function TopBar({ compact = false }: { compact?: boolean }) {
       </button>
 
       <nav id="primary-nav" className={`nav${mobileNavOpen ? ' mobile-open' : ''}`} aria-label="Primary Mission Navigation" ref={navRef}>
-        {/* 1. Clearly identified 3D viewport modes immediately after the brand. */}
-        <div className="nav-capsule" role="group" aria-label="3D views" data-tour-target="views">
-          <span className="nav-capsule-tag" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="m12 2.5 8.2 4.7v9.5L12 21.5l-8.2-4.8V7.2L12 2.5Z" stroke="currentColor" strokeWidth="1.4"/><path d="M3.9 7.4 12 12l8.1-4.6M12 12v9.2" stroke="currentColor" strokeWidth="1.2"/></svg>
-            <span><b>3D</b><small>VIEWS</small></span>
-          </span>
-          {explore.map((l) => (
-            <NavLink
-              key={l.to}
-              to={l.to}
-              title={l.hint}
-              className={() => `nav-capsule-link nav-view-${l.label.toLowerCase()}${isActive(l.to) ? ' active' : ''}`}
-            >
-              <span className="nav-view-dot" aria-hidden="true" />{l.label}
-            </NavLink>
-          ))}
+        {/* 1. Interactive 3D viewport switcher; History is intentionally a separate archive action. */}
+        <div className={`nav-menu nav-views-menu${openMenu === 'views' ? ' open' : ''}`} data-tour-target="views">
+          <button
+            type="button"
+            className={`nav-views-trigger${viewLinks.some((l) => isActive(l.to)) ? ' active' : ''}`}
+            aria-haspopup="menu"
+            aria-expanded={openMenu === 'views'}
+            onClick={() => setOpenMenu((m) => (m === 'views' ? null : 'views'))}
+            title="Switch between the live 3D space and lunar surface views"
+          >
+            <span className="nav-views-icon" aria-hidden="true">◇</span>
+            <span className="nav-views-copy"><b>3D Navigation</b><small>SPACE · MOON</small></span>
+            <span className="nav-views-current mono">{viewLinks.find((l) => isActive(l.to))?.label ?? 'Explore'}</span>
+            <span className="chev">▾</span>
+          </button>
+          {openMenu === 'views' && (
+            <div className="nav-dropdown nav-dropdown-views" role="menu">
+              <div className="nav-dropdown-head">
+                <span className="mono">LIVE 3D NAVIGATION</span>
+                <small>Choose the view that matches your next task</small>
+              </div>
+              <div className="nav-view-cards">
+                {viewLinks.map((l) => (
+                  <NavLink key={l.to} to={l.to} role="menuitem" className={() => `nav-view-card${isActive(l.to) ? ' active' : ''}`}>
+                    <span className={`nav-view-card-icon nav-view-card-${l.label.toLowerCase()}`} aria-hidden="true">{l.label === 'Space' ? '⊕' : '☾'}</span>
+                    <span><strong>{l.label}</strong><small>{l.label === 'Space' ? 'Earth, Moon & mission routes' : 'Surface, sites & LOLA terrain'}</small></span>
+                    <span className="mono nav-view-card-arrow">→</span>
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
+        <NavLink
+          to={historyItem.to}
+          data-tour-target="history"
+          title={historyItem.hint}
+          className={() => `nav-history-btn${isActive(historyItem.to) ? ' active' : ''}`}
+        >
+          <span className="nav-history-icon" aria-hidden="true">◷</span>
+          <span><b>History</b><small>47 MISSIONS</small></span>
+          <span className="nav-history-arrow" aria-hidden="true">↗</span>
+        </NavLink>
 
         {/* 2. Flagship Hybrid 3D Navigator */}
         <NavLink

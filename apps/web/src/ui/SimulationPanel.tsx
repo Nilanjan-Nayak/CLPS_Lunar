@@ -60,6 +60,13 @@ export function SimulationPanel() {
   const om = plan.outcomeModel;
   const eph = ephemerisAt(plan, t);
   const utcNow = plan.ephemeris ? new Date(new Date(plan.ephemeris.calendar.launchUtc).getTime() + t * 1000).toISOString().slice(5, 16).replace('T', ' ') + 'Z' : null;
+  const playFromPhase = (phaseId: PlanPhase['id']) => {
+    const phase = phases.find((item) => item.id === phaseId);
+    if (!phase) return;
+    setFollow(true);
+    setT(phase.startS);
+    play();
+  };
   return (
     <>
       <Panel title={<>Mission simulation <Badge tone="warn">MODEL</Badge></>} subtitle={<span title={utcNow ? `${utcNow} (ephemeris calendar)` : undefined}><b>{formatMissionTime(t)}</b>{utcNow ? ` · ${utcNow}` : ''}</span>}>
@@ -73,6 +80,11 @@ export function SimulationPanel() {
               ))}
             </div>
             <button className={`chip${follow ? ' on' : ''}`} onClick={() => setFollow(!follow)} title="Chase camera follows the simulated spacecraft">follow cam</button>
+          </div>
+          <div className="sim-quick-actions" aria-label="Quick 3D playback">
+            <span className="dim">Quick view:</span>
+            <button className="btn small" onClick={() => playFromPhase('launch')}>🚀 Watch launch</button>
+            <button className="btn small" onClick={() => playFromPhase('landing')}>↓ Watch landing</button>
           </div>
           <div className="flight-hover-hint"><b aria-hidden="true">◎</b>{showLabels ? 'Hover or tap a marker for details; move away to hide.' : 'Enable Labels in Scene Config to inspect markers.'}</div>
           {scrub && (
