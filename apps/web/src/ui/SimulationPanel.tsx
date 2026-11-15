@@ -5,6 +5,7 @@ import { DescentChart } from '@/features/planning/DescentChart';
 import { ephemerisAt } from '@/features/planning/MissionSimulation';
 import { PHASE_SCREEN_SECONDS, formatMissionTime, useSimStore } from '@/state/simStore';
 import { useSceneStore } from '@/state/sceneStore';
+import { useWorldStore } from '@/state/worldStore';
 import { OUTCOME_COLOR, OUTCOME_GLYPH } from '@/features/history/HistoricLanding';
 import type { PlanPhase } from '@/types/domain';
 
@@ -48,9 +49,10 @@ export function SimulationPanel() {
   const follow = useSimStore((s) => s.follow);
   const readout = useSimStore((s) => s.readout);
   const finished = useSimStore((s) => s.finished);
+  const showLabels = useWorldStore((s) => s.showLabels);
   const scrub = useScrub(plan?.timeline.phases);
   if (!active) return null;
-  if (!plan) return <Panel title="Mission simulation"><div className="panel-body"><Note>Computing the plan in the research engine…</Note></div></Panel>;
+  if (!plan) return <Panel title="Mission simulation"><Note>Computing the plan in the research engine…</Note></Panel>;
   const { play, pause, restart, setT, setSpeed, setFollow } = useSimStore.getState();
   const phases = plan.timeline.phases;
   const editQuery = new URLSearchParams(Object.entries(plan.input).filter(([, v]) => typeof v !== 'object' && v != null).map(([k, v]) => [k, String(v)]));
@@ -60,16 +62,19 @@ export function SimulationPanel() {
   const utcNow = plan.ephemeris ? new Date(new Date(plan.ephemeris.calendar.launchUtc).getTime() + t * 1000).toISOString().slice(5, 16).replace('T', ' ') + 'Z' : null;
   return (
     <>
-      <Panel title={<>Mission simulation <Badge tone="warn">MODEL</Badge></>} actions={<span className="mono" title={utcNow ? `${utcNow} (ephemeris calendar)` : undefined}>{formatMissionTime(t)}{utcNow ? <span className="dim"> · {utcNow}</span> : null}</span>}>
-        <div className="panel-body">
+      <Panel title={<>Mission simulation <Badge tone="warn">MODEL</Badge></>} subtitle={<span title={utcNow ? `${utcNow} (ephemeris calendar)` : undefined}><b>{formatMissionTime(t)}</b>{utcNow ? ` · ${utcNow}` : ''}</span>}>
+        <div className="panel-inner">
           <div className="sim-controls">
             <button className="btn primary" onClick={() => (playing ? pause() : play())}>{playing ? '❚❚ Pause' : '▶ Play'}</button>
-            <button className="btn" onClick={restart}>↺ Restart</button>
-            {[0.5, 1, 2, 4].map((x) => (
-              <button key={x} className={`chip${speed === x ? ' on' : ''}`} onClick={() => setSpeed(x)}>{x}×</button>
-            ))}
+            <button className="btn icon" onClick={restart} title="restart">↺</button>
+            <div className="seg" role="group" aria-label="playback speed">
+              {[0.5, 1, 2, 4].map((x) => (
+                <button key={x} className={speed === x ? 'on' : ''} onClick={() => setSpeed(x)}>{x}×</button>
+              ))}
+            </div>
             <button className={`chip${follow ? ' on' : ''}`} onClick={() => setFollow(!follow)} title="Chase camera follows the simulated spacecraft">follow cam</button>
           </div>
+          <div className="flight-hover-hint"><b aria-hidden="true">◎</b>{showLabels ? 'Hover or tap a marker for details; move away to hide.' : 'Enable Labels in Scene Config to inspect markers.'}</div>
           {scrub && (
             <input className="sim-scrub" type="range" min={0} max={1000} value={Math.round(scrub.fromT(t))} onChange={(e) => { pause(); setT(scrub.toT(Number(e.target.value))); }} />
           )}
@@ -106,7 +111,7 @@ export function SimulationPanel() {
         </div>
       </Panel>
       <Panel title="Mission calculation">
-        <div className="panel-body">
+        <div className="panel-inner">
           <KV k="Total mission time" v={plan.summaryCard.totalMissionTime} />
           <KV k="Launch vehicle" v={plan.summaryCard.launchVehicle} />
           <KV k="Payload mass" v={plan.summaryCard.payloadMass} />
@@ -116,7 +121,10 @@ export function SimulationPanel() {
           <KV k="Propellant" v={`${Math.round(plan.budget.mass.propellantUsedKg)} kg used · margin ${Math.round(plan.budget.mass.propellantMarginKg)} kg`} />
           <KV k="Powered descent" v={`${(plan.descent.durationS / 60).toFixed(1)} min from ${plan.descent.initial.altitudeM / 1000} km · touchdown ${plan.descent.touchdownSpeedMps} m/s`} />
           <KV k="Terrain (LOLA)" v={`${plan.site.terrain.elevationM.toFixed(0)} m · slope ${plan.site.terrain.slopeDeg}° · σ ${plan.site.terrain.roughnessM} m · Sun ≤ ${plan.site.terrain.maxSunElevationDeg}°`} />
-          <KV k="Outcome model" v={<span>p(nominal) {(om.pNominal * 100).toFixed(0)} % <span className="dim">· exploratory, n={om.n}, LOO acc {(om.looCv.accuracy * 100).toFixed(0)} %</span></span>} />
+          {plan.viabilityScore != null && (
+            <KV k="Viability & Power" v={<span><b>{plan.viabilityScore.toFixed(0)}/100</b>{plan.powerBudget ? ` · min SOC ${plan.powerBudget.summary.minSocPct.toFixed(0)}% · Golden ${plan.goldenWindows?.totalGoldenDays.toFixed(1) ?? '—'}d` : ''}</span>} />
+          )}
+          <KV k="Historical ML (exp.)" v={<span>{(om.pNominal * 100).toFixed(0)} % <span className="dim">· exploratory comparison, n={om.n}, LOO CV {(om.looCv.accuracy * 100).toFixed(0)} %</span></span>} />
           <div className="neighbours">
             {om.neighbours.map((n) => (
               <span key={n.id} className="chip" style={{ borderColor: OUTCOME_COLOR[n.outcome] }} title={`${n.year} · ${n.outcome}${n.failureCategory ? ` · ${n.failureCategory}` : ''} · slope ${n.terrain.slopeDeg}°`}>
@@ -126,9 +134,9 @@ export function SimulationPanel() {
           </div>
           {plan.flags.length > 0 && <ul className="flags">{plan.flags.map((f) => <li key={f}>{f}</li>)}</ul>}
           <div className="btn-row">
+            <Link className="btn primary" to={`/navigator?${editQuery.toString()}`}>⚡ Hybrid Navigator</Link>
             <Link className="btn" to={`/plan?${editQuery.toString()}`}>Edit plan</Link>
-            <Link className="btn" to={`/plan/journey?${editQuery.toString()}`} title="Earth launch → Moon route for this plan (research engine, precedent profile)">🚀 Journey from Earth</Link>
-            <Link className="btn" to="/moon?history=1">Landing history</Link>
+            <Link className="btn" to={`/plan/journey?${editQuery.toString()}`} title="Earth launch → Moon route for this plan (research engine, precedent profile)">↗ Journey</Link>
           </div>
           <Note>{plan.provenance.note}</Note>
         </div>

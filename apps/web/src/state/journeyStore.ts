@@ -63,7 +63,11 @@ export const useJourneyStore = create<JourneyStore>((set) => ({
   play: () => set((s) => ({ playing: true, t: s.finished ? 0 : s.t, finished: false })),
   pause: () => set({ playing: false }),
   restart: () => set({ t: 0, playing: true, finished: false }),
-  setT: (t) => set({ t, finished: false }),
+  setT: (t) => set((s) => {
+    const end = s.journey ? journeyEndS(s.journey) : Infinity;
+    const tt = Math.max(0, Math.min(end, t));
+    return { t: tt, finished: tt >= end };
+  }),
   setSpeed: (speed) => set({ speed }),
   setView: (view) => set({ view }),
   setReadout: (readout) => set({ readout }),

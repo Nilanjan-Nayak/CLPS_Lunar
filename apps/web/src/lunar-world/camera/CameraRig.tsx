@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { Vector3 } from 'three';
+import { Vector3, type PerspectiveCamera } from 'three';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { MOON_RADIUS_KM } from '@/constants/frames';
 import { liveEphemeris } from '@/solar-system/ephemerisDriver';
@@ -10,10 +10,13 @@ import { useWorldStore } from '@/state/worldStore';
 import { simCamera } from '@/state/simStore';
 import { vec3ToLatLon } from '@/utils/geo';
 import { CameraDirector } from './CameraDirector';
-import { poseFor } from './CameraPoses';
+import { focusSurfacePoint, poseFor } from './CameraPoses';
+import { applySurfaceNav } from './SurfaceNav';
+import { elevationResolver } from '@/lunar-world/terrain/ElevationResolver';
 
 const EARTH = new Vector3();
 const EARTH_STATES = new Set(['EARTH', 'EARTH_ORBIT']);
+const SURFACE_STATES = new Set(['LUNAR_SURFACE', 'LOCATION_FOCUS', 'MISSION_FOCUS']);
 
 /**
  * CameraRig — owns the camera: executes flights from the cameraStore through the CameraDirector,
@@ -63,6 +66,16 @@ export function CameraRig() {
       if (controls.current) controls.current.enabled = false;
       camera.up.copy(simCamera.up);
       camera.position.copy(simCamera.position);
+      // chase cameras are planned above the datum — never let them dip into real terrain (LOLA floor + 20 m)
+      const r = camera.position.length();
+      if (r - MOON_RADIUS_KM < 60) {
+        const ll = vec3ToLatLon(camera.position);
+        const e = elevationResolver.elevationKm(ll.latitude, ll.longitude);
+        if (e) {
+          const floor = MOON_RADIUS_KM + e.elevationKm * exaggeration + 0.02;
+          if (r < floor) camera.position.setLength(floor);
+        }
+      }
       camera.lookAt(simCamera.target);
       simWasActive.current = true;
       if (store.flying) store.setFlying(false);
@@ -84,6 +97,17 @@ export function CameraRig() {
         if (fin && controls.current) {
           camera.up.copy(fin.up);
           controls.current.target.copy(fin.target);
+          // surface poses were planned before the terrain around the focus had streamed in: re-anchor the target on
+          // the DEM surface now (camera moves by the same offset, so the framing is unchanged but height is real)
+          const st = useCameraStore.getState();
+          if (SURFACE_STATES.has(st.state) && st.focus) {
+            const sp = focusSurfacePoint(st.focus, exaggeration);
+            const delta = sp.point.sub(fin.target);
+            if (delta.lengthSq() > 1e-8) {
+              camera.position.add(delta);
+              controls.current.target.add(delta);
+            }
+          }
           // the pose was planned for the Earth position at flight start — carry over any movement since then
           // (re-read the store: setState(legDone) above may have just switched the state in this same frame)
           if (EARTH_STATES.has(useCameraStore.getState().state) && earthAtFlightStart.current) {
@@ -111,13 +135,28 @@ export function CameraRig() {
     } else {
       lastEarth.current = null;
     }
+    // surface navigation regime (level horizon, terrain floor, target on the ground) — only while the user drives
+    const idle = !director.active && !simCamera.active && !!controls.current?.enabled;
+    const nav = applySurfaceNav(camera as PerspectiveCamera, controls.current, exaggeration, idle);
     const now = performance.now();
     if (now - lastTelemetry.current > 100) {
       lastTelemetry.current = now;
       const d = camera.position.length();
       const { latitude, longitude } = vec3ToLatLon(camera.position);
-      store.setTelemetry({ distanceToMoonKm: d, altitudeKm: d - MOON_RADIUS_KM, subLat: latitude, subLon: longitude, distanceToEarthKm: camera.position.distanceTo(EARTH.set(...liveEphemeris.geometry.earthPosScene)) });
+      const targetDistanceKm = controls.current ? camera.position.distanceTo(controls.current.target) : 0;
+      const cam = camera as PerspectiveCamera;
+      const viewWidthKm = 2 * targetDistanceKm * Math.tan((cam.fov * Math.PI) / 360) * (cam.aspect || 1.6);
+      store.setTelemetry({
+        distanceToMoonKm: d, altitudeKm: d - MOON_RADIUS_KM, aglKm: nav.aglKm, groundKm: nav.groundKm, subLat: latitude, subLon: longitude,
+        distanceToEarthKm: camera.position.distanceTo(EARTH.set(...liveEphemeris.geometry.earthPosScene)),
+        headingDeg: nav.headingDeg, pitchDeg: nav.pitchDeg, targetDistanceKm, viewWidthKm, surfaceMode: nav.weight > 0.5,
+      });
     }
+  });
+
+  // e2e / devtools handle
+  useEffect(() => {
+    (window as unknown as { __clpsControls?: unknown }).__clpsControls = controls.current;
   });
 
   return (
@@ -132,6 +171,7 @@ export function CameraRig() {
       rotateSpeed={0.6}
       panSpeed={0.5}
       screenSpacePanning={false}
+      zoomToCursor
     />
   );
 }

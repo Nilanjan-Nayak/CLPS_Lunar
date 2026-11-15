@@ -83,12 +83,10 @@ def moon_state(dt: datetime):
     return r, _mul(_sub(r2, r1), 1.0 / 120.0)
 
 def pad_icrf(lat_deg: float, lon_deg: float, alt_m: float, dt: datetime):
-    """Geodetic pad → geocentric ICRF position (km) at a UTC instant (WGS84 ellipsoid, GMST rotation, precession)."""
+    """Launch pad → geocentric ICRF position (km) at a UTC instant on the 6,371.0 km scene Earth sphere."""
     la, lo = math.radians(lat_deg), math.radians(lon_deg)
-    e2 = F_E * (2 - F_E)
-    N = R_E / math.sqrt(1 - e2 * math.sin(la) ** 2)
-    h = alt_m / 1000.0
-    ecef = ((N + h) * math.cos(la) * math.cos(lo), (N + h) * math.cos(la) * math.sin(lo), (N * (1 - e2) + h) * math.sin(la))
+    r = 6371.0 + alt_m / 1000.0
+    ecef = (r * math.cos(la) * math.cos(lo), r * math.cos(la) * math.sin(lo), r * math.sin(la))
     return ephem.ecef_to_icrf(ecef, _jd(dt))
 
 def site_icrf_dir(lat_deg: float, lon_deg: float, dt: datetime):
@@ -541,14 +539,21 @@ class _Builder:
                  periluneKm=round(h_pdi, 1), apoluneKm=round(a_orb - R_M, 1), revolutions=n_rev + 0.5, deltaVMps=self.stats["doiDeltaVMps"])
         self.event("doi", "burn", self.at(t_doi_s), f"Descent orbit insertion (Δv {self.stats['doiDeltaVMps']:.0f} m/s, modeled)", "modeled" if t_doi_pub is None else "published (time re-phased to the modeled orbit)")
         # --- powered descent along the orbit direction, ending at the site ------------------------------------------
+        # The descent model works in altitude above the 1,737.4 km datum; the real surface at the site sits at the LOLA
+        # elevation (e.g. −1.75 km at Reiner Gamma, +2.6 km at Malapert), so the final kilometres are blended onto the
+        # terrain: touchdown is on the DEM surface, the PDI point keeps its datum altitude.
+        site_elev_km = _site_elevation_km(site)
         prof = desc["profile"]
         samples = []
         for (tr, dr_m, alt_m) in prof:
             tt = t_pdi_s + tr * (t_land_s - t_pdi_s) / D_desc
-            pos = _mul(_rot(s_hat, n, dr_m / 1000.0 / R_M), R_M + alt_m / 1000.0)
+            w = max(0.0, min(1.0, tr / D_desc)) ** 2
+            pos = _mul(_rot(s_hat, n, dr_m / 1000.0 / R_M), R_M + alt_m / 1000.0 + site_elev_km * w)
             samples.append((tt, *body(pos, tt)))
         la, lo = math.radians(site["latitude"]), math.radians(site["longitude"])
-        samples[-1] = (t_land_s, R_M * math.cos(la) * math.cos(lo), R_M * math.cos(la) * math.sin(lo), R_M * math.sin(la))
+        r_td = R_M + site_elev_km
+        samples[-1] = (t_land_s, r_td * math.cos(la) * math.cos(lo), r_td * math.cos(la) * math.sin(lo), r_td * math.sin(la))
+        self.stats["siteElevationKm"] = round(site_elev_km, 3)
         self.seg("descent", "descent", "Powered descent & landing", "moon-fixed", samples,
                  desc["note"], durationMin=round(D_desc / 60, 1), downrangeKm=round(X_km, 1), pdiAltitudeKm=round(h_pdi, 1), deltaVMps=desc.get("deltaVMps"))
         self.event("pdi", "burn", self.at(t_pdi_s), f"Powered descent initiation ({D_desc/60:.0f} min, {X_km:.0f} km downrange)", "published" if self.spec.get("pdiUtc") else "modeled (landing − descent duration)")
@@ -772,6 +777,16 @@ class _Builder:
                 *sp.get("notes", []), *self.notes],
             "sources": sp.get("sourceIds", []),
         }
+
+
+def _site_elevation_km(site: dict) -> float:
+    """Surface elevation at the landing site (km above the datum): LOLA DEM, else the published value, else 0."""
+    try:
+        from . import dem
+        return float(dem.elevation_at(float(site["latitude"]), float(site["longitude"]))) / 1000.0
+    except Exception:
+        pub = site.get("elevationM") or site.get("publishedElevationM")
+        return float(pub) / 1000.0 if pub is not None else 0.0
 
 
 def build(spec: dict) -> dict:

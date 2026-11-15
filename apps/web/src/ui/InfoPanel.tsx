@@ -92,7 +92,7 @@ function MissionInfo({ id }: { id: string }) {
         <LinkButton to={intentToRoute({ type: 'SHOW_MISSION', missionId: id, detail: 'lander' })}>Lander</LinkButton>
         <LinkButton to={intentToRoute({ type: 'SHOW_MISSION', missionId: id, detail: 'payloads' })}>Payloads</LinkButton>
         <LinkButton to={intentToRoute({ type: 'SHOW_MISSION', missionId: id, detail: 'complete' })} primary>Complete scene</LinkButton>
-        <LinkButton to={intentToRoute({ type: 'SHOW_JOURNEY', missionId: id })}>🚀 Launch → Moon journey</LinkButton>
+        <LinkButton to={intentToRoute({ type: 'SHOW_JOURNEY', missionId: id })}>↗ Launch → Moon journey</LinkButton>
         <LinkButton to={`/missions/${id}`}>Data page</LinkButton>
       </div>
     </Panel>

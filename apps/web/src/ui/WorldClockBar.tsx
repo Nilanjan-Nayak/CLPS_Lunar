@@ -6,10 +6,13 @@ import { useEphemerisStore } from '@/solar-system/ephemerisDriver';
 import { nextSunriseAt, sunElevationAt } from '@/solar-system/ephemeris';
 
 /**
- * WorldClockBar — the time base of the environment: live UTC by default, a scene-set epoch (landing time), mission time
- * during playback, or a user-pinned date/rate. Shows what the Sun/Earth/sky geometry currently means for the focus site.
+ * World clock — the time base of the environment: live UTC by default, a scene-set epoch (landing time), mission time
+ * during playback, or a user-pinned date/rate. Split in two dock clusters:
+ *   • <ClockControls/>  mode · editable UTC · rate menu · "now"
+ *   • <EnvReadout/>     what the Sun/Earth/sky geometry currently means (sub-solar point, Earth distance, phase, focus-site Sun)
+ * <WorldClockBar/> keeps the single-row form for places that still want it.
  */
-export function WorldClockBar() {
+export function ClockControls() {
   const epochMs = useClockStore((s) => s.epochMs);
   const mode = useClockStore((s) => s.mode);
   const rate = useClockStore((s) => s.rate);
@@ -17,13 +20,42 @@ export function WorldClockBar() {
   const setLive = useClockStore((s) => s.setLive);
   const setFixed = useClockStore((s) => s.setFixed);
   const setRate = useClockStore((s) => s.setRate);
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState('');
+  const commit = () => {
+    const ms = Date.parse(draft.endsWith('Z') || draft.includes('+') ? draft : draft + 'Z');
+    if (!isNaN(ms)) setFixed(ms, { rate: 0, source: 'you' });
+    setEditing(false);
+  };
+  const rateValue = mode === 'live' ? 1 : mode === 'mission' ? -1 : rate;
+  return (
+    <div className={`clockbar mono ${mode}`} data-testid="world-clock">
+      <span className={`clock-mode ${mode}`} title={mode === 'mission' ? `${source} — the clock follows the mission playback` : source}>{mode === 'live' ? '● LIVE' : mode === 'mission' ? '▶ MISSION' : rate ? '▶ RUNNING' : '❚❚ FIXED'}</span>
+      {editing ? (
+        <input autoFocus className="clock-input" value={draft} onChange={(e) => setDraft(e.target.value)} onBlur={commit} onKeyDown={(e) => { if (e.key === 'Enter') commit(); if (e.key === 'Escape') setEditing(false); }} placeholder="YYYY-MM-DDTHH:MM:SSZ" />
+      ) : (
+        <button className="clock-time" title={`${source} · click to set a UTC date/time`} onClick={() => { setDraft(new Date(epochMs).toISOString().slice(0, 19) + 'Z'); setEditing(true); }}>{formatUtc(epochMs)}</button>
+      )}
+      {mode !== 'mission' && (
+        <label className="clock-rate" title="run the world clock at this rate (leaves LIVE)">
+          <select aria-label="clock rate" value={rateValue} onChange={(e) => setRate(Number(e.target.value))}>
+            {CLOCK_RATES.map((r) => <option key={r.rate} value={r.rate}>{r.label}</option>)}
+          </select>
+        </label>
+      )}
+      {mode === 'fixed' && <button className="chip" onClick={setLive} title="back to the real current time">now</button>}
+    </div>
+  );
+}
+
+export function EnvReadout() {
+  const epochMs = useClockStore((s) => s.epochMs);
+  const setFixed = useClockStore((s) => s.setFixed);
   const g = useEphemerisStore((s) => s.geometry);
   const focus = useSceneStore((s) => s.config?.focus ?? null);
   const lightingMode = useWorldStore((s) => s.lightingMode);
   const nightAid = useWorldStore((s) => s.nightAid);
   const setWorld = useWorldStore((s) => s.set);
-  const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState('');
 
   // Sun at the focus site (spherical Moon) — recomputed at the HUD rate only
   const site = useMemo(() => {
@@ -36,35 +68,12 @@ export function WorldClockBar() {
 
   const phase = g.moonIlluminatedFraction;
   const phaseName = phase < 0.03 ? 'new' : phase < 0.47 ? 'crescent/quarter' : phase < 0.53 ? 'quarter' : phase < 0.97 ? 'gibbous' : 'full';
-
-  const commit = () => {
-    const ms = Date.parse(draft.endsWith('Z') || draft.includes('+') ? draft : draft + 'Z');
-    if (!isNaN(ms)) setFixed(ms, { rate: 0, source: 'you' });
-    setEditing(false);
-  };
-
   return (
-    <div className={`clockbar mono ${mode}`} data-testid="world-clock">
-      <span className={`clock-mode ${mode}`} title={source}>{mode === 'live' ? '● LIVE' : mode === 'mission' ? '▶ MISSION TIME' : rate ? `▶ ${rateLabel(rate)}` : '❚❚ FIXED'}</span>
-      {editing ? (
-        <input autoFocus className="clock-input" value={draft} onChange={(e) => setDraft(e.target.value)} onBlur={commit} onKeyDown={(e) => { if (e.key === 'Enter') commit(); if (e.key === 'Escape') setEditing(false); }} placeholder="YYYY-MM-DDTHH:MM:SSZ" />
-      ) : (
-        <button className="clock-time" title={`${source} · click to set a UTC date/time`} onClick={() => { setDraft(new Date(epochMs).toISOString().slice(0, 19) + 'Z'); setEditing(true); }}>{formatUtc(epochMs)}</button>
-      )}
-      <span className="clock-rates">
-        {CLOCK_RATES.map((r) => (
-          <button key={r.rate} className={`chip ${mode !== 'live' && mode !== 'mission' && rate === r.rate ? 'on' : ''}`} disabled={mode === 'mission'} title={`run the world clock at ${r.label}`} onClick={() => setRate(r.rate)}>{r.label}</button>
-        ))}
-        <button className={`chip ${mode === 'live' ? 'on' : ''}`} onClick={setLive} title="back to the real current time">now</button>
-      </span>
-      <span className="sep" />
-      <span className="dim" title="sub-solar point on the Moon (IAU frame) · Earth–Moon distance · Moon phase seen from Earth">
-        ☀ {g.subSolarLat.toFixed(1)}°, {g.subSolarLon.toFixed(1)}° · ⊕ {Math.round(g.earthDistanceKm).toLocaleString('en-US')} km · phase {Math.round(phase * 100)}% {phaseName}
-      </span>
+    <div className="envbar mono" title="environment for the world-clock time">
       {site && (
-        <span className={site.night ? 'clock-night' : 'clock-day'} title="Sun elevation at the scene focus (spherical Moon, no terrain horizon)">
-          {site.night ? '☾ lunar night at focus' : '☀ Sun'} {site.elev.toFixed(1)}°{site.night && sunrise ? ` · sunrise ${formatUtc(sunrise, false)}` : ''}
-          {site.night && sunrise && <button className="chip" onClick={() => setFixed(sunrise + 6 * 3_600_000, { rate: 0, source: 'sunrise + 6 h at focus' })} title="jump to 6 h after local sunrise">jump</button>}
+        <span className={`env-item ${site.night ? 'clock-night' : 'clock-day'}`} title="Sun elevation at the scene focus (spherical Moon, no terrain horizon)">
+          {site.night ? '☾ focus night' : '☀ focus Sun'} <b>{site.elev.toFixed(1)}°</b>
+          {site.night && sunrise && <> · rise {formatUtc(sunrise, false).slice(5)} <button className="chip" onClick={() => setFixed(sunrise + 6 * 3_600_000, { rate: 0, source: 'sunrise + 6 h at focus' })} title="jump to 6 h after local sunrise">jump</button></>}
           {site.night && lightingMode === 'ephemeris' && (
             <label className="chip" title="boosted earthshine so the dark side stays readable (declared visualization aid)">
               <input type="checkbox" checked={nightAid} onChange={(e) => setWorld({ nightAid: e.target.checked })} /> night aid
@@ -72,12 +81,18 @@ export function WorldClockBar() {
           )}
         </span>
       )}
-      <span className="grow" />
-      <span className="dim">{lightingMode === 'ephemeris' ? 'Sun · Earth · sky from ephemeris (Meeus/IAU 2009, ±0.05° vs JPL)' : lightingMode === 'auto' ? 'visualization lighting (not the real Sun)' : 'manual lighting'}</span>
+      <span className="env-item" title="Earth–Moon distance">⊕ <b>{Math.round(g.earthDistanceKm).toLocaleString('en-US')} km</b></span>
+      {!site && <span className="env-item" title="sub-solar point on the Moon (IAU frame)">☀ <b>{g.subSolarLat.toFixed(1)}°, {g.subSolarLon.toFixed(1)}°</b></span>}
+      {!site && <span className="env-item low" title="Moon phase seen from Earth">☾ <b>{Math.round(phase * 100)}%</b> {phaseName}</span>}
     </div>
   );
 }
 
-function rateLabel(rate: number) {
-  return CLOCK_RATES.find((r) => r.rate === rate)?.label ?? `${rate}×`;
+export function WorldClockBar() {
+  return (
+    <div className="clock-row">
+      <ClockControls />
+      <EnvReadout />
+    </div>
+  );
 }

@@ -15,15 +15,14 @@ export function MissionCard({ m }: { m: MissionSummary }) {
       </header>
       <div className="small dim">{m.provider} · {m.landerName} · {m.taskOrder}</div>
       <p>{m.statusDetail}</p>
-      <div className="mono small">
-        launch {fmtDate(m.launch.date, m.launch.nominal ?? 'TBD')} · landing {fmtDate(m.landing.date, m.landing.attempted ? '—' : 'n/a')}
-      </div>
-      <div className="mono small">
-        {site ? (site.latitude != null ? `${site.name} · ${formatLatLon(site.latitude, site.longitude!)} (${site.precision})` : `${site.name} · coordinates not published`) : 'no site'}
-      </div>
+      <dl className="meta-grid">
+        <dt>Launch</dt><dd>{fmtDate(m.launch.date, m.launch.nominal ?? 'TBD')}</dd>
+        <dt>Landing</dt><dd>{fmtDate(m.landing.date, m.landing.attempted ? '—' : 'n/a')}</dd>
+        <dt>Site</dt><dd>{site ? (site.latitude != null ? <>{site.name} <span className="dim">· {formatLatLon(site.latitude, site.longitude!)} ({site.precision})</span></> : <>{site.name} <span className="dim">· coordinates not published</span></>) : 'no site'}</dd>
+      </dl>
       <div className="btn-row">
         <Link className="btn primary" to={intentToRoute({ type: 'SHOW_MISSION', missionId: m.id, detail: 'complete' })}>Open in 3D</Link>
-        <Link className="btn" to={intentToRoute({ type: 'SHOW_JOURNEY', missionId: m.id })}>🚀 Journey</Link>
+        <Link className="btn" to={intentToRoute({ type: 'SHOW_JOURNEY', missionId: m.id })}>↗ Journey</Link>
         <Link className="btn" to={`/missions/${m.id}`}>Details</Link>
       </div>
     </article>

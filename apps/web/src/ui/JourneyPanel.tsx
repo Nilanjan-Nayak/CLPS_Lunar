@@ -4,11 +4,12 @@ import { intentToRoute } from '@/app/routes';
 import { useJourneyIndex } from '@/services/queries';
 import { SEGMENT_COLORS, formatJourneyTime, journeyEndS, scrubMap, useJourneyStore } from '@/state/journeyStore';
 import { useSceneStore } from '@/state/sceneStore';
+import { useWorldStore } from '@/state/worldStore';
 import type { Journey, JourneyEvent } from '@/types/domain';
 import { Badge, KV, Note, Panel } from './primitives';
 
 const GLYPH: Record<string, string> = { ascent: '↑', parking: '◯', phasing: '⟳', translunar: '⤳', 'lunar-orbit': '◎', 'descent-orbit': '◝', descent: '↓', return: '↩' };
-const EVENT_GLYPH: Record<string, string> = { launch: '🚀', burn: '🔥', capture: '◎', doi: '◝', pdi: '↓', landing: '⌂', end: '■', note: '·' };
+const EVENT_GLYPH: Record<string, string> = { launch: '▲', burn: '✦', capture: '◎', doi: '◝', pdi: '↓', landing: '⌂', end: '■', note: '·' };
 const fmtDur = (s: number) => (s >= 86400 ? `${(s / 86400).toFixed(1)} d` : s >= 3600 ? `${(s / 3600).toFixed(1)} h` : `${Math.round(s / 60)} min`);
 const fmtUtc = (iso: string) => iso.replace('T', ' ').slice(0, 16) + 'Z';
 const fmtKm = (km: number) => (km >= 10_000 ? `${Math.round(km / 1000).toLocaleString()},000 km` : km >= 50 ? `${Math.round(km).toLocaleString()} km` : `${Math.round(km * 1000).toLocaleString()} m`);
@@ -31,6 +32,7 @@ export function JourneyPanel() {
   const view = useJourneyStore((s) => s.view);
   const readout = useJourneyStore((s) => s.readout);
   const finished = useJourneyStore((s) => s.finished);
+  const showLabels = useWorldStore((s) => s.showLabels);
   const scrub = useMemo(() => (journey ? scrubMap(journey) : null), [journey]);
   if (!active) return null;
   if (!journey) return <JourneyIndex />;
@@ -46,25 +48,36 @@ export function JourneyPanel() {
   return (
     <>
       <Panel
-        title={<>{journey.mission?.shortName ?? 'Planned mission'} · journey <Badge tone={fid.tone}>{fid.label}</Badge></>}
-        actions={<span className="mono" title={`${utc} (world clock = launch UTC + T+)`}>{formatJourneyTime(t)}<span className="dim"> · {utc.slice(5, 16).replace('T', ' ')}Z</span></span>}
+        className="journey-panel"
+        title={<><span className="ellipsis">{journey.mission?.shortName ?? 'Planned mission'} · journey</span> <Badge tone={fid.tone}>{fid.label}</Badge></>}
+        subtitle={<span title={`${utc} (world clock = launch UTC + T+)`}><b>{formatJourneyTime(t)}</b> · {utc.slice(0, 16).replace('T', ' ')}Z · {readout.segmentLabel || 'ready'}</span>}
       >
-        <div className="panel-body">
+        <div>
           <KV k="Launch" v={<span>{journey.launchSite.name} <span className="mono dim">({journey.launchSite.latitude.toFixed(3)}°, {journey.launchSite.longitude.toFixed(3)}°)</span><br />{journey.vehicle ?? ''} · {fmtUtc(journey.launchUtc)}{journey.notes.some((n) => /illustrative/.test(n)) ? ' (illustrative date)' : ''}</span>} />
           <KV k="Route" v={<span>{PROFILE[journey.profile]}{st.transferDays != null ? ` · ${st.transferDays} d Earth→Moon coast` : ''}{st.launchPlaneInclinationDeg != null ? ` · launch plane ${st.launchPlaneInclinationDeg}°` : ''}</span>} />
-          <KV k="Arrival" v={<span>{journey.landingSite ? journey.landingSite.name : journey.profile === 'earth-return' ? 'no lunar landing' : 'lunar orbit (site not published)'}<br />{arrival ? `${arrival.title} · ${fmtUtc(arrival.utc)}` : ''} · total {journey.totalDays} days</span>} />
+          <KV k="Arrival" v={<span>{journey.landingSite ? <>{journey.landingSite.name}{journey.landingSite.latitude != null && journey.landingSite.longitude != null ? <span className="mono dim"> ({journey.landingSite.latitude.toFixed(3)}°, {journey.landingSite.longitude.toFixed(3)}°)</span> : null}</> : journey.profile === 'earth-return' ? 'no lunar landing (Earth return)' : 'lunar orbit (site not published)'}<br />{arrival ? `${arrival.type === 'landing' ? 'Touchdown' : arrival.type === 'end' ? 'End' : arrival.title} · ${fmtUtc(arrival.utc)}` : ''} · {journey.totalDays} days total</span>} />
           <div className="sim-controls">
             <button className="btn primary" onClick={() => (playing ? pause() : play())}>{playing ? '❚❚ Pause' : finished ? '▶ Replay' : '▶ Play journey'}</button>
-            <button className="btn" onClick={restart}>↺</button>
-            {[0.5, 1, 2, 4].map((x) => (
-              <button key={x} className={`chip${speed === x ? ' on' : ''}`} onClick={() => setSpeed(x)}>{x}×</button>
-            ))}
-            <span className="dim" style={{ fontSize: 11 }}>view</span>
-            {(['follow', 'overview', 'free'] as const).map((v) => (
-              <button key={v} className={`chip${view === v ? ' on' : ''}`} onClick={() => setView(v)} title={v === 'follow' ? 'chase camera behind the spacecraft' : v === 'overview' ? 'Earth, Moon and the route in one frame' : 'orbit the camera yourself'}>{v}</button>
-            ))}
+            <button className="btn icon" onClick={restart} title="restart from launch">↺</button>
+            <div className="seg" role="group" aria-label="playback speed">
+              {[0.5, 1, 2, 4].map((x) => (
+                <button key={x} className={speed === x ? 'on' : ''} onClick={() => setSpeed(x)}>{x}×</button>
+              ))}
+            </div>
+            <div className="seg" role="group" aria-label="camera view" title="camera">
+              {(['follow', 'overview', 'free'] as const).map((v) => (
+                <button key={v} className={view === v ? 'on' : ''} onClick={() => setView(v)} title={v === 'follow' ? 'chase camera behind the spacecraft' : v === 'overview' ? 'Earth, Moon and the route in one frame' : 'orbit the camera yourself'}>{v}</button>
+              ))}
+            </div>
           </div>
+          <div className="flight-hover-hint"><b aria-hidden="true">◎</b>{showLabels ? 'Hover or tap a marker for details; move away to hide.' : 'Enable Labels in Scene Config to inspect markers.'}</div>
           {scrub && <input className="sim-scrub" type="range" min={0} max={1000} value={Math.round(scrub.fromT(t))} onChange={(e) => seek(scrub.toT(Number(e.target.value)))} />}
+          <div className="readouts mono top">
+            <span title={`altitude above the ${readout.nearBody === 'earth' ? 'Earth' : 'Moon'}'s mean radius`}>{readout.nearBody === 'earth' ? '⊕' : '☾'} alt {fmtKm(readout.altitudeKm)}</span>
+            <span title="speed in the segment's frame (inertial for the Earth phases, Moon-fixed near the Moon)">v {readout.speedKms.toFixed(2)} km/s</span>
+            <span>⊕ {fmtKm(readout.distanceEarthKm)}</span>
+            <span>☾ {fmtKm(readout.distanceMoonKm)}</span>
+          </div>
           <ol className="phase-rail">
             {journey.segments.map((s) => {
               const s0 = s.samples[0][0], s1 = s.samples[s.samples.length - 1][0];
@@ -77,12 +90,6 @@ export function JourneyPanel() {
               );
             })}
           </ol>
-          <div className="readouts mono">
-            <span title={`altitude above the ${readout.nearBody === 'earth' ? 'Earth' : 'Moon'}'s mean radius`}>{readout.nearBody === 'earth' ? '⊕' : '☾'} alt {fmtKm(readout.altitudeKm)}</span>
-            <span title="speed in the segment's frame (inertial for the Earth phases, Moon-fixed near the Moon)">v {readout.speedKms.toFixed(2)} km/s</span>
-            <span>⊕ {fmtKm(readout.distanceEarthKm)}</span>
-            <span>☾ {fmtKm(readout.distanceMoonKm)}</span>
-          </div>
           {finished && (
             <div className="sim-banner" role="status">
               <strong>{journey.profile === 'earth-return' ? 'JOURNEY ENDED — re-entry' : journey.landingSite ? 'ARRIVED — touchdown' : 'ARRIVED — in lunar orbit'}</strong>
@@ -91,8 +98,8 @@ export function JourneyPanel() {
           )}
         </div>
       </Panel>
-      <Panel title="Timeline & sources" collapsed={false}>
-        <div className="panel-body">
+      <Panel title="Timeline & sources">
+        <div>
           <ol className="phase-rail">
             {journey.events.map((e: JourneyEvent) => (
               <li key={e.id} className={`phase${t >= e.tSec ? ' done' : ''}`} onClick={() => seek(e.tSec)} title={e.note ?? e.source}>
@@ -126,7 +133,7 @@ function JourneyIndex() {
   const missing = config?.intent.type === 'SHOW_JOURNEY' ? config.intent.missionId : null;
   return (
     <Panel title={<>Mission journeys <Badge tone="info">Earth → Moon</Badge></>}>
-      <div className="panel-body">
+      <div>
         {missing && <Note>No route can be drawn for <b>{missing}</b>: the catalogue has no published launch/arrival anchors for it (routes are never invented).</Note>}
         {!missing && <Note>Pick a mission to watch its launch site, route and timing animated in the live environment — reconstructed from published event times for flown missions, projected from the provider’s previous profile for upcoming ones.</Note>}
         <ol className="phase-rail">

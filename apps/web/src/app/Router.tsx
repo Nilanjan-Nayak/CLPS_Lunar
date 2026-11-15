@@ -2,7 +2,11 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { MainLayout } from './layouts/MainLayout';
 import { SpaceLayout } from './layouts/SpaceLayout';
 import { EarthScenePage, LandingSiteScenePage, MissionJourneyScenePage, MissionScenePage, MissionsScenePage, MoonScenePage, PlanJourneyScenePage, PlanScenePage, RegionScenePage, SpaceScenePage } from '@/pages/scene';
+import { NavigatorPage } from '@/pages/NavigatorPage';
 import { PlanPage } from '@/pages/PlanPage';
+import { ResiliencePage } from '@/pages/ResiliencePage';
+import { OptimizerPage } from '@/pages/OptimizerPage';
+import { DecisionReportPage } from '@/pages/DecisionReportPage';
 import { MissionsPage } from '@/pages/MissionsPage';
 import { MissionPage } from '@/pages/MissionPage';
 import { PayloadPage, PayloadsPage } from '@/pages/PayloadsPage';
@@ -31,9 +35,13 @@ export function Router() {
         <Route path="/missions/:id/journey" element={<MissionJourneyScenePage />} />
         <Route path="/plan/scene" element={<PlanScenePage />} />
         <Route path="/plan/journey" element={<PlanJourneyScenePage />} />
+        <Route path="/navigator" element={<NavigatorPage />} />
       </Route>
       <Route element={<MainLayout />}>
         <Route path="/plan" element={<PlanPage />} />
+        <Route path="/resilience" element={<ResiliencePage />} />
+        <Route path="/optimizer" element={<OptimizerPage />} />
+        <Route path="/report" element={<DecisionReportPage />} />
         <Route path="/missions" element={<MissionsPage />} />
         <Route path="/missions/:id" element={<MissionPage />} />
         <Route path="/payloads" element={<PayloadsPage />} />

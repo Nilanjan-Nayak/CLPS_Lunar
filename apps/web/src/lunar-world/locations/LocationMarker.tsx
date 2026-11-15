@@ -4,6 +4,8 @@ import { Html } from '@react-three/drei';
 import { Group } from 'three';
 import type { SurfaceAnchor } from '@/hooks/useSurfaceFrame';
 import { useWorldStore } from '@/state/worldStore';
+import { useSceneStore } from '@/state/sceneStore';
+import { FlightMarker } from '@/lunar-world/markers/FlightMarker';
 import { useMarkerVisibility } from '@/hooks/useMarkerVisibility';
 
 export const STATUS_COLOR: Record<string, string> = {
@@ -44,6 +46,8 @@ interface Props {
 export function LocationMarker({ anchor, label, sublabel, color = '#8fd3ff', selected, approximate, onClick, onHover, labelMaxDistanceKm = 3200, glyph }: Props) {
   const group = useRef<Group>(null);
   const showLabels = useWorldStore((s) => s.showLabels);
+  // In animated flights, even selected landing-site labels must not obscure the trajectory.
+  const inFlightScene = useSceneStore((s) => !!s.config?.panels.some((p) => p === 'journey' || p === 'simulation'));
   const [hovered, setHovered] = useState(false);
   const vis = useMarkerVisibility(anchor.position, anchor.up, labelMaxDistanceKm, !!selected || hovered);
   useFrame(({ camera }) => {
@@ -72,14 +76,27 @@ export function LocationMarker({ anchor, label, sublabel, color = '#8fd3ff', sel
           <cylinderGeometry args={[0.02, 0.02, 2.8, 6]} />
           <meshBasicMaterial color={color} transparent opacity={0.6} depthWrite={false} />
         </mesh>
-        {showLabels && vis.label && (
-          <Html position={[0, 3.1, 0]} center distanceFactor={undefined} zIndexRange={[10, 0]} style={{ pointerEvents: 'none' }}>
+        {showLabels && vis.label && (inFlightScene ? (
+          <FlightMarker
+            markerType="site" position={[0, 0.3, 0]} category="Lunar landing site" title={label}
+            badge={approximate ? 'APPROXIMATE' : 'SURFACE'} color={color}
+            details={[
+              ...(sublabel ? [{ label: 'Site details', value: sublabel }] : []),
+              { label: 'Elevation', value: `${Math.round(anchor.elevationKm * 1000).toLocaleString()} m` },
+              { label: 'Terrain source', value: anchor.source },
+            ]}
+            note={onClick ? 'Select the marker to open site details.' : 'Terrain-anchored landing reference.'}
+            onActivate={onClick}
+            onHover={(h) => { setHovered(h); onHover?.(h); }}
+          />
+        ) : (
+          <Html position={[0, 3.1, 0]} distanceFactor={undefined} zIndexRange={[10, 0]} style={{ pointerEvents: 'none', transform: 'translate(-50%, -100%)' }}>
             <div className={`marker-label${selected ? ' selected' : ''}`} style={{ borderColor: color }}>
               <span className="marker-title">{glyph ? `${glyph} ` : ''}{label}</span>
               {sublabel && <span className="marker-sub">{sublabel}</span>}
             </div>
           </Html>
-        )}
+        ))}
       </group>
     </group>
   );

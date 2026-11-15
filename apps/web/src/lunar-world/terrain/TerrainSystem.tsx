@@ -14,6 +14,7 @@ import { TerrainTile } from './TerrainTile';
 import { imageryLoader, type LoadedImageryTile } from './ImageryLoader';
 import { ImageryTile } from './ImageryTile';
 import { terrainMasks } from './CoverageMask';
+import { sharedLightUniforms } from '@/lunar-world/moon/MoonMaterial';
 
 /**
  * TerrainSystem — camera-driven tile streaming.
@@ -24,7 +25,11 @@ export function TerrainSystem({ enabled, imagery, overlay }: { enabled: boolean;
   const camera = useThree((s) => s.camera);
   const exaggeration = useWorldStore((s) => s.elevationExaggeration);
   const quality = useWorldStore((s) => s.quality);
+  const surfaceDetail = useWorldStore((s) => s.surfaceDetail);
+  const autoExposure = useWorldStore((s) => s.autoExposure);
+  const exposurePublished = useRef(-1);
   const sunDir = useSunDirection();
+  const detailPublished = useRef(-1);
   const [active, setActive] = useState<LoadedTile[]>([]);
   const [imageryTiles, setImageryTiles] = useState<{ tile: LoadedImageryTile; parent: LoadedTile }[]>([]);
   const last = useRef(0);
@@ -37,6 +42,29 @@ export function TerrainSystem({ enabled, imagery, overlay }: { enabled: boolean;
     terrainLoader.ensureIndex().catch(() => undefined);
     imageryLoader.ensureIndex().catch(() => undefined);
   }, []);
+
+  // close-range micro-detail weight: user toggle × altitude ramp (fully on below 6 km, off above 60 km)
+  useFrame((_, dt) => {
+    const alt = camera.position.length() - MOON_RADIUS_KM;
+    const ramp = Math.max(0, Math.min(1, (60 - alt) / 54));
+    const w = enabled && surfaceDetail ? ramp : 0;
+    sharedLightUniforms.uDetail.value = w;
+    const q = Math.round(w * 20) / 20;
+    if (q !== detailPublished.current) { detailPublished.current = q; useTerrainStore.getState().setDetailStrength(q); }
+    // auto exposure (display only): like a camera, open up when the Sun over the sub-point is low (<12°) or set —
+    // ×1 in full daylight, up to ×3 near the terminator / at night; eased so it never flickers
+    let target = 1;
+    if (autoExposure && ramp > 0) {
+      const sinEl = sunDir.dot(tmp.current.copy(camera.position).normalize());
+      const low = 1 - Math.max(0, Math.min(1, sinEl / 0.2));
+      target = 1 + 2 * low * ramp;
+    }
+    const cur = sharedLightUniforms.uExposure.value;
+    const next = cur + (target - cur) * (1 - Math.exp(-1.5 * Math.min(dt, 0.1)));
+    sharedLightUniforms.uExposure.value = next;
+    const qe = Math.round(next * 20) / 20;
+    if (qe !== exposurePublished.current) { exposurePublished.current = qe; useTerrainStore.getState().setExposure(qe); }
+  });
 
   useFrame(({ clock }) => {
     if (!enabled) return;

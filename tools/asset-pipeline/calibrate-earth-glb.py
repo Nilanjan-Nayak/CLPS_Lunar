@@ -38,7 +38,7 @@ COMP = {5120: np.int8, 5121: np.uint8, 5122: np.int16, 5123: np.uint16, 5125: np
 NUM = {"SCALAR": 1, "VEC2": 2, "VEC3": 3, "VEC4": 4, "MAT4": 16}
 
 
-def load_glb(path: Path):
+def load_glb(path: Path): 
     b = path.read_bytes()
     assert b[:4] == b"glTF"
     jl = struct.unpack("<I", b[12:16])[0]

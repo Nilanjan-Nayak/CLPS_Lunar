@@ -24,6 +24,12 @@ export const useResearchModel = () => useQuery({ queryKey: ['research', 'model']
 export const usePlanOptions = () => useQuery({ queryKey: ['research', 'options'], queryFn: api.researchOptions, staleTime: Infinity });
 export const usePlan = (input: import('@/types/domain').PlanInput | null) =>
   useQuery({ queryKey: ['research', 'plan', input], queryFn: () => api.researchPlan(input!), enabled: !!input, staleTime: Infinity });
+export const useResilience = (input: import('@/types/domain').PlanInput | null) =>
+  useQuery({ queryKey: ['research', 'resilience', input], queryFn: () => api.researchResilience(input!), enabled: !!input, staleTime: Infinity });
+export const useSiteOptimization = (input: import('@/types/domain').PlanInput | null) =>
+  useQuery({ queryKey: ['research', 'optimize', input], queryFn: () => api.researchOptimize(input!), enabled: !!input, staleTime: Infinity });
+export const useDecisionReport = (input: import('@/types/domain').PlanInput | null) =>
+  useQuery({ queryKey: ['research', 'report', input], queryFn: () => api.researchReport(input!), enabled: !!input, staleTime: Infinity });
 export const useLaunchSites = () => useQuery({ queryKey: ['launch-sites'], queryFn: api.launchSites, staleTime: Infinity });
 export const useMissionJourney = (id?: string) => useQuery({ queryKey: ['journey', id], queryFn: () => api.missionJourney(id!), enabled: !!id, staleTime: Infinity });
 export const usePlanJourney = (input: import('@/types/domain').PlanInput | null, launchSiteId?: string) =>

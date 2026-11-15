@@ -1,9 +1,10 @@
-"""Mission calculation: phases, Δv / propellant budgets, payload capacity, comms — from the user's plan parameters.
+"""Mission calculation: phases, Δv / propellant budgets, payload capacity, comms, electrical power budget,
+Golden Mission Windows, and structured engineering constraints — from the user's plan parameters.
 Everything here is a model (documented formulas); results are labelled 'simulation' in the API."""
 from __future__ import annotations
 import math
 from datetime import datetime, timedelta, timezone
-from . import dem, dem_polar, descent, ephem, model
+from . import dem, dem_polar, descent, ephem, model, power, resilience
 from .landers import LANDERS, LAUNCH_VEHICLES, TRANSFERS
 
 G0 = 9.80665
@@ -16,15 +17,20 @@ def _by_id(items, id_, default):
 
 
 def plan(inp: dict) -> dict:
-    lat = float(inp["latitude"]); lon = float(inp["longitude"])
+    lat, lon = dem.validate_coords(float(inp["latitude"]), float(inp["longitude"]))
     preset = _by_id(LANDERS, inp.get("landerId", "generic-clps-100kg"), LANDERS[0])
-    dry = float(inp.get("dryMassKg", preset["dryMassKg"])); prop = float(inp.get("propellantKg", preset["propellantKg"]))
-    payload = float(inp.get("payloadKg", preset["payloadKg"])); thrust = float(inp.get("thrustN", preset["thrustN"]))
-    isp = float(inp.get("ispS", preset["ispS"])); min_thr = float(inp.get("minThrottle", preset["minThrottle"]))
+    dry = max(float(inp.get("dryMassKg", preset["dryMassKg"])), 50.0)
+    prop = max(float(inp.get("propellantKg", preset["propellantKg"])), 10.0)
+    payload = max(float(inp.get("payloadKg", preset["payloadKg"])), 0.0)
+    thrust = max(float(inp.get("thrustN", preset["thrustN"])), 100.0)
+    isp = max(float(inp.get("ispS", preset["ispS"])), 100.0)
+    min_thr = min(max(float(inp.get("minThrottle", preset["minThrottle"])), 0.05), 0.95)
     lv = _by_id(LAUNCH_VEHICLES, inp.get("launchVehicleId", "falcon-9"), LAUNCH_VEHICLES[0])
     tr = _by_id(TRANSFERS, inp.get("transferId", "direct"), TRANSFERS[0])
-    orbit_days = float(inp.get("orbitDays", 1.0)); surface_days = float(inp.get("surfaceDays", 14.0))
-    data_gb = float(inp.get("dataVolumeGb", 20.0)); mbps = float(inp.get("downlinkMbps", 4.0))
+    orbit_days = min(max(float(inp.get("orbitDays", 1.0)), 0.2), 60.0)
+    surface_days = min(max(float(inp.get("surfaceDays", 14.0)), 0.5), 60.0)
+    data_gb = max(float(inp.get("dataVolumeGb", 20.0)), 0.1)
+    mbps = max(float(inp.get("downlinkMbps", 4.0)), 0.1)
     year = int(inp.get("year", 2027))
     ve = isp * G0
 
@@ -32,8 +38,7 @@ def plan(inp: dict) -> dict:
     terrain_regional = dem.terrain_features_regional(lat, lon)     # training scale for the outcome model
     grid = dem.analysis_grid(lat, lon, half_km=(float(inp["gridHalfKm"]) if "gridHalfKm" in inp else None), n=int(inp.get("gridN", 32)))
     fine = dem_polar.finest_for(lat)
-    horizon = fine.horizon(lat, lon) if fine else None
-    hfn = dem_polar.horizon_fn(horizon) if horizon else None
+    horizon, hfn = dem.best_horizon(lat, lon)
     x = model.feature_vector(lat, lon, terrain_regional, hazard=bool(inp.get("hazardAvoidance", True)), crewed=bool(inp.get("crewed", False)),
                              commercial=bool(inp.get("commercial", True)), year=year)
     pred = model.predict(x); near = model.neighbours(x, k=5)
@@ -73,16 +78,15 @@ def plan(inp: dict) -> dict:
     psi = math.degrees(math.acos(max(-1.0, min(1.0, math.cos(math.radians(lat)) * math.cos(math.radians(lon))))))
     earth_elev = 90.0 - psi                                          # mean geometry (no libration)
 
-    # --- calendar from the ephemeris model: land shortly after local sunrise ------------------------------------
+    # --- calendar from the ephemeris model: land shortly after local terrain-masked sunrise ---------------------
     pre_landing_s = next(p for p in phases if p["id"] == "landing")["endS"]   # launch … touchdown
     peak_possible = min(90.0, 90.0 - abs(lat) + 1.54)
     target_sun = round(min(7.0, max(1.0, peak_possible - 2.0)), 2)
-    # Without a requested date, the earliest landing is "launch now + pre-landing phases" (launch can't be in the past).
     now_iso = (datetime.now(timezone.utc) + timedelta(seconds=pre_landing_s)).strftime("%Y-%m-%dT%H:%M:%SZ")
     requested = inp.get("landingDate")
     from_iso = (requested if "T" in str(requested) else f"{requested}T00:00:00Z") if requested else now_iso
     try:
-        windows = ephem.landing_windows(lat, lon, from_iso, count=4, target_elev_deg=target_sun, horizon_fn=hfn)
+        windows = ephem.landing_windows(lat, lon, from_iso, count=5, target_elev_deg=target_sun, horizon_fn=hfn)
     except Exception:
         windows = []
     if requested and "T" in str(requested):
@@ -98,8 +102,12 @@ def plan(inp: dict) -> dict:
     surf_phase = next(p for p in phases if p["id"] == "surface")
     surf_start = launch_dt + timedelta(seconds=surf_phase["startS"]); surf_end = launch_dt + timedelta(seconds=surf_phase["endS"])
     at_landing = ephem.site_geometry(fmt(landing_dt).replace("Z", ":00Z"), lat, lon)
-    at_landing["sunVisible"] = at_landing["sunElevationDeg"] > (hfn(at_landing["sunAzimuthDeg"]) if hfn else 0.0)
-    at_landing["earthVisible"] = at_landing["earthElevationDeg"] > (hfn(at_landing["earthAzimuthDeg"]) if hfn else 0.0)
+    sun_mask_td = float(hfn(at_landing["sunAzimuthDeg"])) if hfn else 0.0
+    earth_mask_td = float(hfn(at_landing["earthAzimuthDeg"])) if hfn else 0.0
+    at_landing["sunVisible"] = at_landing["sunElevationDeg"] > sun_mask_td
+    at_landing["earthVisible"] = at_landing["earthElevationDeg"] > earth_mask_td
+    at_landing["sunClearanceDeg"] = round(at_landing["sunElevationDeg"] - sun_mask_td, 2)
+    at_landing["earthClearanceDeg"] = round(at_landing["earthElevationDeg"] - earth_mask_td, 2)
     total_s_est = surf_phase["endS"] + downlink_h * H
     step_h = max(3.0, total_s_est / 3600.0 / 160.0)
     samples = ephem.profile(lat, lon, fmt(launch_dt).replace("Z", ":00Z"), total_s_est / D + step_h / 24.0, step_hours=step_h)
@@ -122,6 +130,52 @@ def plan(inp: dict) -> dict:
     horizon_max = max(horizon["elevationDeg"]) if horizon else 0.0
     horizon_max_az = horizon["elevationDeg"].index(horizon_max) * horizon["azimuthStepDeg"] if horizon else None
 
+    # --- Power Budget & Golden Mission Window (Features 3 & 6) --------------------------------------------------
+    power_budget = power.compute_power_budget(
+        inp,
+        preset,
+        samples,
+        float(surf_phase["startS"]),
+        float(surf_phase["endS"]),
+        horizon_fn=hfn,
+    )
+    golden_windows = power.compute_golden_windows(
+        power_budget,
+        windows,
+        surface_days,
+        relay_enabled=bool(inp.get("useRelay", False)),
+    )
+
+    # --- Structured Engineering Constraints & Viability Score ----------------------------------------------------
+    constraints = resilience.evaluate_constraints(
+        propellant_margin_kg=margin,
+        stack_mass_tli_kg=m_tli,
+        lv_capacity_kg=float(lv["tliCapacityKg"]),
+        lv_name=str(lv["name"]),
+        peak_throttle=float(sim["peakThrottle"]),
+        slope_deg=float(terrain["slopeDeg"]),
+        baseline_m=float(terrain["baselineM"]),
+        sun_elev_td_deg=float(at_landing["sunElevationDeg"]),
+        sun_clearance_td_deg=float(at_landing["sunClearanceDeg"]),
+        sun_visible_td=bool(at_landing["sunVisible"]),
+        sunlit_fraction=sun_frac,
+        sunlit_hours=float(power_budget["summary"]["sunlitHours"]),
+        requested_surface_days=surface_days,
+        earth_vis_fraction=earth_frac,
+        earth_min_deg=earth_min,
+        relay_enabled=bool(inp.get("useRelay", False)),
+        power_summary=power_budget["summary"],
+        power_params=power_budget["parameters"],
+    )
+    viability_score = resilience.compute_viability_score(
+        constraints,
+        sun_frac,
+        earth_frac,
+        float(terrain["slopeDeg"]),
+        power_budget["summary"],
+        margin,
+    )
+
     flags = []
     if margin < 0:
         hint = f"reduce payload to ≤ {max_payload:.0f} kg or choose a lower-energy transfer" if max_payload > 0 else "no payload closes — add propellant, raise Isp or choose a lower-energy transfer"
@@ -134,8 +188,10 @@ def plan(inp: dict) -> dict:
     if relay: flags.append("Earth low or hidden for much of surface ops — plan a relay (cf. Chang'e 4 Queqiao, ESA Lunar Pathfinder).")
     if not at_landing["sunVisible"]: flags.append(f"Sun below the {'terrain' if hfn else 'geometric'} horizon at the chosen landing time ({at_landing['sunElevationDeg']}° elevation) — shift the landing date.")
     if windows and windows[0]["sunlitHoursAfter"] < surface_days * 24: flags.append(f"Only ≈{windows[0]['sunlitHoursAfter']:.0f} h of sunlight follow the first landing window (requested {surface_days:g} d) — plan night survival or shorten surface ops.")
-    if horizon_max > 5: flags.append(f"Terrain horizon rises to {horizon_max:.1f}° toward azimuth {horizon_max_az:.0f}° (LOLA GDR DEM) — Sun/Earth masking modelled in the illumination profile.")
+    if horizon_max > 5: flags.append(f"Terrain horizon rises to {horizon_max:.1f}° toward azimuth {horizon_max_az:.0f}° ({horizon.get('grade', 'LOLA DEM')}) — Sun/Earth masking modelled in the illumination profile.")
     if sun_frac < 0.6: flags.append(f"Site is sunlit only {sun_frac*100:.0f} % of the surface-ops period (ephemeris + terrain horizon) — solar power / thermal risk.")
+    if not power_budget["summary"]["powerFeasible"]:
+        flags.append(f"Electrical power deficit: battery drops to {power_budget['summary']['minSocPct']:.0f}% SOC (longest darkness {power_budget['summary']['maxContinuousDarknessHours']:.1f} h vs survival limit {power_budget['summary']['darknessSurvivalHours']:.1f} h).")
 
     azimuth = 90.0 if abs(lat) < 70 else (180.0 if lat < 0 else 0.0)
     return {
@@ -145,11 +201,16 @@ def plan(inp: dict) -> dict:
         "site": {"latitude": lat, "longitude": lon, "terrain": terrain, "terrainRegional": terrain_regional, "horizon": horizon,
                  "earthElevationDeg": round(earth_elev, 1), "relayRequired": relay,
                  "comms": {"earthElevationMinDeg": round(earth_min, 1), "earthElevationMaxDeg": round(earth_max, 1), "earthVisibleFraction": round(earth_frac, 2), "sunlitFraction": round(sun_frac, 2)}},
-        "ephemeris": {"model": "Meeus low-precision Sun/Moon + IAU 1976 precession + IAU 2009 Moon orientation (≤0.05°, checked against JPL Horizons); TT = UTC + 69.184 s; terrain horizon from the DEM where available",
-                      "atLanding": at_landing, "windows": windows, "targetSunElevationDeg": target_sun, "samples": samples,
+        "ephemeris": {"model": "Meeus Ch. 25/47 + IAU 1976 precession + IAU 2009 Moon orientation (validated vs JPL Horizons DE441 to ≤0.6′ at 3 reference epochs); TT = UTC + 69.184 s; terrain horizon from LOLA DEM",
+                      "validation": ephem.VALIDATION_INFO,
+                      "atLanding": at_landing, "windows": golden_windows["candidateWindows"] if golden_windows.get("candidateWindows") else windows, "targetSunElevationDeg": target_sun, "samples": samples,
                       "calendar": {"launchUtc": fmt(launch_dt), "landingUtc": fmt(landing_dt), "surfaceEndUtc": fmt(surf_end), "missionEndUtc": fmt(launch_dt + timedelta(seconds=t)), "requestedLandingDate": requested}},
+        "powerBudget": power_budget,
+        "goldenWindows": golden_windows,
+        "constraints": constraints,
+        "viabilityScore": viability_score,
         "analysisGrid": grid,
-        "outcomeModel": {**pred, "neighbours": near},
+        "outcomeModel": {**pred, "neighbours": near, "exploratoryNote": "Exploratory historical comparison (n=47, LOO CV 57.5%) — NOT a validated probability of mission success."},
         "budget": {"deltaV": {"transferCorrectionsMps": tr["extraDeltaVMps"], "loiMps": round(loi, 1), "doiMps": round(doi, 1), "descentMps": sim["deltaVMps"], "hoverReserveMps": HOVER_RESERVE_MPS, "totalMps": round(dv_total, 1)},
                    "mass": {"atTliKg": round(m_tli, 1), "afterLoiKg": round(m2, 1), "atPdiKg": round(m3, 1), "atTouchdownKg": round(m_td, 1), "propellantUsedKg": round(used, 1), "propellantMarginKg": round(margin, 1), "maxPayloadKg": round(max_payload, 1)},
                    "exhaustVelocityMps": round(ve, 1)},

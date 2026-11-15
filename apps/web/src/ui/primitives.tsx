@@ -1,13 +1,20 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
-export function Panel({ title, children, className = '', actions, collapsed = false, onToggle }: { title?: ReactNode; children?: ReactNode; className?: string; actions?: ReactNode; collapsed?: boolean; onToggle?: () => void }) {
+/**
+ * Panel — HUD / page card. `title` (uppercase label + badges) and optional `actions` share the head row; a `subtitle`
+ * (e.g. mission time · UTC) gets its own line so long titles never squeeze it. `onToggle` makes the head a collapse button.
+ */
+export function Panel({ title, subtitle, children, className = '', actions, collapsed = false, onToggle }: { title?: ReactNode; subtitle?: ReactNode; children?: ReactNode; className?: string; actions?: ReactNode; collapsed?: boolean; onToggle?: () => void }) {
   return (
-    <section className={`panel ${className}`}>
+    <section className={`panel ${className}${collapsed ? ' collapsed' : ''}`}>
       {title && (
-        <header className="panel-head" onClick={onToggle} style={onToggle ? { cursor: 'pointer' } : undefined}>
-          <h3>{title}</h3>
-          <div className="panel-actions">{actions}{onToggle && <span className="chev">{collapsed ? '▸' : '▾'}</span>}</div>
+        <header className={`panel-head${onToggle ? ' toggle' : ''}`} onClick={onToggle} role={onToggle ? 'button' : undefined} aria-expanded={onToggle ? !collapsed : undefined}>
+          <div className="panel-title">
+            <h3>{title}</h3>
+            {subtitle && <div className="panel-sub">{subtitle}</div>}
+          </div>
+          {(actions || onToggle) && <div className="panel-actions">{actions}{onToggle && <span className="chev">{collapsed ? '▸' : '▾'}</span>}</div>}
         </header>
       )}
       {!collapsed && <div className="panel-body">{children}</div>}

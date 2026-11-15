@@ -33,7 +33,7 @@
  },
  {
   "id": "src-research-engine",
-  "title": "CLPS Lunar Mission Browser research engine — derived terrain features, statistical model and physics-based mission calculations (NOT flight data)",
+  "title": "SELENARA X research engine — derived terrain features, statistical model and physics-based mission calculations (NOT flight data)",
   "publisher": "this project",
   "url": "services/research-engine",
   "kind": "derived",

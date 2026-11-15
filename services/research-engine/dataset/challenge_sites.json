@@ -1,0 +1,137 @@
+{
+  "note": "Rounded, illustrative quick-comparison points; not a mission database or certified touchdown coordinates. Mission-specific source citations remain in the backend catalogue.",
+  "sites": [
+    {
+      "id": "mons-mouton",
+      "name": "Mons Mouton (IM-2 Athena)",
+      "category": "CLPS",
+      "agency": "NASA CLPS · Intuitive Machines",
+      "latitude": -84.79,
+      "longitude": 29.2,
+      "landerId": "nova-c",
+      "summary": "Approximate south-polar reference near the IM-2 Athena landing region; Sun and Earth geometry depends on the selected time and local skyline.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "mare-crisium",
+      "name": "Mare Crisium (Blue Ghost M1)",
+      "category": "CLPS",
+      "agency": "NASA CLPS · Firefly Aerospace",
+      "latitude": 18.56,
+      "longitude": 61.81,
+      "landerId": "blue-ghost",
+      "summary": "Nearside mare reference close to Blue Ghost Mission 1. Illumination depends on the selected landing time.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "malapert-a",
+      "name": "Malapert Massif (IM-1 Odysseus)",
+      "category": "CLPS",
+      "agency": "NASA CLPS · Intuitive Machines",
+      "latitude": -80.13,
+      "longitude": 1.44,
+      "landerId": "nova-c",
+      "summary": "Reference near the IM-1 Odysseus landing region in the south-polar highlands.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "nobile-rim",
+      "name": "Nobile Crater Rim (Griffin M1)",
+      "category": "CLPS",
+      "agency": "NASA CLPS · Astrobotic",
+      "latitude": -85.28,
+      "longitude": 53.5,
+      "landerId": "generic-clps-100kg",
+      "summary": "Approximate Nobile south-polar regional candidate, not a verified terminal landing site.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "reiner-gamma",
+      "name": "Reiner Gamma Swirl (IM-3)",
+      "category": "CLPS",
+      "agency": "NASA CLPS / CSA LEAP · Intuitive Machines",
+      "latitude": 7.5,
+      "longitude": -59,
+      "landerId": "nova-c",
+      "summary": "Approximate centre of the lunar swirl identified as an IM-3 target; assess local hazards separately.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "shackleton-ridge",
+      "name": "Shackleton Connecting Ridge",
+      "category": "Artemis",
+      "agency": "NASA Artemis reference region",
+      "latitude": -89.45,
+      "longitude": -137,
+      "landerId": "nova-c",
+      "summary": "Illustrative south-polar coordinate near Shackleton; not a certified Artemis landing site.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "leibnitz-beta",
+      "name": "Leibnitz Beta Plateau",
+      "category": "Artemis",
+      "agency": "NASA Artemis III Candidate",
+      "latitude": -85.4,
+      "longitude": 31.8,
+      "landerId": "nova-c",
+      "summary": "Illustrative south-polar plateau reference for site and illumination comparisons.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "apollo-11",
+      "name": "Tranquility Base (Apollo 11)",
+      "category": "Apollo",
+      "agency": "NASA Apollo Heritage (1969)",
+      "latitude": 0.67,
+      "longitude": 23.47,
+      "landerId": "apollo-lm",
+      "summary": "Historic Apollo 11 reference in Mare Tranquillitatis; coordinates are rounded.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "apollo-17",
+      "name": "Taurus-Littrow Valley (Apollo 17)",
+      "category": "Apollo",
+      "agency": "NASA Apollo Heritage (1972)",
+      "latitude": 20.19,
+      "longitude": 30.77,
+      "landerId": "apollo-lm",
+      "summary": "Historic Apollo 17 reference in the Taurus-Littrow valley; coordinates are rounded.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "shiv-shakti",
+      "name": "Shiv Shakti Point (Chandrayaan-3)",
+      "category": "International",
+      "agency": "ISRO · Vikram Lander (2023)",
+      "latitude": -69.37,
+      "longitude": 32.32,
+      "landerId": "vikram-class",
+      "summary": "Rounded reference near the Chandrayaan-3 Vikram landing site in the southern high latitudes.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "slim-shioli",
+      "name": "Shioli Crater Rim (JAXA SLIM)",
+      "category": "International",
+      "agency": "JAXA · Pinpoint Lander (2024)",
+      "latitude": -13.32,
+      "longitude": 25.25,
+      "landerId": "generic-clps-100kg",
+      "summary": "Rounded reference near the JAXA SLIM landing site at Shioli crater.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "schrodinger-farside",
+      "name": "Schrödinger Basin (Far Side)",
+      "category": "International",
+      "agency": "CLPS / International Far-Side Target",
+      "latitude": -75,
+      "longitude": 132.4,
+      "landerId": "blue-ghost",
+      "summary": "Representative far-side basin reference; direct-to-Earth visibility depends on the actual site and horizon.",
+      "precision": "approximate planning reference"
+    }
+  ]
+}

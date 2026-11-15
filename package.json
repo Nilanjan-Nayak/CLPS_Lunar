@@ -2,14 +2,14 @@
   "name": "clps-lunar-browser",
   "private": true,
   "version": "0.1.0",
-  "description": "CLPS Lunar Mission Browser \u2014 NASA-grounded Earth \u2192 Moon \u2192 Lunar Surface \u2192 CLPS dynamic environment",
+  "description": "SELENARA X \u2014 a modified lunar landing site navigator: NASA-grounded Earth \u2192 Moon \u2192 Lunar Surface \u2192 CLPS dynamic environment",
   "workspaces": [
     "apps/*",
     "services/*"
   ],
   "scripts": {
     "assets:fetch": "node tools/asset-pipeline/fetch.mjs",
-    "assets:derive": "node tools/run-python.mjs tools/asset-pipeline/derive.py",
+    "assets:derive": "python tools/asset-pipeline/derive.py",
     "assets:inspect": "node tools/asset-pipeline/inspect-glb.mjs",
     "assets:manifest": "node tools/asset-pipeline/build-manifest.mjs",
     "assets:all": "npm run assets:fetch && npm run assets:derive && npm run assets:manifest",
@@ -18,8 +18,8 @@
     "dev": "concurrently -n api,web,research -c cyan,magenta,yellow \"npm run dev:api\" \"npm run dev:web\" \"npm run dev:research\"",
     "build": "npm run build:ai && npm run build -w services/api && npm run build -w apps/web",
     "typecheck": "npm run build:ai && npm run typecheck -w services/api && npm run typecheck -w apps/web",
-    "dev:research": "node tools/run-python.mjs services/research-engine/server.py 8790",
-    "train:research": "node tools/run-python.mjs services/research-engine/train.py",
+    "dev:research": "python services/research-engine/server.py 8790",
+    "train:research": "python services/research-engine/train.py",
     "build:ai": "npm run build -w services/ai-engine",
     "test:ai": "npm run test -w services/ai-engine",
     "check:ephemeris": "tsx tools/ephemeris/horizons-check.ts"

@@ -239,15 +239,66 @@
  {
   "id": "src-research-engine",
   "title": "Research engine — derived terrain features, exploratory outcome model and physics-based mission calculations",
-  "publisher": "CLPS Lunar Mission Browser (this project)",
+  "publisher": "SELENARA X (this project)",
   "url": "services/research-engine",
   "date": "2026-09-28",
   "type": "derived",
   "retrievedAt": "2026-09-28",
   "claims": [
    "Model output / simulation — NOT NASA flight data",
-   "Terrain features from the LOLA-derived CGI Moon Kit DEM (16 px/deg)",
+   "Terrain features from the LOLA-derived CGI Moon Kit DEM (16 px/deg) and PDS LOLA Polar GDR (240 m/px)",
    "Logistic-regression outcome model over 40 historical landing attempts with leave-one-out CV"
+  ]
+ },
+ {
+  "id": "src-lroc-quickmap",
+  "title": "LROC QuickMap — Interactive Lunar Mapping & South Pole Topography Tool",
+  "publisher": "Arizona State University / NASA LRO",
+  "url": "https://quickmap.lroc.im-ldi.com/",
+  "date": null,
+  "type": "primary",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "Official NASA Space Apps 2026 resource for high-resolution LROC NAC/WAC imagery and LOLA topographic inspection",
+   "Direct coordinate cross-verification of polar crater rims, slopes, and shadow masks"
+  ]
+ },
+ {
+  "id": "src-jpl-horizons",
+  "title": "NASA JPL Horizons On-Line Ephemeris System (DE441)",
+  "publisher": "NASA Jet Propulsion Laboratory (SSD)",
+  "url": "https://ssd.jpl.nasa.gov/horizons/",
+  "date": null,
+  "type": "primary",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "Official NASA Space Apps 2026 ephemeris reference for topocentric Sun and Earth azimuth/elevation from any lunar location",
+   "Reference benchmark for our analytical Meeus + IAU 2009 lunar orientation solver (verified ≤ 0.6 arcmin geocentric, ≤ 0.35° sub-solar/sub-Earth)"
+  ]
+ },
+ {
+  "id": "src-csa-moon",
+  "title": "Canadian Space Agency (CSA) — Moon Exploration Portal (Artemis & LEAP)",
+  "publisher": "Canadian Space Agency (CSA)",
+  "url": "https://www.asc-csa.gc.ca/eng/astronomy/moon-exploration/",
+  "date": null,
+  "type": "primary",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "Official Space Agency Partner resource for NASA Space Apps 2026 Lunar Landing Site Navigator",
+   "Documents Canadian lunar rovers, Canadarm3, and Lunar Exploration Accelerator Program (LEAP) payloads"
+  ]
+ },
+ {
+  "id": "src-spaceapps-2026",
+  "title": "2026 NASA Space Apps Challenge — Lunar Landing Site Navigator",
+  "publisher": "NASA Space Apps Challenge",
+  "url": "https://www.spaceappschallenge.org/2026/challenges/lunar-landing-site-navigator/?tab=resources",
+  "date": "2026-09-28",
+  "type": "primary",
+  "retrievedAt": "2026-09-28",
+  "claims": [
+   "Challenge specification: rapid comparison of lunar landing sites and dates, Sun/Earth horizon positions, power generation potential, and direct-to-Earth communication windows"
   ]
  }
 ]

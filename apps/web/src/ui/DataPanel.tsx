@@ -27,7 +27,7 @@ export function DataPanel() {
               <KV k="Published" v={<span className="mono">{fmtM(terrain.site?.publishedElevationM)}{terrain.elevationDiscrepancyM != null ? ` (Δ ${terrain.elevationDiscrepancyM.toFixed(0)} m)` : ''}</span>} />
               <KV k="Slope / aspect" v={<span className="mono">{terrain.surface.slopeDeg.toFixed(1)}° / {terrain.surface.aspectDeg.toFixed(0)}°</span>} />
               <KV k="Sample" v={<span className="mono">LOD{terrain.surface.lod} · {terrain.surface.source} · step {terrain.surface.sampleStepDeg}°</span>} />
-              <KV k="Tiles" v={<span className="mono">{terrain.tiles?.map((t) => t.id).join(', ')}</span>} />
+              <KV k="Tiles" v={<span className="mono" title={terrain.tiles?.map((t) => t.id).join(', ')}>{terrain.tiles?.length ?? 0} loaded · {terrain.tiles?.[0]?.id ?? '—'}{(terrain.tiles?.length ?? 0) > 1 ? ' …' : ''}</span>} />
               {terrain.dataSource && <Note>{terrain.dataSource.description} · grade: {terrain.dataSource.scientificGrade}</Note>}
             </>
           ) : (

@@ -115,14 +115,19 @@ class PolarDem:
         }
 
 
-    def horizon(self, lat: float, lon: float, n_az: int = 36, max_km: float = 60.0) -> dict:
-        """Terrain horizon elevation angle (deg) per azimuth bin (clockwise from north) by ray-marching the DEM along
-        great circles, including the curvature drop d²/2R. Polar sites are dominated by this mask."""
+    def horizon(self, lat: float, lon: float, n_az: int = 36, max_km: float = 60.0, fallback_elevation=None) -> dict:
+        """Terrain horizon per azimuth, ray-marched along great circles with curvature.
+
+        A ray near a product boundary may leave the polar DEM before max_km. When
+        provided, the regional DEM continues that ray rather than silently treating
+        the rest of it as unobstructed; callers must disclose the mixed resolution.
+        """
         e0 = self.elevation(lat, lon) + 2.0  # 2 m above ground (lander sensors / solar array)
         la = math.radians(lat); lo = math.radians(lon)
         R = MOON_R_M
         steps = [k * 250.0 for k in range(1, 21)] + [5000.0 + k * 500.0 for k in range(1, int((max_km * 1000 - 5000) / 500) + 1)]
         out = []
+        regional_fallback_used = False
         for i in range(n_az):
             az = math.radians(i * 360.0 / n_az)
             best = -90.0
@@ -132,17 +137,24 @@ class PolarDem:
                 lo2 = lo + math.atan2(math.sin(az) * math.sin(ang) * math.cos(la), math.cos(ang) - math.sin(la) * math.sin(la2))
                 lat2 = math.degrees(la2); lon2 = (math.degrees(lo2) + 540.0) % 360.0 - 180.0
                 if not self.covers(lat2):
-                    break
-                try:
-                    e = self.elevation(lat2, lon2)
-                except Exception:
-                    break
+                    if fallback_elevation is None:
+                        break
+                    e = fallback_elevation(lat2, lon2)
+                    regional_fallback_used = True
+                else:
+                    try:
+                        e = self.elevation(lat2, lon2)
+                    except Exception:
+                        break
                 h = math.degrees(math.atan2(e - e0 - d * d / (2 * R), d))
                 if h > best:
                     best = h
             out.append(round(max(best, -5.0), 2))
+        note = "Geometric terrain horizon from the DEM (2 m above ground); no shadowing by features finer than the DEM."
+        if regional_fallback_used:
+            note += " Rays beyond polar DEM coverage continue on the coarser global LOLA-derived grid."
         return {"azimuthStepDeg": 360.0 / n_az, "elevationDeg": out, "maxKm": max_km, "dataSource": self.source,
-                "note": "Geometric terrain horizon from the DEM (2 m above ground); no shadowing by features finer than the DEM."}
+                "regionalFallbackUsed": regional_fallback_used, "note": note}
 
 
 def horizon_fn(h: dict):

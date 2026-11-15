@@ -1,6 +1,7 @@
 import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Html, Line } from '@react-three/drei';
+import { Line } from '@react-three/drei';
+import { FlightMarker } from '@/lunar-world/markers/FlightMarker';
 import { Group, Vector3 } from 'three';
 import { MOON_RADIUS_KM } from '@/constants/frames';
 import { useNasaModel } from '@/hooks/useNasaModel';
@@ -59,12 +60,15 @@ export function OrbiterInstance({ object }: { object: SceneObject }) {
           </mesh>
         )}
         {showLabels && (
-          <Html position={[0, 30, 0]} center zIndexRange={[20, 0]} style={{ pointerEvents: 'none' }}>
-            <div className="marker-label orbiter">
-              <span className="marker-title">{object.label}</span>
-              <span className="marker-sub">schematic orbit ~{alt} km · ×{object.displayScale ?? 1} display scale</span>
-            </div>
-          </Html>
+          <FlightMarker
+            markerType="orbiter" category="Lunar orbiter" title={object.label} badge="SCHEMATIC" color="#abbaff"
+            details={[
+              { label: 'Orbit altitude', value: `~${alt} km` },
+              { label: 'Display scale', value: `×${object.displayScale ?? 1}` },
+            ]}
+            note="Schematic visual orbit, not a measured ephemeris. Select for spacecraft details."
+            onActivate={() => select({ kind: 'spacecraft', id: object.spacecraftId!, missionId: object.missionId })}
+          />
         )}
       </group>
     </group>

@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Html } from '@react-three/drei';
+import { FlightMarker } from '@/lunar-world/markers/FlightMarker';
 import { Group, Mesh } from 'three';
 import type { SurfaceAnchor } from '@/hooks/useSurfaceFrame';
 import type { SceneObject } from '@/scene-manager/SceneConfig';
@@ -45,12 +45,16 @@ export function InfoMarkerLander({ object, anchor }: { object: SceneObject; anch
           <meshBasicMaterial color={color} transparent opacity={0.6} depthWrite={false} />
         </mesh>
         {showLabels && vis.label && (
-          <Html position={[0, 0.45, 0]} center zIndexRange={[20, 0]} style={{ pointerEvents: 'none' }}>
-            <div className={`marker-label lander${isSel ? ' selected' : ''}`} style={{ borderColor: color }}>
-              <span className="marker-title">{object.label}</span>
-              <span className="marker-sub">info marker · no official NASA model</span>
-            </div>
-          </Html>
+          <FlightMarker
+            markerType="lander" position={[0, 0.16, 0]} category="Surface spacecraft" title={object.label}
+            badge="INFO MARKER" color={color}
+            details={[
+              { label: 'Status', value: (object.status ?? 'Not specified').replaceAll('-', ' ') },
+              { label: 'Surface elevation', value: `${Math.round(anchor.elevationKm * 1000).toLocaleString()} m` },
+            ]}
+            note="Abstract information marker; no official NASA 3D model. Select for spacecraft details."
+            onActivate={() => select({ kind: 'spacecraft', id: object.spacecraftId!, missionId: object.missionId })}
+          />
         )}
       </group>
     </group>

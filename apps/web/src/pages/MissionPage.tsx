@@ -19,7 +19,7 @@ export function MissionPage() {
           <p className="lead">{m.statusDetail}</p>
           <div className="btn-row">
             <Link className="btn primary" to={intentToRoute({ type: 'SHOW_MISSION', missionId: m.id, detail: 'complete' })}>Open complete 3D scene</Link>
-            <Link className="btn" to={intentToRoute({ type: 'SHOW_JOURNEY', missionId: m.id })} title="Launch site → route → arrival, animated in the live environment">🚀 Launch → Moon journey</Link>
+            <Link className="btn" to={intentToRoute({ type: 'SHOW_JOURNEY', missionId: m.id })} title="Launch site → route → arrival, animated in the live environment">↗ Launch → Moon journey</Link>
             <Link className="btn" to={intentToRoute({ type: 'SHOW_MISSION', missionId: m.id, detail: 'complete', journeyFromEarth: true })}>Camera flight from Earth</Link>
             <Link className="btn" to={`/research?mission=${m.id}`}>Research</Link>
           </div>

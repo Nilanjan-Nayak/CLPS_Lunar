@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { Html, Line } from '@react-three/drei';
+import { Line } from '@react-three/drei';
+import { FlightMarker, formatMarkerAltitude } from '@/lunar-world/markers/FlightMarker';
 import { Group, Matrix4, Vector3 } from 'three';
 import { EARTH_RADIUS_KM, MOON_RADIUS_KM } from '@/constants/frames';
 import type { SceneObject } from '@/scene-manager/SceneConfig';
 import { liveEphemeris } from '@/solar-system/ephemerisDriver';
 import { setMatrixFromMat3 } from '@/solar-system/SkyMap';
 import { geometryAt } from '@/solar-system/ephemeris';
+import { useSurfaceAnchor, type SurfaceAnchor } from '@/hooks/useSurfaceFrame';
 import { useClockStore, worldClock } from '@/state/clockStore';
 import { SEGMENT_COLORS, formatJourneyTime, journeyEndS, journeyRate, segmentAt, useJourneyStore } from '@/state/journeyStore';
 import { simCamera } from '@/state/simStore';
@@ -31,7 +33,7 @@ import type { Journey as JourneyData, JourneySegment } from '@/types/domain';
 
 const toScene = (x: number, y: number, z: number): [number, number, number] => [x, z, -y];
 /** drei <Line> instance (Line2): its LineGeometry is instanced — `instanceCount` limits how many segments are drawn. */
-type TrailLine = { geometry: { instanceCount: number; attributes: { instanceStart?: { data: { array: Float32Array; needsUpdate: boolean } } } } };
+type TrailLine = { geometry: { instanceCount: number; attributes: { instanceStart?: { data: { array: Float32Array; needsUpdate: boolean } } } }; material: { opacity: number } };
 
 /** Overwrite the first `upto` line segments (pairs of consecutive samples) of an instanced Line2 geometry in place. */
 function writeSegments(line: TrailLine, pts: Float32Array, upto: number) {
@@ -48,7 +50,7 @@ function writeSegments(line: TrailLine, pts: Float32Array, upto: number) {
 }
 
 /** Earth-relative ↔ Moon-frame-track blend weight for the trans-lunar arc, from geocentric distance. */
-const BLEND_R0 = 8_000, BLEND_R1 = 40_000;
+const BLEND_R0 = 10_000, BLEND_R1 = 220_000;
 const smooth = (x: number) => { const u = Math.max(0, Math.min(1, x)); return u * u * (3 - 2 * u); };
 
 interface Prepared {
@@ -78,7 +80,7 @@ interface Prepared {
   color: string;
 }
 
-function prepare(j: JourneyData, launchMs: number): Prepared[] {
+function prepare(j: JourneyData, launchMs: number, siteAnchor: SurfaceAnchor | null): Prepared[] {
   return j.segments.map((seg) => {
     const n = seg.samples.length;
     const times = new Float64Array(n);
@@ -88,6 +90,20 @@ function prepare(j: JourneyData, launchMs: number): Prepared[] {
       times[i] = s[0];
       const p = toScene(s[1], s[2], s[3]);
       pts[i * 3] = p[0]; pts[i * 3 + 1] = p[1]; pts[i * 3 + 2] = p[2];
+    }
+    // Anchor powered descent touchdown to the exact client LOLA DEM surface marker position
+    if (seg.kind === 'descent' && siteAnchor && n >= 2) {
+      const last = (n - 1) * 3;
+      const dx = siteAnchor.position.x - pts[last];
+      const dy = siteAnchor.position.y - pts[last + 1];
+      const dz = siteAnchor.position.z - pts[last + 2];
+      const tSpan = Math.max(1, times[n - 1] - times[0]);
+      for (let i = 0; i < n; i++) {
+        const w = Math.pow(Math.max(0, Math.min(1, (times[i] - times[0]) / tSpan)), 1.5);
+        pts[i * 3] += dx * w;
+        pts[i * 3 + 1] += dy * w;
+        pts[i * 3 + 2] += dz * w;
+      }
     }
     const inertial = seg.frame === 'earth-inertial';
     let apoIdx = 0, apoR = -1;
@@ -130,7 +146,8 @@ const Y = new Vector3(0, 1, 0);
 export function Journey({ object }: { object: SceneObject }) {
   const journey = object.data?.journey as JourneyData | undefined;
   const launchMs = journey ? Date.parse(journey.launchUtc) : NaN;
-  const prepared = useMemo(() => (journey ? prepare(journey, launchMs) : []), [journey, launchMs]);
+  const siteAnchor = useSurfaceAnchor(journey?.landingSite?.latitude, journey?.landingSite?.longitude);
+  const prepared = useMemo(() => (journey ? prepare(journey, launchMs, siteAnchor) : []), [journey, launchMs, siteAnchor]);
   const endS = journey ? journeyEndS(journey) : 0;
   const showLabels = useWorldStore((s) => s.showLabels);
   const { camera } = useThree();
@@ -145,15 +162,19 @@ export function Journey({ object }: { object: SceneObject }) {
   const lastPush = useRef(0);
   /** frames left in which the chase camera snaps instead of easing (2 after a scrub: the ephemeris geometry lags one frame behind a time jump) */
   const snapFrames = useRef(2);
-  const [label, setLabel] = useState<{ seg: string; time: string } | null>(null);
+  const [label, setLabel] = useState<{ seg: string; time: string; altitudeKm: number; body: string; speedKms: number; utc: string } | null>(null);
 
-  // launch pad in Earth-fixed scene-convention coordinates (spherical Earth, pad altitude)
+  // Launch pad anchored directly to the first ascent sample (in inertialGroup) so the pad marker and ascent origin never separate
   const pad = useMemo(() => {
     if (!journey) return null;
+    const asc = prepared.find((p) => p.seg.kind === 'ascent') ?? prepared[0];
+    if (asc && asc.pts.length >= 3) {
+      return new Vector3(asc.pts[0], asc.pts[1], asc.pts[2]);
+    }
     const la = (journey.launchSite.latitude * Math.PI) / 180, lo = (journey.launchSite.longitude * Math.PI) / 180;
     const r = EARTH_RADIUS_KM + (journey.launchSite.altitudeM ?? 0) / 1000;
     return new Vector3(...toScene(r * Math.cos(la) * Math.cos(lo), r * Math.cos(la) * Math.sin(lo), r * Math.sin(la)));
-  }, [journey]);
+  }, [journey, prepared]);
 
   // external time changes (scrub, event click, restart) — ignore the loop's own 10 Hz pushes
   useEffect(() => useJourneyStore.subscribe((s, prev) => { if (s.t !== prev.t && s.t !== pushedT.current) { tRef.current = s.t; snapFrames.current = 2; } }), []);
@@ -237,10 +258,18 @@ export function Journey({ object }: { object: SceneObject }) {
       marker.current.scale.setScalar(Math.max(0.05, Math.min(6000, d * 0.014)));
     }
     // --- flown trail (instanced line segments: draw the first n) -------------------------------------------------
+    // Near the ground the dozens of lunar-orbit passes overhead would read as a cage across the sky, so every route
+    // line except the powered descent fades out below ~150 km camera altitude (fully gone under 25 km).
+    const camAlt = (simCamera.active ? simCamera.position : camera.position).length() - MOON_RADIUS_KM;
+    const fade = Math.max(0, Math.min(1, (camAlt - 25) / 125));
     for (let k = 0; k < prepared.length; k++) {
       const line = trails.current[k];
-      if (!line) continue;
       const p = prepared[k];
+      const keep = p.seg.kind === 'descent' || p.seg.kind === 'ascent';
+      const path = paths.current[k];
+      if (path) path.material.opacity = 0.28 * (keep ? 1 : fade);
+      if (!line) continue;
+      line.material.opacity = 0.95 * (keep ? 1 : fade);
       const n = p.times.length - 1;
       const count = t >= p.t1 ? n : t <= p.t0 ? 0 : Math.min(n, bracket(p.times, t) + 1);
       line.geometry.instanceCount = count;
@@ -262,9 +291,9 @@ export function Journey({ object }: { object: SceneObject }) {
             desired.copy(pos).addScaledVector(right, D * 0.85).addScaledVector(radial, D * 0.35).addScaledVector(tang, -D * 0.45);
             target.copy(pos).addScaledVector(tang, D * 0.1);
           } else {
-            const D = 2_200;
-            desired.copy(pos).addScaledVector(tang, -D * 0.9).addScaledVector(radial, D * 0.5).addScaledVector(right, D * 0.12);
-            target.copy(pos).addScaledVector(tang, D * 0.8);
+            const D = 1_850;
+            desired.copy(pos).addScaledVector(tang, -D * 0.8).addScaledVector(radial, D * 0.44).addScaledVector(right, D * 0.5);
+            target.copy(pos).addScaledVector(tang, D * 0.2).addScaledVector(radial, -D * 0.26);
           }
           up.copy(radial);
         } else if (kind === 'translunar' || kind === 'return') {
@@ -280,9 +309,18 @@ export function Journey({ object }: { object: SceneObject }) {
           up.copy(radial);
         } else {
           const alt = dMoon - MOON_RADIUS_KM;
-          const back = alt > 20 ? 900 : 4 + alt * 0.6, upK = alt > 20 ? 400 : 1.6 + alt * 0.35;
-          desired.copy(pos).addScaledVector(fwd, -back).addScaledVector(radial, upK);
-          target.copy(pos).addScaledVector(fwd, alt > 20 ? 600 : 1.5);
+          if (t >= endS) {
+            // landed: settle on the lander itself (horizontal stand-off, so the hand-over to free orbiting starts on the ground)
+            const tang = scratch.tang.copy(fwd).addScaledVector(radial, -fwd.dot(radial));
+            if (tang.lengthSq() < 1e-6) tang.crossVectors(radial, Y);
+            tang.normalize();
+            desired.copy(pos).addScaledVector(tang, -3.2).addScaledVector(radial, 1.1);
+            target.copy(pos);
+          } else {
+            const back = alt > 20 ? 900 : 4 + alt * 0.6, upK = alt > 20 ? 400 : 1.6 + alt * 0.35;
+            desired.copy(pos).addScaledVector(fwd, -back).addScaledVector(radial, upK);
+            target.copy(pos).addScaledVector(fwd, alt > 20 ? 600 : 1.5);
+          }
           up.copy(radial);
         }
       } else {
@@ -332,7 +370,12 @@ export function Journey({ object }: { object: SceneObject }) {
         altitudeKm: nearEarth ? dEarth - EARTH_RADIUS_KM : dMoon - MOON_RADIUS_KM, nearBody: nearEarth ? 'earth' : 'moon',
         speedKms, distanceEarthKm: dEarth, distanceMoonKm: dMoon, utc: isNaN(launchMs) ? '' : new Date(launchMs + t * 1000).toISOString().slice(0, 19) + 'Z',
       });
-      setLabel({ seg: cur.seg.label, time: formatJourneyTime(t) });
+      setLabel({
+        seg: cur.seg.label, time: formatJourneyTime(t),
+        altitudeKm: nearEarth ? dEarth - EARTH_RADIUS_KM : dMoon - MOON_RADIUS_KM,
+        body: nearEarth ? 'Earth' : 'Moon', speedKms,
+        utc: isNaN(launchMs) ? '—' : new Date(launchMs + t * 1000).toISOString().slice(0, 19).replace('T', ' ') + 'Z',
+      });
     }
   });
 
@@ -341,7 +384,7 @@ export function Journey({ object }: { object: SceneObject }) {
   const fidelityWord = journey.fidelity === 'reconstructed' ? 'reconstructed route' : journey.fidelity === 'projected' ? 'projected route' : 'planned route (model)';
   return (
     <group name="journey">
-      {/* Earth-centred inertial segments (ascent, parking, phasing, Earth return): rebuilt frame pose every frame */}
+      {/* Earth-centred inertial segments (ascent, parking, phasing, Earth return) + Launch Pad anchor: rebuilt frame pose every frame */}
       <group ref={inertialGroup} matrixAutoUpdate={false} name="journey-earth-inertial">
         {prepared.map((p, k) => p.inertial && !p.track ? (
           <Line key={`${p.seg.id}-path`} ref={(el) => { paths.current[k] = el as unknown as TrailLine | null; }} points={p.flat} color={p.color} lineWidth={1} transparent opacity={0.28} depthWrite={false} />
@@ -349,6 +392,26 @@ export function Journey({ object }: { object: SceneObject }) {
         {prepared.map((p, k) => p.inertial && !p.track ? (
           <Line key={`${p.seg.id}-trail`} ref={(el) => { trails.current[k] = el as unknown as TrailLine | null; }} points={p.flat} color={p.color} lineWidth={2.2} transparent opacity={0.95} depthWrite={false} />
         ) : null)}
+        {pad && (
+          <group position={pad} name="journey-launch-pad">
+            <mesh>
+              <sphereGeometry args={[12, 12, 12]} />
+              <meshBasicMaterial color="#ffb454" />
+            </mesh>
+            {showLabels && (
+              <FlightMarker
+                markerType="launch" category="Earth departure" title={journey.launchSite.shortName ?? journey.launchSite.name}
+                badge="LAUNCH" color="#ffbf72"
+                details={[
+                  { label: 'Coordinates', value: `${journey.launchSite.latitude.toFixed(3)}°, ${journey.launchSite.longitude.toFixed(3)}°` },
+                  { label: 'Vehicle', value: journey.vehicle ?? 'Not specified' },
+                  { label: 'Launch UTC', value: journey.launchUtc.replace('T', ' ').slice(0, 16) + 'Z' },
+                ]}
+                note={`${fidelityWord} · model, not live flight telemetry.`}
+              />
+            )}
+          </group>
+        )}
       </group>
       {/* Moon-fixed segments (lunar orbit, descent) and the trans-lunar track (drawn in the Moon-fixed frame) */}
       {prepared.map((p, k) => !p.inertial || p.track ? (
@@ -357,25 +420,7 @@ export function Journey({ object }: { object: SceneObject }) {
       {prepared.map((p, k) => !p.inertial || p.track ? (
         <Line key={`${p.seg.id}-trail`} ref={(el) => { trails.current[k] = el as unknown as TrailLine | null; }} points={p.flat} color={p.color} lineWidth={2.2} transparent opacity={0.95} depthWrite={false} frustumCulled={false} />
       ) : null)}
-      {/* launch pad — rotates with the Earth */}
-      {pad && (
-        <group ref={earthGroup} matrixAutoUpdate={false} name="journey-earth-fixed">
-          <group position={pad}>
-            <mesh>
-              <sphereGeometry args={[45, 12, 12]} />
-              <meshBasicMaterial color="#ffb454" />
-            </mesh>
-            {showLabels && (
-              <Html position={[0, 140, 0]} center zIndexRange={[9, 0]} style={{ pointerEvents: 'none' }}>
-                <div className="marker-label" style={{ borderColor: '#ffb454' }}>
-                  <span className="marker-title">Launch · {journey.launchSite.shortName ?? journey.launchSite.name}</span>
-                  <span className="marker-sub">{journey.launchSite.latitude.toFixed(3)}°, {journey.launchSite.longitude.toFixed(3)}° · {journey.launchUtc.replace('T', ' ').slice(0, 16)}Z</span>
-                </div>
-              </Html>
-            )}
-          </group>
-        </group>
-      )}
+      <group ref={earthGroup} matrixAutoUpdate={false} name="journey-earth-fixed" />
       {/* spacecraft marker (unit size, scaled per frame with camera distance) */}
       <group ref={marker} name="journey-marker">
         <mesh>
@@ -387,12 +432,18 @@ export function Journey({ object }: { object: SceneObject }) {
           <meshBasicMaterial color="#8fd3ff" transparent opacity={0.85} depthWrite={false} side={2} />
         </mesh>
         {showLabels && label && (
-          <Html position={[0, 1.6, 0]} center zIndexRange={[10, 0]} style={{ pointerEvents: 'none' }}>
-            <div className="marker-label selected" style={{ borderColor: '#8fd3ff' }}>
-              <span className="marker-title">{name} · {label.seg}</span>
-              <span className="marker-sub">{label.time} · {fidelityWord}, not telemetry</span>
-            </div>
-          </Html>
+          <FlightMarker
+            markerType="spacecraft" category="Mission journey" title={name} badge={journey.fidelity} color="#91ddff"
+            details={[
+              { label: 'Phase', value: label.seg },
+              { label: 'Mission time', value: label.time },
+              { label: `Altitude · ${label.body}`, value: formatMarkerAltitude(label.altitudeKm) },
+              { label: 'Speed', value: `${label.speedKms.toFixed(2)} km/s` },
+              { label: 'UTC', value: label.utc },
+              { label: 'Destination', value: journey.landingSite?.name ?? (journey.profile === 'earth-return' ? 'Earth return' : 'Lunar orbit') },
+            ]}
+            note={`${fidelityWord} · model, not live flight telemetry.`}
+          />
         )}
       </group>
     </group>

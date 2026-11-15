@@ -94,10 +94,48 @@ uniform float uMaxKm;
 uniform float uOpacity;
 uniform sampler2D uMask;
 uniform float uMaskEnabled;
+uniform float uDetail;
+uniform float uExposure;
 varying vec2 vUv;
 varying vec3 vNormalW;
 varying float vHeight;
 varying vec3 vWorldPos;
+
+// ---- close-range micro-detail (procedural regolith shading — a declared visualization aid, never data) ----------
+// Value noise over the Moon-fixed world position (km). Amplitudes are metres, wavelengths 50 m – 1 km: enough to give
+// the surface grain under raking light when the 1.9 km/px LROC colour and the DEM posts have nothing finer to offer.
+float hash31(vec3 p) {
+  p = fract(p * 0.1031);
+  p += dot(p, p.yzx + 33.33);
+  return fract((p.x + p.y) * p.z);
+}
+float vnoise(vec3 x) {
+  vec3 i = floor(x);
+  vec3 f = fract(x);
+  f = f * f * (3.0 - 2.0 * f);
+  float n000 = hash31(i), n100 = hash31(i + vec3(1, 0, 0)), n010 = hash31(i + vec3(0, 1, 0)), n110 = hash31(i + vec3(1, 1, 0));
+  float n001 = hash31(i + vec3(0, 0, 1)), n101 = hash31(i + vec3(1, 0, 1)), n011 = hash31(i + vec3(0, 1, 1)), n111 = hash31(i + vec3(1, 1, 1));
+  return mix(mix(mix(n000, n100, f.x), mix(n010, n110, f.x), f.y), mix(mix(n001, n101, f.x), mix(n011, n111, f.x), f.y), f.z) * 2.0 - 1.0;
+}
+// height field (km) and an albedo factor; each octave fades out once a pixel spans a sizeable part of its wavelength
+void microDetail(vec3 p, float footprintKm, out float h, out float albedoMul) {
+  const vec3 lambda = vec3(0.95, 0.23, 0.055); // km
+  const vec3 amp = vec3(0.0055, 0.0022, 0.0009); // km (5.5 m, 2.2 m, 0.9 m)
+  vec3 w = 1.0 - smoothstep(vec3(0.3), vec3(1.0), vec3(footprintKm) / lambda);
+  float n0 = vnoise(p / lambda.x), n1 = vnoise(p / lambda.y + 7.3), n2 = vnoise(p / lambda.z + 19.1);
+  h = (n0 * amp.x * w.x + n1 * amp.y * w.y + n2 * amp.z * w.z);
+  float a = vnoise(p / 2.6 + 3.7) * 0.05 + n1 * 0.035 * w.y + n2 * 0.02 * w.z;
+  albedoMul = 1.0 + a;
+}
+// bump the normal from a scalar height field using screen-space derivatives (no tangent frame needed)
+vec3 bumpNormal(vec3 n, vec3 p, float h) {
+  vec3 sx = dFdx(p), sy = dFdy(p);
+  float hx = dFdx(h), hy = dFdy(h);
+  vec3 r1 = cross(sy, n), r2 = cross(n, sx);
+  float det = dot(sx, r1);
+  vec3 grad = sign(det) * (hx * r1 + hy * r2);
+  return normalize(abs(det) * n - grad);
+}
 
 vec3 ramp(float t) {
   vec3 a = vec3(0.16, 0.30, 0.85);
@@ -114,10 +152,18 @@ void main() {
   if (uMaskEnabled > 0.5 && texture2D(uMask, vUv).r > 0.5) discard;
   #include <logdepthbuf_fragment>
   vec3 n = normalize(vNormalW);
+  vec3 albedo = texture2D(uColor, vUv).rgb * uTint;
+  if (uDetail > 0.001) {
+    float h, aMul;
+    float footprint = length(fwidth(vWorldPos));
+    microDetail(vWorldPos, footprint, h, aMul);
+    // scale the relief by the detail weight (fades in with altitude) and keep slopes gentle (regolith, not rocks)
+    n = bumpNormal(n, vWorldPos, h * uDetail * 0.9);
+    albedo *= mix(1.0, aMul, uDetail);
+  }
   float ndl = max(dot(n, uSunDir), 0.0);
   // soft terminator: a touch of wrap lighting so the night side is not pure black
   float wrap = max(dot(n, uSunDir) * 0.5 + 0.5, 0.0);
-  vec3 albedo = texture2D(uColor, vUv).rgb * uTint;
   // gentle view-dependent fill so close-up terrain in low polar light stays readable (visualization aid)
   float fill = max(dot(n, normalize(cameraPosition - vWorldPos)), 0.0) * uFill;
   // earthshine: the Earth lights the near-side night (real, but boosted ×~1000 as a night-reading aid; 0 = off)
@@ -127,6 +173,7 @@ void main() {
     float t = clamp((vHeight - uMinKm) / max(uMaxKm - uMinKm, 0.001), 0.0, 1.0);
     col = mix(col, ramp(t) * (ndl * 0.9 + 0.35), 0.6);
   }
+  col *= uExposure;                                   // near-surface auto exposure (display only, see TerrainSystem)
   gl_FragColor = vec4(col, uOpacity);
   #include <colorspace_fragment>
 }
@@ -139,6 +186,10 @@ void main() {
 export const sharedLightUniforms = {
   uEarthDir: { value: new Vector3(1, 0, 0) },
   uEarthshine: { value: 0 },
+  /** 0 = off; 1 = full close-range micro-detail (driven per frame from the camera altitude × the user toggle) */
+  uDetail: { value: 0 },
+  /** display exposure multiplier for close-range low-Sun views (1 = none) */
+  uExposure: { value: 1 },
 };
 
 export interface MoonMaterialOptions {
@@ -192,6 +243,8 @@ export function createMoonMaterial(o: MoonMaterialOptions): ShaderMaterial {
       uOpacity: { value: 1 },
       uMask: { value: o.mask ?? null },
       uMaskEnabled: { value: o.mask ? 1 : 0 },
+      uDetail: sharedLightUniforms.uDetail,
+      uExposure: sharedLightUniforms.uExposure,
     },
     defines: o.manualBilinear ? { MANUAL_BILINEAR: '' } : {},
     polygonOffset: !!o.polygonOffset,

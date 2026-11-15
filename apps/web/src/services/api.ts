@@ -1,6 +1,6 @@
 import type {
   AiCapabilities, AiRequest, AiResponse,
-  AssetEntry, AssetManifest, HistoricCatalog, ImageryIndex, Journey, JourneyIndexEntry, JourneyResponse, LandingSite, LaunchSite, ModelInfo, PlanInput, PlanOptions, PlanResult, Mission, MissionDetail, MissionEvent, MissionSummary, Payload, Provider, Region, SiteTerrain, SourceRef, Spacecraft, TileIndex,
+  AssetEntry, AssetManifest, DecisionReportResult, HistoricCatalog, HorizonsComparison, ImageryIndex, Journey, JourneyIndexEntry, JourneyResponse, LandingSite, LaunchSite, ModelInfo, PlanInput, PlanOptions, PlanResult, ResilienceResult, SiteOptimizationResult, Mission, MissionDetail, MissionEvent, MissionSummary, Payload, Provider, Region, SiteTerrain, SourceRef, Spacecraft, TileIndex,
 } from '@/types/domain';
 
 const BASE = '/api/v1';
@@ -26,6 +26,18 @@ export const api = {
   researchModel: () => get<ModelInfo>('/research/model'),
   researchOptions: () => get<PlanOptions>('/research/options'),
   researchPlan: (input: PlanInput) => post<PlanResult>('/research/plan', input),
+  researchResilience: (input: PlanInput) => post<ResilienceResult>('/research/resilience', input),
+  researchOptimize: (input: PlanInput) => post<SiteOptimizationResult>('/research/optimize', input),
+  researchReport: (input: PlanInput) => post<DecisionReportResult>('/research/report', input),
+  researchBatch: (scenarios: PlanInput[]) => post<{ kind: 'batch'; count: number; results: unknown[] }>('/research/batch', { scenarios }),
+  /** Explicit, on-demand Horizons query; a failed upstream request never masquerades as live data. */
+  researchHorizons: async (latitude: number, longitude: number, utc: string, days: number): Promise<HorizonsComparison> => {
+    const q = new URLSearchParams({ lat: String(latitude), lon: String(longitude), utc, days: String(days) });
+    const res = await fetch(`${BASE}/research/horizons?${q}`);
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(typeof body.error === 'string' ? body.error : 'JPL Horizons is unavailable. Local planning is still available.');
+    return body as HorizonsComparison;
+  },
   health: () => get<{ ok: boolean; assets: number }>('/health'),
   // journeys (research engine, through this API)
   launchSites: () => get<{ launchSites: LaunchSite[] }>('/launch-sites'),

@@ -13,6 +13,10 @@ export interface WorldSettings {
   lightingMode: 'ephemeris' | 'auto' | 'manual';
   /** faint fill light on the lunar night side so unlit terrain stays readable (visualization aid, declared in the HUD) */
   nightAid: boolean;
+  /** procedural regolith micro-shading that fades in below ~60 km altitude (visualization aid, declared in the HUD; never data) */
+  surfaceDetail: boolean;
+  /** near-surface auto exposure: brightens the display (not the data) when the Sun is low or below the horizon */
+  autoExposure: boolean;
   elevationExaggeration: number; // 1 = true scale
   showLabels: boolean;
   showCoordinateGrid: boolean;
@@ -34,6 +38,8 @@ export const useWorldStore = create<WorldStore>((set) => ({
   subsolarLatitudeDeg: 1.5,
   lightingMode: 'ephemeris',
   nightAid: true,
+  surfaceDetail: true,
+  autoExposure: true,
   elevationExaggeration: 1,
   showLabels: true,
   showCoordinateGrid: false,

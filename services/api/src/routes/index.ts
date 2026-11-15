@@ -17,7 +17,7 @@ export function registerRoutes(app: FastifyInstance, { repo, terrain, imagery }:
   const v1 = '/api/v1';
 
   app.get(`${v1}`, async () => ({
-    name: 'CLPS Lunar Mission Browser API',
+    name: 'SELENARA X API',
     version: 'v1',
     endpoints: [
       'GET /api/v1/health',
@@ -36,7 +36,8 @@ export function registerRoutes(app: FastifyInstance, { repo, terrain, imagery }:
       'GET /api/v1/sources', 'GET /api/v1/sources/:id',
       'GET /api/v1/timeline',
       'GET /api/v1/search?q=',
-      'GET /api/v1/research/{health|missions|model|features|options|terrain|grid|horizon|ephemeris|windows}', 'POST /api/v1/research/{plan|train}',
+      'GET /api/v1/research/{health|missions|model|features|options|terrain|grid|horizon|ephemeris|windows}',
+      'GET /api/v1/research/horizons?lat=&lon=&utc=&days= (on-demand JPL/LOLA comparison)', 'POST /api/v1/research/{plan|train}',
       'GET /api/v1/launch-sites', 'GET /api/v1/launch-sites/:id', 'GET /api/v1/journeys', 'GET /api/v1/missions/:id/journey', 'POST /api/v1/plan/journey',
       'GET /api/v1/ai/capabilities', 'POST /api/v1/ai/message', 'POST /api/v1/ai/validate',
     ],
@@ -191,7 +192,7 @@ export function registerRoutes(app: FastifyInstance, { repo, terrain, imagery }:
   registerAiRoutes(app, repo, RESEARCH);
   const forward = async (reply: { code: (n: number) => { send: (b: unknown) => unknown } }, path: string, init?: RequestInit) => {
     try {
-      const res = await fetch(`${RESEARCH}${path}`, { ...init, signal: AbortSignal.timeout(30_000) });
+      const res = await fetch(`${RESEARCH}${path}`, { ...init, signal: AbortSignal.timeout(60_000) });
       const body = await res.json().catch(() => ({ error: 'invalid response from research engine' }));
       return reply.code(res.status).send(body);
     } catch (e) {
@@ -206,7 +207,7 @@ export function registerRoutes(app: FastifyInstance, { repo, terrain, imagery }:
   });
   app.post<{ Params: { '*': string } }>(`${v1}/research/*`, async (req, reply) => {
     const rest = req.params['*'];
-    if (!/^(plan|train)$/.test(rest)) return reply.code(404).send({ error: 'not found' });
+    if (!/^(plan|resilience|optimize|batch|report|train)$/.test(rest)) return reply.code(404).send({ error: 'not found' });
     return forward(reply, `/${rest}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(req.body ?? {}) });
   });
   // ---- journeys: Earth launch → Moon (per mission, or for a user plan) -------------------------------------------

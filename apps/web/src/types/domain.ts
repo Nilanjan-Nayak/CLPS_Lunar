@@ -96,13 +96,30 @@ export interface HistoricMission {
   hazardAvoidance: boolean; crewed: boolean; commercial: boolean; massKg: number | null; massNote: string | null; sourceIds: string[];
 }
 export interface HistoricCatalog { version: number; generatedAt: string; note: string; missions: HistoricMission[]; sources: { id: string; title: string; publisher: string; url: string; kind: string }[] }
-export interface LanderPreset { id: string; name: string; dryMassKg: number; propellantKg: number; payloadKg: number; thrustN: number; ispS: number; minThrottle: number; power: string; note: string; confidence: string }
-export interface PlanOptions { landers: LanderPreset[]; launchVehicles: { id: string; name: string; tliCapacityKg: number; note: string }[]; transfers: { id: string; name: string; cruiseDays: number; vInfKms: number; extraDeltaVMps: number; carrierDoesLoi?: boolean; note: string }[] }
+export interface LanderPreset {
+  id: string; name: string; dryMassKg: number; propellantKg: number; payloadKg: number; thrustN: number; ispS: number; minThrottle: number; power: string; note: string; confidence: string;
+  solarPanelAreaM2?: number; panelEfficiency?: number; batteryCapacityWh?: number; baseLoadW?: number; payloadLoadW?: number; nightSurvivalLoadW?: number; maxDod?: number;
+}
+/** Backend-provided, rounded reference sites for quick comparison—not mission database records. */
+export interface CuratedLunarSite {
+  id: string; name: string; category: 'CLPS' | 'Artemis' | 'Apollo' | 'International'; agency: string;
+  latitude: number; longitude: number; landerId?: string; summary: string; precision?: string;
+}
+export interface PlanOptions {
+  landers: LanderPreset[];
+  launchVehicles: { id: string; name: string; tliCapacityKg: number; note: string }[];
+  transfers: { id: string; name: string; cruiseDays: number; vInfKms: number; extraDeltaVMps: number; carrierDoesLoi?: boolean; note: string }[];
+  defaultCandidateSites?: { id: string; name: string; region: string; latitude: number; longitude: number }[];
+  challengeSites?: CuratedLunarSite[];
+}
 export interface PlanInput {
   latitude: number; longitude: number; landerId?: string; dryMassKg?: number; propellantKg?: number; payloadKg?: number; thrustN?: number; ispS?: number; minThrottle?: number;
   launchVehicleId?: string; transferId?: string; orbitDays?: number; surfaceDays?: number; dataVolumeGb?: number; downlinkMbps?: number; year?: number;
   /** ISO date or datetime (UTC). Date-only → first landing window (Sun rising through the target elevation) on/after that day. */
   landingDate?: string; gridHalfKm?: number;
+  /** Optional electrical power & constraint overrides */
+  solarPanelAreaM2?: number; panelEfficiency?: number; batteryCapacityWh?: number; baseLoadW?: number; payloadLoadW?: number; nightSurvivalLoadW?: number; maxDod?: number;
+  useRelay?: boolean; maxSlopeDeg?: number; minSunlitFraction?: number; minEarthVisFraction?: number; delaysDays?: number[];
 }
 export interface TerrainFeatures {
   elevationM: number; slopeDeg: number; aspectDeg: number; roughnessM: number; reliefM: number; baselineM: number; maxSunElevationDeg: number; polar: boolean; dataSource: string;
@@ -111,15 +128,76 @@ export interface TerrainFeatures {
   /** the 16 px/deg values (training scale of the outcome model) when `grade` is science */
   regional?: Pick<TerrainFeatures, 'elevationM' | 'slopeDeg' | 'aspectDeg' | 'roughnessM' | 'reliefM' | 'baselineM' | 'dataSource'>;
 }
-export interface TerrainHorizon { azimuthStepDeg: number; elevationDeg: number[]; maxKm: number; dataSource: string; note: string }
+export interface TerrainHorizon { azimuthStepDeg: number; elevationDeg: number[]; maxKm: number; resolutionM?: number; grade?: string; dataSource: string; note: string }
 export interface EphemSample {
   utc: string; t?: number; sunElevationDeg: number; sunAzimuthDeg: number; earthElevationDeg: number; earthAzimuthDeg: number;
-  subSolarLat: number; subSolarLon: number; subEarthLat: number; subEarthLon: number; earthDistanceKm: number; sunVisible?: boolean; earthVisible?: boolean;
+  subSolarLat: number; subSolarLon: number; subEarthLat: number; subEarthLon: number; earthDistanceKm: number;
+  sunVisible?: boolean; earthVisible?: boolean; sunClearanceDeg?: number; earthClearanceDeg?: number;
 }
-export interface LandingWindow extends EphemSample { dayHoursAfter: number; sunlitHoursAfter: number; peakSunElevationDeg: number; earthElevationMinDeg14d: number; earthElevationMaxDeg14d: number; targetSunElevationDeg: number }
+export interface LandingWindow extends EphemSample {
+  dayHoursAfter: number; sunlitHoursAfter: number; continuousSunlitHoursAfter?: number; maxDarknessHours14d?: number;
+  peakSunElevationDeg: number; earthElevationMinDeg14d: number; earthElevationMaxDeg14d: number;
+  earthClearanceMinDeg14d?: number; earthClearanceMaxDeg14d?: number; earthVisibleFraction14d?: number;
+  targetSunElevationDeg: number; terrainMasked?: boolean;
+  goldenScore?: number; goldenFeasible?: boolean; powerSurvives14d?: boolean; commsFeasible?: boolean; summary?: string;
+}
+export interface EphemValidationInfo {
+  subPointAgreementArcmin: number; subPointAgreementDeg: number;
+  seriesTruncationDeg: { moonLonDeg: number; moonLatDeg: number; sunLonDeg: number };
+  referenceSystem: string; testedEpochsUtc: string[]; apolloLandingChecks: string; scopeNote: string;
+}
+/** On-demand NASA JPL observer table compared with the app's own LOLA horizon and offline model. */
+export interface HorizonsSample {
+  utc: string;
+  sunAzimuthDeg: number; sunElevationDeg: number; sunHorizonDeg: number; sunClearanceDeg: number; sunVisible: boolean;
+  earthAzimuthDeg: number; earthElevationDeg: number; earthHorizonDeg: number; earthClearanceDeg: number; earthVisible: boolean;
+}
+export interface HorizonsComparison {
+  kind: 'horizons_comparison'; source: string; sourceUrl: string; sunEphemeris: string; earthEphemeris: string;
+  retrievedAtUtc: string; startUtc: string; endUtc: string; stepHours: number;
+  site: { latitude: number; longitude: number; terrainElevationM: number; observerHeightM: number; horizonGrade?: string; horizonResolutionM?: number; horizonFallbackResolutionM?: number; horizonSource: string; horizonNote?: string; horizonMaxKm: number };
+  atLanding: HorizonsSample;
+  localAtLanding: { sunAzimuthDeg: number; sunElevationDeg: number; earthAzimuthDeg: number; earthElevationDeg: number };
+  localMinusHorizonsDeg: { sunAzimuth: number; sunElevation: number; earthAzimuth: number; earthElevation: number };
+  summary: { durationHours: number; sampleCount: number; sunlitHours: number; earthVisibleHours: number; bothVisibleHours: number; sunlitFraction: number; earthVisibleFraction: number; bothVisibleFraction: number };
+  series: HorizonsSample[]; limitations: string;
+}
 export interface PlanEphemeris {
-  model: string; atLanding: EphemSample; windows: LandingWindow[]; targetSunElevationDeg: number; samples: EphemSample[];
+  model: string; validation?: EphemValidationInfo; atLanding: EphemSample; windows: LandingWindow[]; targetSunElevationDeg: number; samples: EphemSample[];
   calendar: { launchUtc: string; landingUtc: string; surfaceEndUtc: string; missionEndUtc: string; requestedLandingDate: string | null };
+}
+export interface MissionConstraint {
+  id: string; name: string; category: 'propulsion' | 'terrain' | 'illumination' | 'power' | 'communications';
+  hard: boolean; status: 'pass' | 'warn' | 'fail'; actual: number; threshold: number; unit: string; margin: number; summary: string;
+}
+export interface PowerSample {
+  tHours: number; utc: string; sunElevationDeg: number; sunClearanceDeg: number; earthElevationDeg: number; earthClearanceDeg: number;
+  sunVisible: boolean; earthVisible: boolean; solarPowerW: number; loadPowerW: number; netPowerW: number; socWh: number; socPct: number; goldenActive: boolean;
+}
+export interface PowerBudget {
+  powerType: string;
+  parameters: {
+    solarPanelAreaM2: number; panelEfficiency: number; solarIrradianceWm2: number; batteryCapacityWh: number; usableBatteryWh: number;
+    maxDod: number; minSafeSocPct: number; baseLoadW: number; payloadLoadW: number; operationalLoadW: number; nightSurvivalLoadW: number;
+  };
+  summary: {
+    generatedWh: number; generatedKwh: number; requiredWh: number; requiredKwh: number; fullCalendarRequiredKwh?: number;
+    energyMarginWh: number; energyMarginKwh: number; energyBalanceRatio: number; peakSolarPowerW: number; meanSolarPowerW: number; meanLoadPowerW: number;
+    minSocWh: number; minSocPct: number; endOfCalendarSocPct?: number; endSocPct: number;
+    sunlitHours: number; darknessHours: number; maxContinuousDarknessHours: number; totalCalendarDarknessHours?: number; darknessSurvivalHours: number;
+    brownoutHours: number; depletedHours: number; survivesDarkness: boolean; powerFeasible: boolean; powerPositiveFraction: number; goldenWindowFraction: number;
+  };
+  formulaNote: string;
+  series: PowerSample[];
+}
+export interface GoldenWindowInterval {
+  startUtc: string; endUtc: string; durationHours: number; durationDays: number;
+  meanSunElevationDeg: number; meanEarthElevationDeg: number; meanSolarPowerW: number; minSocPct: number;
+}
+export interface GoldenWindows {
+  totalGoldenHours: number; totalGoldenDays: number; longestGoldenHours: number; longestGoldenDays: number;
+  overlapFraction: number; intervals: GoldenWindowInterval[]; candidateWindows: LandingWindow[];
+  bestWindowUtc: string | null; bestWindowScore: number | null; dsnNote: string;
 }
 export interface DescentSample { t: number; downrangeM: number; altitudeM: number; vxMps: number; vzMps: number; speedMps: number; massKg: number; throttle: number }
 export interface PlanPhase { id: 'launch' | 'separation' | 'transfer' | 'loi' | 'landing' | 'surface' | 'relay'; name: string; startS: number; endS: number; durationS: number; deltaVMps?: number; note?: string; startUtc?: string; endUtc?: string }
@@ -132,8 +210,12 @@ export interface PlanResult {
     comms?: { earthElevationMinDeg: number; earthElevationMaxDeg: number; earthVisibleFraction: number; sunlitFraction: number };
   };
   ephemeris?: PlanEphemeris;
+  powerBudget?: PowerBudget;
+  goldenWindows?: GoldenWindows;
+  constraints?: MissionConstraint[];
+  viabilityScore?: number;
   analysisGrid: { bounds: { north: number; south: number; west: number; east: number }; rows: number; cols: number; slopeDeg: number[]; roughnessM: number[]; elevationM: number[]; suitability: number[]; dataSource: string; method: string; halfKm?: number; cellM?: number; grade?: string };
-  outcomeModel: { pNominal: number; logit: number; contributions: Record<string, number>; modelVersion: number; looCv: { accuracy: number; balancedAccuracy: number; brier: number }; n: number; neighbours: HistoricNeighbour[] };
+  outcomeModel: { pNominal: number; logit: number; contributions: Record<string, number>; modelVersion: number; looCv: { accuracy: number; balancedAccuracy: number; brier: number }; n: number; neighbours: HistoricNeighbour[]; exploratoryNote?: string };
   budget: { deltaV: { transferCorrectionsMps: number; loiMps: number; doiMps: number; descentMps: number; hoverReserveMps: number; totalMps: number }; mass: { atTliKg: number; afterLoiKg: number; atPdiKg: number; atTouchdownKg: number; propellantUsedKg: number; propellantMarginKg: number; maxPayloadKg: number }; exhaustVelocityMps: number };
   descent: { tgoS: number; durationS: number; deltaVMps: number; propellantKg: number; finalMassKg: number; peakThrottle: number; secondsBelowMinThrottle: number; touchdownSpeedMps: number; downrangeAtPdiKm: number; initial: { altitudeM: number; speedMps: number; descentOrbitKm: number[]; coastFromApoluneS: number }; samples: DescentSample[] };
   approachAzimuthDeg: number;
@@ -141,6 +223,62 @@ export interface PlanResult {
   summaryCard: { totalMissionTime: string; launchVehicle: string; payloadMass: string; landingSite: string; dataDownlink: string };
   flags: string[];
   provenance: { sourceIds: string[]; note: string };
+}
+
+// ---- Mission Intelligence Layer (SELENARA X: Resilience, MRI, Pareto, Confidence Report) ---------------------------
+export interface ResilienceScenario {
+  delayDays: number; code: string; label: string; launchUtc: string; landingUtc: string; surfaceEndUtc: string;
+  sunElevationAtLandingDeg: number; sunClearanceAtLandingDeg: number; sunVisibleAtLanding: boolean;
+  earthElevationAtLandingDeg: number; earthClearanceAtLandingDeg: number; earthVisibleAtLanding: boolean;
+  sunlitHours: number; sunlitFraction: number; earthVisibleFraction: number; earthElevationMinDeg: number; earthElevationMaxDeg: number;
+  relayRecommended: boolean; power: PowerBudget['summary'];
+  constraints: MissionConstraint[]; failedConstraintIds: string[]; failedHardConstraints: string[]; warnConstraints: string[];
+  feasible: boolean; resultStatus: 'Feasible' | 'Marginal' | 'Constraint violation' | 'Replanning required'; viabilityScore: number;
+}
+export interface RecoveryCandidate {
+  rank: number; landingUtc: string; surfaceEndUtc: string; shiftFromBaselineDays: number; feasible: boolean; resultStatus: string;
+  viabilityScore: number; sunElevationAtLandingDeg: number; sunClearanceAtLandingDeg: number; sunlitFraction: number; sunlitHours: number;
+  earthVisibleFraction: number; minSocPct: number; energyMarginKwh: number; maxContinuousDarknessHours: number;
+  failedHardConstraints: string[]; warnConstraints: string[];
+}
+export interface ExplainableRecommendations {
+  siteLabel: string; verdict: string; whyRecommended: string[]; knownRisks: string[]; recommendedActions: string[]; provenanceNote: string;
+}
+export interface ConfidenceDomain {
+  id: string; domain: string; grade: string; confidenceLevel: string; dataset: string; resolution: string; assumptions: string; limitations: string; testedEpochsUtc?: string[];
+}
+export interface ResilienceResult {
+  kind: 'resilience';
+  site: { latitude: number; longitude: number; label: string; terrain: TerrainFeatures; horizon: TerrainHorizon | null };
+  baselineLandingUtc: string; surfaceDays: number;
+  mri: {
+    score: number; weightedScore: number; totalScenarios: number; feasibleScenarios: number; failedScenarios: number;
+    criticalDelayDays: number | null; constraintFailureCounts: Record<string, number>; formula: string; testedDelaysDays: number[]; note: string;
+  };
+  scenarios: ResilienceScenario[];
+  recovery: { searchedDays: number; testedRecoveryCandidates: number; feasibleRecoveryCandidates: number; bestRecovery: RecoveryCandidate | null; candidates: RecoveryCandidate[] };
+  recommendations: ExplainableRecommendations;
+  confidence: { domains: ConfidenceDomain[] };
+}
+export interface SiteOptimizationCandidate {
+  id: string; name: string; region: string; latitude: number; longitude: number;
+  optimalLandingUtc: string; surfaceEndUtc: string; feasible: boolean; resultStatus: string; viabilityScore: number; mriScore: number; criticalDelayDays: number | null;
+  terrain: { elevationM: number; slopeDeg: number; roughnessM: number; baselineM: number; resolutionM: number; grade: string; polar: boolean };
+  objectives: { solarPct: number; earthPct: number; terrainSafetyPct: number; terrainRiskPct: number; darknessHours: number; darknessSafetyPct: number; mriScore: number };
+  power: PowerBudget['summary']; relayRecommended: boolean;
+  failedHardConstraints: string[]; warnConstraints: string[]; constraints: MissionConstraint[];
+  recommendations: ExplainableRecommendations;
+  delayStrip: { delayDays: number; feasible: boolean; status: string; solarPct: number; minSocPct: number }[];
+  paretoRank: number; paretoOptimal: boolean; dominatedBy: string[]; tradeoffSummary: string; overallRank: number;
+}
+export interface SiteOptimizationResult {
+  kind: 'site_optimization'; searchEpochUtc: string; surfaceDays: number;
+  totalCandidates: number; feasibleCandidates: number; paretoFrontierCount: number; paretoFrontierIds: string[];
+  recommendedCandidate: SiteOptimizationCandidate | null; candidates: SiteOptimizationCandidate[];
+  objectivesMeta: { key: string; label: string; direction: string }[]; methodNote: string;
+}
+export interface DecisionReportResult {
+  kind: 'decision_report'; generatedAtUtc: string; plan: PlanResult; resilience: ResilienceResult; optimization: SiteOptimizationResult;
 }
 export interface ModelInfo { version: number; trainedAt: string; algorithm: string; target: string; n: number; positives: number; majorityBaselineAccuracy: number; featureNames: string[]; coefficientsStandardized: Record<string, number>; looCv: { accuracy: number; balancedAccuracy: number; brier: number; confusion: Record<string, number> }; demSource: string; caveats: string[] }
 

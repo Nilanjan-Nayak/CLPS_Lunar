@@ -88,7 +88,11 @@ def _run(m0, thrust_n, ve, min_throttle, r0, v0, tgo, dt, sample_every) -> dict:
         t += dt
     if touchdown_speed is None:
         touchdown_speed = math.hypot(vx, vz)
+    x_end = R * math.atan2(ry, rx)
+    for s in samples:
+        s["downrangeM"] = round(s["downrangeM"] - x_end, 1)
     samples.append({"t": round(t, 1), "downrangeM": 0.0, "altitudeM": 0.0, "vxMps": 0.0, "vzMps": 0.0, "speedMps": round(touchdown_speed, 2), "massKg": round(m, 1), "throttle": 0.0})
+    pdi_km = round(samples[0]["downrangeM"] / 1000.0, 1) if samples else round(-(v0 * tgo / 2.0) / 1000.0, 1)
     return {"tgoS": round(tgo), "durationS": round(t, 1), "deltaVMps": round(dv, 1), "propellantKg": round(m0 - m, 1), "finalMassKg": round(m, 1),
             "peakThrottle": round(peak, 3), "secondsBelowMinThrottle": round(below_min, 1), "touchdownSpeedMps": round(touchdown_speed, 2),
-            "downrangeAtPdiKm": round(-(v0 * tgo / 2.0) / 1000.0, 1), "samples": samples}
+            "downrangeAtPdiKm": pdi_km, "samples": samples}

@@ -243,13 +243,19 @@ export class ScenePlanner {
     layers.trajectories = true;
     layers.navigationPath = false;
     const neighbours = new Set(plan?.outcomeModel.neighbours.map((n) => n.id) ?? []);
+    const elevKm = plan ? plan.site.terrain.elevationM / 1000 : null;
+    const histObjs = this.historicObjects(data.history, neighbours).filter((h) => {
+      const p = h.placement;
+      if (!p || p.latitude == null || p.longitude == null) return true;
+      return Math.hypot(p.latitude - latitude, p.longitude - longitude) > 0.25;
+    });
     const objects: SceneObject[] = [
-      { id: 'plan:site', kind: 'plan-site', label: 'Planned landing site (user input)', placement: { latitude, longitude, elevationKm: plan ? plan.site.terrain.elevationM / 1000 : null }, resolution: 'info-marker', precision: 'measured', status: 'planned', data: { terrain: plan?.site.terrain } },
-      ...this.historicObjects(data.history, neighbours),
+      { id: 'plan:site', kind: 'plan-site', label: 'Planned landing site (user input)', placement: { latitude, longitude, elevationKm: elevKm }, resolution: 'info-marker', precision: 'measured', status: 'planned', data: { terrain: plan?.site.terrain } },
+      ...histObjs,
     ];
     if (plan) {
       objects.push({ id: 'plan:grid', kind: 'analysis-grid', label: 'Site suitability grid (heuristic)', resolution: 'info-only', data: { grid: plan.analysisGrid } });
-      objects.push({ id: 'plan:sim', kind: 'simulation', label: `Simulated mission — ${plan.input.lander.name}`, placement: { latitude, longitude }, resolution: 'info-marker', note: plan.provenance.note, data: { plan } });
+      objects.push({ id: 'plan:sim', kind: 'simulation', label: `Simulated mission — ${plan.input.lander.name}`, placement: { latitude, longitude, elevationKm: elevKm }, resolution: 'info-marker', note: plan.provenance.note, data: { plan } });
     }
     return {
       id: nextId('scene'),

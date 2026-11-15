@@ -66,6 +66,12 @@ export function SceneConfigPanel() {
             <input type="checkbox" checked={world.nightAid} onChange={(e) => world.set({ nightAid: e.target.checked })} /> Night aid (earthshine ×1000 on the near-side night — visualization)
           </label>
         )}
+        <label className="row" title="Procedural regolith micro-shading (metre-scale relief + albedo grain) that fades in below ~60 km altitude. Visualization aid only: it never changes elevations, coordinates or imagery.">
+          <input type="checkbox" checked={world.surfaceDetail} onChange={(e) => world.set({ surfaceDetail: e.target.checked })} /> Close-range micro-detail (procedural — visualization, not data)
+        </label>
+        <label className="row" title="Below ~60 km the display opens up like a camera when the Sun over the viewpoint is low or set (×1 in daylight → ×3 at night). Changes only the on-screen brightness, never the lighting geometry or data.">
+          <input type="checkbox" checked={world.autoExposure} onChange={(e) => world.set({ autoExposure: e.target.checked })} /> Auto exposure near the surface (display only — brightens low-Sun / night views)
+        </label>
         <label>
           Sub-solar longitude <b>{world.subsolarLongitudeDeg}°</b>
           <input type="range" min={-180} max={180} step={1} value={world.subsolarLongitudeDeg} onChange={(e) => world.set({ subsolarLongitudeDeg: +e.target.value, lightingMode: 'manual' })} />
@@ -105,7 +111,7 @@ export function SceneConfigPanel() {
           </select>
         </label>
         <label className="row">
-          <input type="checkbox" checked={world.showLabels} onChange={(e) => world.set({ showLabels: e.target.checked })} /> Labels
+          <input type="checkbox" checked={world.showLabels} onChange={(e) => world.set({ showLabels: e.target.checked })} /> Labels &amp; hover details
         </label>
       </div>
     </Panel>

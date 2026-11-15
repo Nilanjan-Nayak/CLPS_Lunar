@@ -6,18 +6,24 @@ import type { PlanInput } from '@/types/domain';
 import { OUTCOME_COLOR, OUTCOME_GLYPH } from '@/features/history/HistoricLanding';
 import { DescentChart } from '@/features/planning/DescentChart';
 import { HorizonStrip, IlluminationChart } from '@/features/planning/IlluminationChart';
+import { PolarHorizonPlot } from '@/features/planning/PolarHorizonPlot';
+import { PowerBudgetChart } from '@/features/planning/PowerBudgetChart';
+import { ConstraintMatrix } from '@/features/planning/ConstraintMatrix';
+import { MissionIntelSubnav } from '@/features/planning/MissionIntelSubnav';
+import { SpaceAppsResourceBar } from '@/features/planning/SpaceAppsResourceBar';
 
 type Form = Required<Pick<PlanInput, 'latitude' | 'longitude' | 'landerId' | 'launchVehicleId' | 'transferId' | 'orbitDays' | 'surfaceDays' | 'dataVolumeGb' | 'downlinkMbps' | 'payloadKg'>> &
-  Pick<PlanInput, 'dryMassKg' | 'propellantKg' | 'thrustN' | 'ispS' | 'minThrottle' | 'landingDate'>;
+  Pick<PlanInput, 'dryMassKg' | 'propellantKg' | 'thrustN' | 'ispS' | 'minThrottle' | 'landingDate' | 'useRelay'>;
 const STRING_KEYS = ['landerId', 'launchVehicleId', 'transferId', 'landingDate'];
 
-const DEFAULTS: Form = { latitude: -84.79, longitude: 29.2, landerId: 'generic-clps-100kg', launchVehicleId: 'falcon-9', transferId: 'direct', orbitDays: 1, surfaceDays: 14, dataVolumeGb: 20, downlinkMbps: 4, payloadKg: 100 };
+const DEFAULTS: Form = { latitude: -84.79, longitude: 29.2, landerId: 'nova-c', launchVehicleId: 'falcon-9', transferId: 'direct', orbitDays: 1, surfaceDays: 14, dataVolumeGb: 20, downlinkMbps: 4, payloadKg: 100 };
 
 const heatColor = (v: number) => (v < 0.5 ? `rgb(255,${Math.round(90 + 240 * v)},90)` : `rgb(${Math.round(255 - 320 * (v - 0.5))},${Math.round(210 + 60 * (v - 0.5))},${Math.round(102 + 130 * (v - 0.5))})`);
 
 /**
  * PlanPage — "Landing Plan Studio": choose a site + lander/launch/transfer parameters, run the research engine
- * (terrain analysis, historical comparison, physics budgets, descent simulation) and open the animated 3-D simulation.
+ * (terrain analysis, 360° polar horizon, power budget, Golden Mission Window, structured constraints, historical comparison,
+ * physics budgets, descent simulation) and open the Hybrid 3D Navigator or animated 3-D simulation.
  */
 export function PlanPage() {
   const [q, setQ] = useSearchParams();
@@ -27,16 +33,21 @@ export function PlanPage() {
   const { data: history } = useHistoricMissions();
   const [form, setForm] = useState<Form>(() => {
     const f = { ...DEFAULTS } as Record<string, unknown>;
-    for (const [k, v] of q.entries()) { if (k === 'run') continue; f[k] = STRING_KEYS.includes(k) ? v : Number(v); }
+    for (const [k, v] of q.entries()) {
+      if (k === 'run' || k === 'tab') continue;
+      if (k === 'useRelay') f[k] = v === '1' || v === 'true';
+      else f[k] = STRING_KEYS.includes(k) ? v : Number(v);
+    }
     return f as Form;
   });
-  const [submitted, setSubmitted] = useState<PlanInput | null>(null);
+  const [submitted, setSubmitted] = useState<PlanInput | null>(() => clean(form));
   const { data: plan, isFetching, error } = usePlan(submitted);
   const preset = options?.landers.find((l) => l.id === form.landerId);
 
   useEffect(() => {
-    if (q.get('run') === '1' && !submitted) setSubmitted(clean(form));
-  }, [q, submitted, form]);
+    if (q.get('run') === '1') setSubmitted(clean(form));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [q]);
 
   const set = (k: keyof Form, v: string) => setForm((f) => ({ ...f, [k]: STRING_KEYS.includes(k) ? (v === '' ? undefined : v) : v === '' ? undefined : Number(v) }));
   const applyPreset = (id: string) => {
@@ -48,10 +59,12 @@ export function PlanPage() {
     setSubmitted(input);
     setQ(Object.fromEntries(Object.entries(input).map(([k, v]) => [k, String(v)])));
   };
-  const sceneUrl = useMemo(() => (submitted ? `/plan/scene?${new URLSearchParams(Object.entries(submitted).map(([k, v]) => [k, String(v)])).toString()}` : '#'), [submitted]);
+  const activeInput = submitted ?? clean(form);
+  const sceneUrl = useMemo(() => `/plan/scene?${new URLSearchParams(Object.entries(activeInput).map(([k, v]) => [k, String(v)])).toString()}`, [activeInput]);
+  const navUrl = useMemo(() => `/navigator?${new URLSearchParams(Object.entries(activeInput).map(([k, v]) => [k, String(v)])).toString()}`, [activeInput]);
   const launchSites = useLaunchSites();
   const [launchSiteId, setLaunchSiteId] = useState(q.get('launchSiteId') ?? 'ksc-lc-39a');
-  const journeyUrl = useMemo(() => (submitted ? `/plan/journey?${new URLSearchParams([...Object.entries(submitted).map(([k, v]) => [k, String(v)]), ['launchSiteId', launchSiteId]]).toString()}` : '#'), [submitted, launchSiteId]);
+  const journeyUrl = useMemo(() => `/plan/journey?${new URLSearchParams([...Object.entries(activeInput).map(([k, v]) => [k, String(v)]), ['launchSiteId', launchSiteId]]).toString()}`, [activeInput, launchSiteId]);
   const sitePresets = useMemo(() => [
     ...(sites?.landingSites.filter((s) => s.latitude != null).map((s) => ({ id: `clps:${s.id}`, name: `CLPS · ${s.name}`, lat: s.latitude!, lon: s.longitude! })) ?? []),
     ...(history?.missions.filter((m) => m.site && m.missionType !== 'impact').map((m) => ({ id: `hist:${m.id}`, name: `${m.eventDate.slice(0, 4)} · ${m.name}`, lat: m.site!.latitude, lon: m.site!.longitude })) ?? []),
@@ -59,14 +72,26 @@ export function PlanPage() {
 
   return (
     <div>
+      <MissionIntelSubnav input={activeInput} />
       <div className="page-head">
         <h1>Landing plan studio <Badge tone="warn">research engine · model output</Badge></h1>
         <p className="dim">
-          Pick a site and a lander, and the Python research engine computes terrain features from the LOLA-derived DEM, compares the site with
-          {history ? ` ${history.missions.filter((m) => m.missionType !== 'impact').length}` : ''} historical landing attempts (NSSDCA), runs the Δv / propellant chain and a
-          powered-descent simulation — then animates the whole mission in the 3-D world. Nothing here is NASA flight data.
+          Pick a site and a lander, and the Python research engine computes terrain features and a 360° horizon mask from the LOLA DEM, evaluates the electrical power
+          budget and Golden Mission Window, checks structured engineering constraints, compares the site with
+          {history ? ` ${history.missions.filter((m) => m.missionType !== 'impact').length}` : ''} historical landing attempts (NSSDCA), and runs a powered-descent simulation.
         </p>
       </div>
+      <SpaceAppsResourceBar
+        input={activeInput}
+        plan={plan}
+        onSelectSite={(s) => {
+          const next = { ...form, latitude: s.latitude, longitude: s.longitude, landerId: s.landerId ?? form.landerId };
+          setForm(next);
+          const cleaned = clean(next);
+          setSubmitted(cleaned);
+          setQ(Object.fromEntries(Object.entries(cleaned).map(([k, v]) => [k, String(v)])));
+        }}
+      />
       <div className="plan-grid">
         <div>
           <Panel title="1 · Landing site">
@@ -77,8 +102,8 @@ export function PlanPage() {
                   {sitePresets.map((p) => <option key={p.id} value={p.id}>{p.name} ({p.lat.toFixed(2)}, {p.lon.toFixed(2)})</option>)}
                 </select>
               </label>
-              <label>Latitude (°, S negative)<input type="number" step="0.01" min={-90} max={90} value={form.latitude} onChange={(e) => set('latitude', e.target.value)} /></label>
-              <label>Longitude (°, W negative)<input type="number" step="0.01" min={-180} max={180} value={form.longitude} onChange={(e) => set('longitude', e.target.value)} /></label>
+              <label>Latitude (°, −90..90)<input type="number" step="0.01" min={-90} max={90} value={form.latitude} onChange={(e) => set('latitude', e.target.value)} /></label>
+              <label>Longitude (°, −180..180)<input type="number" step="0.01" min={-180} max={180} value={form.longitude} onChange={(e) => set('longitude', e.target.value)} /></label>
             </div>
           </Panel>
           <Panel title="2 · Lander & launch">
@@ -112,26 +137,26 @@ export function PlanPage() {
               </label>
             </div>
           </Panel>
-          <Panel title="3 · Operations">
+          <Panel title="3 · Operations & Constraints">
             <div className="panel-body form-grid">
-              <label>Days in lunar orbit<input type="number" step="0.5" value={form.orbitDays} onChange={(e) => set('orbitDays', e.target.value)} /></label>
-              <label>Surface operations (days)<input type="number" step="1" value={form.surfaceDays} onChange={(e) => set('surfaceDays', e.target.value)} /></label>
+              <label>Days in lunar orbit<input type="number" step="0.5" min={0.2} max={60} value={form.orbitDays} onChange={(e) => set('orbitDays', e.target.value)} /></label>
+              <label>Surface operations (days)<input type="number" step="1" min={1} max={60} value={form.surfaceDays} onChange={(e) => set('surfaceDays', e.target.value)} /></label>
               <label>Science data volume (GB)<input type="number" step="1" value={form.dataVolumeGb} onChange={(e) => set('dataVolumeGb', e.target.value)} /></label>
               <label>Downlink rate (Mbit/s)<input type="number" step="0.5" value={form.downlinkMbps} onChange={(e) => set('downlinkMbps', e.target.value)} /></label>
-              <label className="wide">Landing date (UTC, optional — default: next window when the Sun rises through ~7° at the site)
+              <label className="wide">Landing date (UTC, optional — default: next terrain-masked sunrise window)
                 <input type="text" placeholder="YYYY-MM-DD or YYYY-MM-DDTHH:MMZ" value={form.landingDate ?? ''} onChange={(e) => set('landingDate', e.target.value)} />
               </label>
               <div className="wide btn-row">
                 <button className="btn primary" onClick={run} disabled={isFetching}>{isFetching ? 'Computing…' : 'Run analysis'}</button>
-                {plan && <Link className="btn primary" to={sceneUrl}>▶ Simulate in 3D</Link>}
-                {plan && <Link className="btn primary" to={journeyUrl} title="Earth launch → Moon route computed from the precedent profile of this lander class">🚀 Journey from Earth</Link>}
-                <Link className="btn" to="/moon?history=1">Landing history</Link>
+                {plan && <Link className="btn primary" to={navUrl}>⚡ Hybrid 3D Navigator</Link>}
+                {plan && <Link className="btn" to={sceneUrl}>▶ Simulate in 3D</Link>}
+                {plan && <Link className="btn" to={journeyUrl} title="Earth launch → Moon route computed from the precedent profile of this lander class">↗ Journey from Earth</Link>}
               </div>
               {error && <Note>Research engine error: {(error as Error).message}</Note>}
             </div>
           </Panel>
           {model && (
-            <Panel title="Outcome model (trained on the historical catalogue)">
+            <Panel title={<>Historical Outcome Model <Badge tone="warn">Exploratory · Not Reliability</Badge></>}>
               <div className="panel-body">
                 <KV k="Algorithm" v={model.algorithm} />
                 <KV k="Training set" v={`${model.n} landing attempts (1965–2025), ${model.positives} nominal · trained ${model.trainedAt.slice(0, 10)}`} />
@@ -144,14 +169,23 @@ export function PlanPage() {
           )}
         </div>
         <div>
-          {!plan && <Panel title="Results"><div className="panel-body"><Note>Run the analysis to see the mission calculation, terrain analysis, historical neighbours and the descent profile.</Note></div></Panel>}
+          {!plan && <Panel title="Results"><div className="panel-body"><Note>Run the analysis to see the mission calculation, terrain analysis, power budget, constraints, and descent profile.</Note></div></Panel>}
           {plan && (
             <>
-              <Panel title={<>Mission calculation <Badge tone="warn">simulation</Badge></>}>
+              <Panel
+                title={
+                  <>
+                    Mission calculation &amp; Constraints{' '}
+                    <Badge tone={(plan.viabilityScore ?? 80) >= 70 ? 'ok' : 'warn'}>
+                      Viability {(plan.viabilityScore ?? 80).toFixed(0)}/100
+                    </Badge>
+                  </>
+                }
+              >
                 <div className="panel-body">
                   <KV k="Total mission time" v={`${plan.summaryCard.totalMissionTime} (${plan.timeline.totalDays} d)`} />
                   {plan.ephemeris && <KV k="Calendar (ephemeris)" v={<span className="mono" style={{ fontSize: 12 }}>launch {plan.ephemeris.calendar.launchUtc} → landing {plan.ephemeris.calendar.landingUtc} → surface ops end {plan.ephemeris.calendar.surfaceEndUtc}</span>} />}
-                  {plan.ephemeris && <KV k="At landing" v={`Sun ${plan.ephemeris.atLanding.sunElevationDeg}° (az ${plan.ephemeris.atLanding.sunAzimuthDeg}°)${plan.ephemeris.atLanding.sunVisible === false ? ' — below terrain horizon' : ''} · Earth ${plan.ephemeris.atLanding.earthElevationDeg}°${plan.ephemeris.atLanding.earthVisible === false ? ' (hidden)' : ''}`} />}
+                  {plan.ephemeris && <KV k="At landing" v={`Sun ${plan.ephemeris.atLanding.sunElevationDeg}° (az ${plan.ephemeris.atLanding.sunAzimuthDeg}°)${plan.ephemeris.atLanding.sunVisible === false ? ' — below terrain horizon' : ` · +${plan.ephemeris.atLanding.sunClearanceDeg ?? 0}° clear`} · Earth ${plan.ephemeris.atLanding.earthElevationDeg}°${plan.ephemeris.atLanding.earthVisible === false ? ' (hidden)' : ''}`} />}
                   <KV k="Launch vehicle" v={`${plan.summaryCard.launchVehicle} · stack ${plan.budget.mass.atTliKg.toLocaleString()} kg at TLI`} />
                   <KV k="Payload mass" v={plan.summaryCard.payloadMass} />
                   <KV k="Landing site" v={`${plan.summaryCard.landingSite} · Earth elevation ${plan.site.earthElevationDeg}°`} />
@@ -160,6 +194,13 @@ export function PlanPage() {
                   <KV k="Mass chain" v={<span className="mono" style={{ fontSize: 12 }}>TLI {Math.round(plan.budget.mass.atTliKg)} → after LOI {Math.round(plan.budget.mass.afterLoiKg)} → PDI {Math.round(plan.budget.mass.atPdiKg)} → touchdown {Math.round(plan.budget.mass.atTouchdownKg)} kg</span>} />
                   <KV k="Propellant margin" v={<Badge tone={plan.budget.mass.propellantMarginKg >= 0 ? 'ok' : 'bad'}>{Math.round(plan.budget.mass.propellantMarginKg)} kg · max payload ≈ {Math.round(plan.budget.mass.maxPayloadKg)} kg</Badge>} />
                   <KV k="Powered descent" v={`${(plan.descent.durationS / 60).toFixed(1)} min · PDI ${Math.abs(plan.descent.downrangeAtPdiKm).toFixed(0)} km uprange at ${plan.descent.initial.altitudeM / 1000} km · peak throttle ${Math.round(plan.descent.peakThrottle * 100)} % · touchdown ${plan.descent.touchdownSpeedMps} m/s`} />
+
+                  {plan.constraints && (
+                    <div style={{ marginTop: 10 }}>
+                      <ConstraintMatrix constraints={plan.constraints} compact />
+                    </div>
+                  )}
+
                   <h4 className="card-title">Powered-descent profile (simulated)</h4>
                   <DescentChart plan={plan} />
                   <div className="dim" style={{ fontSize: 11, marginTop: 4 }}>purple = altitude, blue dashed = speed, amber bars = throttle · closed-loop E-guidance from a {plan.descent.initial.descentOrbitKm[0]} × {plan.descent.initial.descentOrbitKm[1]} km descent orbit</div>
@@ -172,11 +213,15 @@ export function PlanPage() {
                       </li>
                     ))}
                   </ol>
-                  {plan.flags.length > 0 && <ul className="flags">{plan.flags.map((f) => <li key={f}>{f}</li>)}</ul>}
-                  <div className="btn-row"><Link className="btn primary" to={sceneUrl}>▶ Simulate in 3D</Link><Link className="btn" to={journeyUrl}>🚀 Journey from Earth</Link></div>
+                  <div className="btn-row">
+                    <Link className="btn primary" to={navUrl}>⚡ Open in Hybrid 3D Navigator</Link>
+                    <Link className="btn" to={sceneUrl}>▶ Simulate in 3D</Link>
+                    <Link className="btn" to={journeyUrl}>↗ Journey from Earth</Link>
+                  </div>
                 </div>
               </Panel>
-              <Panel title={<>Terrain analysis <Badge tone={plan.site.terrain.grade?.startsWith('science') ? 'ok' : 'warn'}>{plan.site.terrain.grade?.startsWith('science') ? `LOLA GDR ${plan.site.terrain.resolutionM} m` : 'regional 16 px/deg'}</Badge></>}>
+
+              <Panel title={<>Terrain &amp; 360° Horizon Analysis <Badge tone={plan.site.terrain.grade?.startsWith('science') ? 'ok' : 'warn'}>{plan.site.terrain.grade?.startsWith('science') ? `LOLA GDR ${plan.site.terrain.resolutionM} m` : 'regional 16 px/deg'}</Badge></>}>
                 <div className="panel-body">
                   <KV k="Data" v={<span style={{ fontSize: 12 }}>{plan.site.terrain.dataSource}{plan.site.terrain.regional ? ` · regional check: ${plan.site.terrain.regional.elevationM} m, slope ${plan.site.terrain.regional.slopeDeg}° at ${plan.site.terrain.regional.baselineM} m` : ''}</span>} />
                   <KV k="Elevation" v={`${plan.site.terrain.elevationM.toFixed(0)} m (datum 1737.4 km)`} />
@@ -186,8 +231,19 @@ export function PlanPage() {
                   {plan.site.horizon && (
                     <>
                       <KV k="Terrain horizon" v={`up to ${Math.max(...plan.site.horizon.elevationDeg).toFixed(1)}° (az ${plan.site.horizon.elevationDeg.indexOf(Math.max(...plan.site.horizon.elevationDeg)) * plan.site.horizon.azimuthStepDeg}°) within ${plan.site.horizon.maxKm} km`} />
-                      <HorizonStrip plan={plan} />
-                      <div className="dim" style={{ fontSize: 11 }}>{plan.site.horizon.note} Dots: Sun (amber) and Earth (blue) at the planned landing time.</div>
+                      <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: 12, alignItems: 'center', margin: '8px 0' }}>
+                        <PolarHorizonPlot
+                          horizon={plan.site.horizon}
+                          atLanding={plan.ephemeris?.atLanding}
+                          samples={plan.ephemeris?.samples}
+                          size={230}
+                        />
+                        <div>
+                          <div className="dim" style={{ fontSize: 11, marginBottom: 4 }}>2D Azimuth Horizon Strip (0°..360°)</div>
+                          <HorizonStrip plan={plan} height={80} />
+                          <div className="dim" style={{ fontSize: 11, marginTop: 6 }}>{plan.site.horizon.note}</div>
+                        </div>
+                      </div>
                     </>
                   )}
                   <div className="heat" style={{ gridTemplateColumns: `repeat(${plan.analysisGrid.cols}, 1fr)` }} title="suitability heuristic ±1° around the site (green = better) — click a cell to move the site there">
@@ -207,35 +263,52 @@ export function PlanPage() {
                   <Note>{plan.analysisGrid.method}. {plan.analysisGrid.cellM ? `Cells ≈ ${plan.analysisGrid.cellM} m over ±${plan.analysisGrid.halfKm} km. ` : ''}Heuristic score, not a NASA product; {plan.analysisGrid.grade?.startsWith('science') ? 'even 240 m/px is coarser than lander-scale hazards (rocks, small craters)' : 'the regional DEM is ~1.9 km/px, far coarser than landing-hazard scales'}.</Note>
                 </div>
               </Panel>
+
               {plan.ephemeris && (
-                <Panel title={<>Illumination & comms <Badge tone="warn">ephemeris model ±0.05°</Badge></>}>
+                <Panel title={<>Illumination, Power Budget &amp; Golden Mission Window <Badge tone="info">Meeus/IAU 2009 · ≤0.6′ at 3 JPL Horizons epochs</Badge></>}>
                   <div className="panel-body">
+                    {plan.powerBudget && (
+                      <div style={{ marginBottom: 12 }}>
+                        <h4 className="card-title" style={{ marginTop: 0 }}>Electrical Power Balance &amp; Golden Window Overlap</h4>
+                        <PowerBudgetChart powerBudget={plan.powerBudget} goldenWindows={plan.goldenWindows} height={165} />
+                      </div>
+                    )}
+                    <h4 className="card-title">Sun &amp; Earth Elevation Profile (with Terrain Masking)</h4>
                     <IlluminationChart plan={plan} />
                     <div className="dim" style={{ fontSize: 11, margin: '4px 0 8px' }}>Sun (amber) and Earth (blue) elevation at the site from launch to mission end; red ticks = Sun above the geometric horizon but behind terrain; teal band = surface operations.</div>
-                    {plan.site.comms && <KV k="Surface ops" v={`sunlit ${Math.round(plan.site.comms.sunlitFraction * 100)} % of the time · Earth ${plan.site.comms.earthElevationMinDeg}–${plan.site.comms.earthElevationMaxDeg}° elevation, visible ${Math.round(plan.site.comms.earthVisibleFraction * 100)} %${plan.site.relayRequired ? ' → relay recommended' : ' → direct-to-Earth feasible'}`} />}
-                    <h4 className="card-title">Landing opportunities (Sun rising through {plan.ephemeris.targetSunElevationDeg.toFixed(1)}°)</h4>
+                    {plan.site.comms && <KV k="Surface ops" v={`sunlit ${Math.round(plan.site.comms.sunlitFraction * 100)} % of the time · Earth ${plan.site.comms.earthElevationMinDeg}–${plan.site.comms.earthElevationMaxDeg}° elevation, terrain-masked visible ${Math.round(plan.site.comms.earthVisibleFraction * 100)} %${plan.site.relayRequired ? ' → relay recommended' : ' → direct-to-Earth feasible'}`} />}
+                    <h4 className="card-title">Terrain-Masked Golden Landing Opportunities (Sun rising above local terrain mask &amp; ≥ {plan.ephemeris.targetSunElevationDeg.toFixed(1)}°)</h4>
                     <table className="table small">
-                      <thead><tr><th>Landing UTC</th><th>Sun</th><th>Sunlit after</th><th>Peak Sun</th><th>Earth (14 d)</th><th></th></tr></thead>
+                      <thead><tr><th>Landing UTC</th><th>Sun @ TD</th><th>Cont. Sunlit</th><th>Peak Sun</th><th>Earth LOS (14d)</th><th>Golden Score</th><th></th></tr></thead>
                       <tbody>
                         {plan.ephemeris.windows.map((w) => (
                           <tr key={w.utc} className={w.utc === plan.ephemeris!.calendar.landingUtc ? 'active' : undefined}>
                             <td className="mono">{w.utc}</td>
                             <td>{w.sunElevationDeg}°{w.sunVisible === false ? ' ⊘' : ''}</td>
-                            <td>{(w.sunlitHoursAfter / 24).toFixed(1)} d</td>
+                            <td>{((w.continuousSunlitHoursAfter ?? w.sunlitHoursAfter) / 24).toFixed(1)} d</td>
                             <td>{w.peakSunElevationDeg}°</td>
-                            <td>{w.earthElevationMinDeg14d}–{w.earthElevationMaxDeg14d}°</td>
+                            <td>{w.earthVisibleFraction14d != null ? `${Math.round(w.earthVisibleFraction14d * 100)}% (${w.earthElevationMinDeg14d}..${w.earthElevationMaxDeg14d}°)` : `${w.earthElevationMinDeg14d}–${w.earthElevationMaxDeg14d}°`}</td>
+                            <td>
+                              {w.goldenScore != null ? (
+                                <Badge tone={w.goldenFeasible ? 'ok' : 'warn'}>{w.goldenScore.toFixed(0)}/100</Badge>
+                              ) : '—'}
+                            </td>
                             <td><button className="btn small" onClick={() => { setForm((f) => ({ ...f, landingDate: w.utc })); setSubmitted(clean({ ...form, landingDate: w.utc })); }}>Use</button></td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
-                    <Note>{plan.ephemeris.model}. Windows assume landing shortly after local sunrise to maximise the sunlit surface phase; local terrain masking uses the LOLA GDR DEM where available (|lat| ≥ 75°).</Note>
+                    <Note>
+                      {plan.ephemeris.model}.{' '}
+                      {plan.ephemeris.validation ? `${plan.ephemeris.validation.scopeNote} (Tested UTC epochs: ${plan.ephemeris.validation.testedEpochsUtc.join(', ')}).` : ''}
+                    </Note>
                   </div>
                 </Panel>
               )}
-              <Panel title="Learning from past missions">
+
+              <Panel title={<>Exploratory Historical Comparison <Badge tone="warn">Statistical Reference Only</Badge></>}>
                 <div className="panel-body">
-                  <KV k="p(nominal landing)" v={<span>{(plan.outcomeModel.pNominal * 100).toFixed(0)} % <span className="dim">· exploratory logistic model, n={plan.outcomeModel.n}, LOO accuracy {(plan.outcomeModel.looCv.accuracy * 100).toFixed(0)} %</span></span>} />
+                  <KV k="Historical comparison" v={<span>{(plan.outcomeModel.pNominal * 100).toFixed(0)} % <span className="dim">· exploratory logistic model (n={plan.outcomeModel.n}, LOO CV {(plan.outcomeModel.looCv.accuracy * 100).toFixed(0)} %) — NOT a mission reliability metric</span></span>} />
                   <KV k="Drivers" v={<span className="mono" style={{ fontSize: 12 }}>{Object.entries(plan.outcomeModel.contributions).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1])).slice(0, 5).map(([k, v]) => `${k} ${v > 0 ? '+' : ''}${v}`).join(' · ')}</span>} />
                   <h4 className="card-title">Most similar historical sites</h4>
                   {plan.outcomeModel.neighbours.map((n) => (
@@ -256,6 +329,12 @@ export function PlanPage() {
 
 function clean(f: Form): PlanInput {
   const out: Record<string, unknown> = {};
-  for (const [k, v] of Object.entries(f)) if (v !== undefined && v !== null && !(typeof v === 'number' && Number.isNaN(v))) out[k] = v;
+  for (const [k, v] of Object.entries(f)) {
+    if (v !== undefined && v !== null && !(typeof v === 'number' && Number.isNaN(v))) {
+      if (k === 'latitude') out[k] = Math.min(90, Math.max(-90, Number(v)));
+      else if (k === 'longitude') out[k] = Math.min(180, Math.max(-180, Number(v)));
+      else out[k] = v;
+    }
+  }
   return out as unknown as PlanInput;
 }

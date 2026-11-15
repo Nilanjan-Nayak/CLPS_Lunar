@@ -36,8 +36,8 @@ export function HistoryPanel() {
 
   if (!active) return null;
   return (
-    <Panel title={<>Mission Lunar <Badge tone="info">{cursor}/{missions.length}</Badge></>} actions={<span className="mono">{current ? current.eventDate.slice(0, 4) : '—'}</span>}>
-      <div className="panel-body">
+    <Panel title={<>Landing history <Badge tone="info">{cursor}/{missions.length}</Badge></>} subtitle={<span>1959 → today · {current ? `${current.eventDate.slice(0, 10)} · ${current.agency ?? ''}` : '—'}</span>} actions={<span className="mono">{current ? current.eventDate.slice(0, 4) : '—'}</span>}>
+      <div className="panel-inner">
         <div className="sim-controls">
           <button className="btn" onClick={() => { pause(); step(-1); }}>◀</button>
           <button className="btn primary" onClick={() => (playing ? pause() : play())}>{playing ? '❚❚ Pause' : '▶ Play timeline'}</button>
