@@ -52,6 +52,8 @@ export interface Repository {
   events(missionId?: string): MissionEvent[];
   assetManifest(): AssetManifest;
   asset(id: string): AssetManifestEntry | undefined;
+  journey?(missionId: string): unknown | undefined;
+  researchFallback?(name: string): unknown | undefined;
 }
 
 export class JsonRepository implements Repository {
@@ -123,6 +125,16 @@ export class JsonRepository implements Repository {
   }
   assetManifest() { this.refreshManifestIfChanged(); return this._manifest; }
   asset(id: string) { this.refreshManifestIfChanged(); return this._manifest.assets.find((a) => a.assetId === id); }
+
+  journey(missionId: string): unknown | undefined {
+    const f = path.join(DATA_DIR, 'journeys', `${missionId}.json`);
+    return fs.existsSync(f) ? readJson(f) : undefined;
+  }
+
+  researchFallback(name: string): unknown | undefined {
+    const f = path.join(DATA_DIR, 'research', `${name}.json`);
+    return fs.existsSync(f) ? readJson(f) : undefined;
+  }
 
   missionDetail(id: string): MissionDetail | undefined {
     const mission = this.mission(id);

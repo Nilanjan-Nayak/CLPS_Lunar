@@ -135,6 +135,7 @@ export function NavigatorPage() {
       {/* Navigator Workbench Header & Mode Switcher */}
       <div
         className="navigator-workbench-header"
+        data-tour-target="navigator-header"
         style={{
           background: 'rgba(9, 14, 26, 0.90)',
           backdropFilter: 'blur(14px)',
@@ -241,7 +242,7 @@ export function NavigatorPage() {
 
         {/* 4 Workbench Tabs + Full-Screen Studio Links */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
-          <div className="seg navigator-workbench-tabs" role="tablist" aria-label="Hybrid Navigator Tabs">
+          <div className="seg navigator-workbench-tabs" role="tablist" aria-label="Hybrid Navigator Tabs" data-tour-target="navigator-tabs">
             <button type="button" className={tab === 'overview' ? 'on' : ''} onClick={() => setTab('overview')}>
               1 · Golden &amp; Power
             </button>
@@ -257,7 +258,7 @@ export function NavigatorPage() {
           </div>
           <div style={{ display: 'flex', gap: 4 }}>
             <Link className="btn small" to={`/plan?${qs}`} title="Open full-page Landing Plan Studio">Studio ↗</Link>
-            <Link className="btn small" to={`/report?${qs}`} title="Open printable Decision Report">PDF Report ↗</Link>
+            <Link className="btn small" to={`/report?${qs}`} title="Open printable Decision Report" data-tour-target="pdf-report">PDF Report ↗</Link>
           </div>
         </div>
       </div>

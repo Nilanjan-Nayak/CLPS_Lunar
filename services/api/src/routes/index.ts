@@ -203,6 +203,17 @@ export function registerRoutes(app: FastifyInstance, { repo, terrain, imagery }:
     const rest = req.params['*'];
     if (!/^[a-z-]+$/.test(rest)) return reply.code(404).send({ error: 'not found' });
     const qs = req.raw.url?.includes('?') ? '?' + req.raw.url.split('?')[1] : '';
+    try {
+      const res = await fetch(`${RESEARCH}/${rest}${qs}`, { signal: AbortSignal.timeout(3_000) });
+      if (res.ok) {
+        const body = await res.json().catch(() => null);
+        if (body && !body.error) return reply.code(res.status).send(body);
+      }
+    } catch {
+      // Offline fallback
+    }
+    const fallback = repo.researchFallback?.(rest);
+    if (fallback) return reply.code(200).send(fallback);
     return forward(reply, `/${rest}${qs}`);
   });
   app.post<{ Params: { '*': string } }>(`${v1}/research/*`, async (req, reply) => {
@@ -257,15 +268,27 @@ export function registerRoutes(app: FastifyInstance, { repo, terrain, imagery }:
       landingSite: site ? { id: site.id, name: site.name, latitude: site.latitude, longitude: site.longitude } : null,
     };
     try {
-      const res = await fetch(`${RESEARCH}/journey`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ spec }), signal: AbortSignal.timeout(60_000) });
-      const body = await res.json().catch(() => ({ error: 'invalid response from research engine' }));
-      const out = res.ok ? { ...(body as Record<string, unknown>), mission: { id: mission.id, name: mission.name, shortName: mission.shortName, status: mission.status },
-        sources: (profile.sourceIds ?? []).map((id) => repo.source(id)).filter(Boolean) } : body;
-      journeyCache.set(mission.id, { at: Date.now(), body: out, status: res.status });
-      return reply.code(res.status).send(out);
-    } catch (e) {
-      return reply.code(502).send({ error: 'research engine unavailable', detail: (e as Error).message });
+      const res = await fetch(`${RESEARCH}/journey`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ spec }), signal: AbortSignal.timeout(3_000) });
+      if (res.ok) {
+        const body = await res.json().catch(() => null);
+        if (body && !body.error) {
+          const out = { ...(body as Record<string, unknown>), mission: { id: mission.id, name: mission.name, shortName: mission.shortName, status: mission.status },
+            sources: (profile.sourceIds ?? []).map((id) => repo.source(id)).filter(Boolean) };
+          journeyCache.set(mission.id, { at: Date.now(), body: out, status: res.status });
+          return reply.code(res.status).send(out);
+        }
+      }
+    } catch {
+      // Research engine unavailable, fall through to static pre-computed journey
     }
+
+    const staticJourney = repo.journey?.(mission.id);
+    if (staticJourney) {
+      journeyCache.set(mission.id, { at: Date.now(), body: staticJourney, status: 200 });
+      return reply.code(200).send(staticJourney);
+    }
+
+    return reply.code(502).send({ error: 'research engine unavailable' });
   });
   app.post<{ Body: { planInput?: Record<string, unknown>; launchSiteId?: string } }>(`${v1}/plan/journey`, async (req, reply) => {
     const planInput = req.body?.planInput;

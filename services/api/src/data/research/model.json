@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "trainedAt": "2026-11-14T19:14:10.443575Z",
+  "algorithm": "sklearn LogisticRegression(C=0.5, class_weight=balanced) on standardized features",
+  "target": "nominal landing (outcome == success) vs partial/failure",
+  "n": 40,
+  "positives": 24,
+  "majorityBaselineAccuracy": 0.6,
+  "featureNames": [
+    "absLat",
+    "slopeDeg",
+    "roughnessM",
+    "reliefM",
+    "elevationKm",
+    "hazardAvoidance",
+    "crewed",
+    "commercial",
+    "era"
+  ],
+  "scaler": {
+    "mean": [
+      25.425545,
+      1.3455,
+      204.06250000000003,
+      1572.175,
+      -1.6378624999999996,
+      0.4,
+      0.15,
+      0.15,
+      2.150000000000001
+    ],
+    "scale": [
+      24.128008757871005,
+      2.3406622460320925,
+      258.3901794646035,
+      1544.8709434367001,
+      1.8882049105814098,
+      0.48989794855663565,
+      0.3570714214271425,
+      0.3570714214271425,
+      2.5401771591761073
+    ]
+  },
+  "coef": [
+    -0.1370095873345528,
+    -0.07267943085071059,
+    -0.024963610171928118,
+    -0.36614892184115194,
+    -0.47238268431889363,
+    0.705483025796664,
+    0.5123670075350831,
+    -0.4631504038343532,
+    -0.2158421961520038
+  ],
+  "intercept": 0.1740152855853758,
+  "coefficientsStandardized": {
+    "absLat": -0.137,
+    "slopeDeg": -0.073,
+    "roughnessM": -0.025,
+    "reliefM": -0.366,
+    "elevationKm": -0.472,
+    "hazardAvoidance": 0.705,
+    "crewed": 0.512,
+    "commercial": -0.463,
+    "era": -0.216
+  },
+  "looCv": {
+    "accuracy": 0.625,
+    "balancedAccuracy": 0.604,
+    "brier": 0.207,
+    "confusion": {
+      "tp": 17,
+      "tn": 8,
+      "fp": 8,
+      "fn": 7
+    }
+  },
+  "demSource": "nasa-cgi-moon-kit-ldem-4-uint (4 px/deg, fallback)",
+  "caveats": [
+    "Exploratory model on ~40 historical attempts spanning 1965\u20132025; technology and programmes differ enormously.",
+    "Terrain features are sampled from a 16 px/deg (\u22481.9 km) LOLA-derived DEM, far coarser than landing-hazard scales (metres).",
+    "Probabilities are not calibrated mission-success predictions; use the neighbour comparison and the physics budgets for engineering judgement."
+  ]
+}

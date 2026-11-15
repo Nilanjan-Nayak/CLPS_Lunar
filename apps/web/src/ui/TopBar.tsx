@@ -82,6 +82,7 @@ export function TopBar({ compact = false }: { compact?: boolean }) {
       <NavLink
         to="/space"
         className="brand"
+        data-tour-target="brand"
         title="SELENARA X (A Modified Lunar Landing Site Navigator)"
         aria-label="SELENARA X — a modified lunar landing site navigator, home"
       >
@@ -112,7 +113,7 @@ export function TopBar({ compact = false }: { compact?: boolean }) {
 
       <nav id="primary-nav" className={`nav${mobileNavOpen ? ' mobile-open' : ''}`} aria-label="Primary Mission Navigation" ref={navRef}>
         {/* 1. Clearly identified 3D viewport modes immediately after the brand. */}
-        <div className="nav-capsule" role="group" aria-label="3D views">
+        <div className="nav-capsule" role="group" aria-label="3D views" data-tour-target="views">
           <span className="nav-capsule-tag" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none"><path d="m12 2.5 8.2 4.7v9.5L12 21.5l-8.2-4.8V7.2L12 2.5Z" stroke="currentColor" strokeWidth="1.4"/><path d="M3.9 7.4 12 12l8.1-4.6M12 12v9.2" stroke="currentColor" strokeWidth="1.2"/></svg>
             <span><b>3D</b><small>VIEWS</small></span>
@@ -132,6 +133,7 @@ export function TopBar({ compact = false }: { compact?: boolean }) {
         {/* 2. Flagship Hybrid 3D Navigator */}
         <NavLink
           to={navigatorItem.to}
+          data-tour-target="navigator"
           title={navigatorItem.hint}
           className={() => `nav-navigator-btn${isActive(navigatorItem.to) ? ' active' : ''}`}
         >
@@ -145,6 +147,7 @@ export function TopBar({ compact = false }: { compact?: boolean }) {
           <button
             type="button"
             className={`nav-menu-btn studio-trigger${activeStudio ? ' active' : ''}`}
+            data-tour-target="studio"
             aria-haspopup="menu"
             aria-expanded={openMenu === 'studio'}
             onClick={() => setOpenMenu((m) => (m === 'studio' ? null : 'studio'))}
@@ -202,6 +205,7 @@ export function TopBar({ compact = false }: { compact?: boolean }) {
         {/* 4. CLPS Missions Manifest */}
         <NavLink
           to={missionsItem.to}
+          data-tour-target="missions"
           title={missionsItem.hint}
           className={() => `nav-link-std missions-link${isActive(missionsItem.to) ? ' active' : ''}`}
         >
@@ -213,6 +217,7 @@ export function TopBar({ compact = false }: { compact?: boolean }) {
           <button
             type="button"
             className={`nav-menu-btn data-trigger${dataActive ? ' active' : ''}`}
+            data-tour-target="data"
             aria-haspopup="menu"
             aria-expanded={openMenu === 'data'}
             onClick={() => setOpenMenu((m) => (m === 'data' ? null : 'data'))}
@@ -269,6 +274,7 @@ export function TopBar({ compact = false }: { compact?: boolean }) {
         {/* 6. AI Copilot Pill & Interactive Mission Guide */}
         <NavLink
           to={copilotItem.to}
+          data-tour-target="copilot"
           title={copilotItem.hint}
           className={() => `nav-copilot-btn${isActive(copilotItem.to) ? ' active' : ''}`}
         >
@@ -279,6 +285,7 @@ export function TopBar({ compact = false }: { compact?: boolean }) {
         <button
           type="button"
           className={`nav-guide-btn${tour.open ? ' active' : ''}`}
+          data-tour-target="guide"
           onClick={() => tour.setOpen(true)}
           title="Open Interactive Mission Guide & Capabilities Tour"
         >

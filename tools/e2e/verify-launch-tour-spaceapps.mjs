@@ -31,7 +31,7 @@ try {
     const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     const page = await ctx.newPage();
     await page.goto(`${BASE}/plan?latitude=-84.79&longitude=29.2&landerId=nova-c&surfaceDays=14&run=1&tour=1`, { waitUntil: 'domcontentloaded' });
-    await page.waitForSelector('.tour-modal', { timeout: 20000 });
+    await page.waitForSelector('.tour-callout', { timeout: 20000 });
     await page.waitForTimeout(800);
     await page.screenshot({ path: `${OUT}/selenara-guided-tour.png`, timeout: 120000 });
     console.log('Saved selenara-guided-tour.png');

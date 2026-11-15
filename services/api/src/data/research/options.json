@@ -1,0 +1,399 @@
+{
+  "landers": [
+    {
+      "id": "generic-clps-100kg",
+      "name": "Generic CLPS-class lander (parametric)",
+      "dryMassKg": 650,
+      "propellantKg": 1200,
+      "payloadKg": 100,
+      "thrustN": 4000,
+      "ispS": 315,
+      "minThrottle": 0.2,
+      "power": "solar",
+      "solarPanelAreaM2": 2.6,
+      "panelEfficiency": 0.29,
+      "batteryCapacityWh": 1500,
+      "baseLoadW": 210,
+      "payloadLoadW": 90,
+      "nightSurvivalLoadW": 130,
+      "maxDod": 0.8,
+      "note": "Parametric class similar to Nova-C / Blue Ghost; edit freely.",
+      "confidence": "parametric"
+    },
+    {
+      "id": "nova-c",
+      "name": "Nova-C class (Intuitive Machines)",
+      "dryMassKg": 675,
+      "propellantKg": 1130,
+      "payloadKg": 100,
+      "thrustN": 4000,
+      "ispS": 340,
+      "minThrottle": 0.2,
+      "power": "solar",
+      "solarPanelAreaM2": 2.8,
+      "panelEfficiency": 0.29,
+      "batteryCapacityWh": 1650,
+      "baseLoadW": 220,
+      "payloadLoadW": 95,
+      "nightSurvivalLoadW": 140,
+      "maxDod": 0.8,
+      "note": "\u22481,908 kg launch mass, VR900 (\u2248900 lbf \u2248 4 kN) LOX/methane main engine; Isp not published \u2014 ~340 s assumed for a vacuum methalox engine. IM-2: PDI at 13 km, \u224814.5 min before touchdown.",
+      "confidence": "approx"
+    },
+    {
+      "id": "blue-ghost",
+      "name": "Blue Ghost class (Firefly) \u2014 Mission 1 as flown",
+      "dryMassKg": 469,
+      "propellantKg": 954,
+      "payloadKg": 94,
+      "thrustN": 2600,
+      "ispS": 320,
+      "minThrottle": 0.25,
+      "power": "solar",
+      "solarPanelAreaM2": 2.5,
+      "panelEfficiency": 0.3,
+      "batteryCapacityWh": 1450,
+      "baseLoadW": 200,
+      "payloadLoadW": 90,
+      "nightSurvivalLoadW": 125,
+      "maxDod": 0.8,
+      "note": "Published M1 figures: launch mass 1,517 kg, dry 469 kg, ten NASA payloads \u224894 kg (TO 19D) \u2192 \u2248954 kg MMH/MON-3; payload capacity 155 kg (NSSDCA) trades against propellant at the same launch mass. LEROS 4-ET main engine (>1 kN, Isp \u2248320 s) + 8 Spectre RCS (1.6 kN total) fire together for braking (\u22482.6 kN); terminal descent on pulsed RCS. M1: LOI burn 4 min 15 s, DOI \u2248T\u221263 min, 9-min PDI burn 1,700 \u2192 40 m/s from \u224820 km. The budget closes with only \u224810 kg to spare \u2014 as tight as the real mission.",
+      "confidence": "approx"
+    },
+    {
+      "id": "apollo-lm",
+      "name": "Apollo Lunar Module (descent stage)",
+      "dryMassKg": 6900,
+      "propellantKg": 8200,
+      "payloadKg": 500,
+      "thrustN": 45040,
+      "ispS": 311,
+      "minThrottle": 0.1,
+      "power": "battery",
+      "solarPanelAreaM2": 0.0,
+      "panelEfficiency": 0.0,
+      "batteryCapacityWh": 70000,
+      "baseLoadW": 1400,
+      "payloadLoadW": 250,
+      "nightSurvivalLoadW": 1100,
+      "maxDod": 0.85,
+      "note": "DPS 45 kN throttleable 10\u201360 % + full; landed mass \u22487.3\u20138.2 t.",
+      "confidence": "published"
+    },
+    {
+      "id": "vikram-class",
+      "name": "Vikram class (ISRO Chandrayaan-3)",
+      "dryMassKg": 900,
+      "propellantKg": 850,
+      "payloadKg": 26,
+      "thrustN": 3200,
+      "ispS": 300,
+      "minThrottle": 0.3,
+      "power": "solar",
+      "solarPanelAreaM2": 2.4,
+      "panelEfficiency": 0.28,
+      "batteryCapacityWh": 1200,
+      "baseLoadW": 180,
+      "payloadLoadW": 55,
+      "nightSurvivalLoadW": 115,
+      "maxDod": 0.8,
+      "note": "4 \u00d7 800 N throttleable engines; 1,752 kg lander module incl. rover.",
+      "confidence": "approx"
+    }
+  ],
+  "launchVehicles": [
+    {
+      "id": "falcon-9",
+      "name": "SpaceX Falcon 9",
+      "tliCapacityKg": 3500,
+      "note": "Approx. TLI capacity with booster recovery."
+    },
+    {
+      "id": "falcon-heavy",
+      "name": "SpaceX Falcon Heavy",
+      "tliCapacityKg": 16000,
+      "note": "Approx. TLI capacity (expendable)."
+    },
+    {
+      "id": "vulcan",
+      "name": "ULA Vulcan Centaur",
+      "tliCapacityKg": 6000,
+      "note": "Approx., configuration-dependent."
+    },
+    {
+      "id": "new-glenn",
+      "name": "Blue Origin New Glenn",
+      "tliCapacityKg": 7000,
+      "note": "Approx. public figure."
+    },
+    {
+      "id": "lvm3",
+      "name": "ISRO LVM3",
+      "tliCapacityKg": 1800,
+      "note": "Approx. (Chandrayaan-3 used a phasing-orbit profile)."
+    }
+  ],
+  "transfers": [
+    {
+      "id": "direct",
+      "name": "Direct transfer (~4.5 days)",
+      "cruiseDays": 4.5,
+      "vInfKms": 0.85,
+      "extraDeltaVMps": 40,
+      "note": "CLPS-style direct injection with mid-course corrections."
+    },
+    {
+      "id": "apollo",
+      "name": "Fast transfer (~3 days, Apollo-like)",
+      "cruiseDays": 3.0,
+      "vInfKms": 1.0,
+      "extraDeltaVMps": 30,
+      "note": "Higher arrival speed \u2192 larger LOI burn."
+    },
+    {
+      "id": "phasing",
+      "name": "Earth phasing loops + transfer (~30 days)",
+      "cruiseDays": 30.0,
+      "vInfKms": 0.85,
+      "extraDeltaVMps": 120,
+      "note": "Blue Ghost / Chandrayaan style: several Earth-orbit raising burns before TLI."
+    },
+    {
+      "id": "carrier-orbit",
+      "name": "Delivered to lunar orbit by a carrier/propulsion module (~5 days)",
+      "cruiseDays": 5.0,
+      "vInfKms": 0.85,
+      "extraDeltaVMps": 0,
+      "carrierDoesLoi": true,
+      "note": "Apollo CSM / Chandrayaan-3 propulsion-module style: the lander only performs DOI + powered descent."
+    },
+    {
+      "id": "low-energy",
+      "name": "Low-energy (weak stability boundary, ~100 days)",
+      "cruiseDays": 100.0,
+      "vInfKms": 0.3,
+      "extraDeltaVMps": 60,
+      "note": "Hakuto-R / CAPSTONE style; smallest LOI burn, longest cruise."
+    }
+  ],
+  "defaultCandidateSites": [
+    {
+      "id": "mons-mouton",
+      "name": "Mons Mouton Plateau (IM-2 / VIPER)",
+      "region": "South Pole Plateau",
+      "latitude": -84.79,
+      "longitude": 29.2
+    },
+    {
+      "id": "nobile-rim",
+      "name": "Nobile Crater Rim (Griffin M1)",
+      "region": "South Polar Rim",
+      "latitude": -85.28,
+      "longitude": 53.5
+    },
+    {
+      "id": "malapert-massif",
+      "name": "Malapert Massif (IM-1)",
+      "region": "South Polar Highlands",
+      "latitude": -80.13,
+      "longitude": 1.44
+    },
+    {
+      "id": "shackleton-ridge",
+      "name": "Shackleton Connecting Ridge (Artemis III ref)",
+      "region": "South Pole Crest",
+      "latitude": -89.45,
+      "longitude": -137.0
+    },
+    {
+      "id": "leibnitz-beta",
+      "name": "Leibnitz Beta Plateau",
+      "region": "South Polar Plateau",
+      "latitude": -85.4,
+      "longitude": 31.8
+    },
+    {
+      "id": "mare-crisium",
+      "name": "Mare Crisium (Blue Ghost M1)",
+      "region": "Nearside Mare Basin",
+      "latitude": 18.56,
+      "longitude": 61.81
+    },
+    {
+      "id": "reiner-gamma",
+      "name": "Reiner Gamma Swirl (IM-3)",
+      "region": "Oceanus Procellarum",
+      "latitude": 7.5,
+      "longitude": -59.0
+    },
+    {
+      "id": "gruithuisen-domes",
+      "name": "Sinus Viscositatis / Gruithuisen",
+      "region": "Northern Volcanic Domes",
+      "latitude": 35.2,
+      "longitude": -40.5
+    },
+    {
+      "id": "lacus-mortis",
+      "name": "Lacus Mortis Plain (Peregrine target)",
+      "region": "Northern Mare Plain",
+      "latitude": 44.97,
+      "longitude": 25.24
+    },
+    {
+      "id": "shiv-shakti",
+      "name": "Shiv Shakti Point (ISRO Chandrayaan-3)",
+      "region": "Southern High Latitude",
+      "latitude": -69.37,
+      "longitude": 32.32
+    },
+    {
+      "id": "apollo-11",
+      "name": "Tranquility Base (Apollo 11 Heritage)",
+      "region": "Mare Tranquillitatis",
+      "latitude": 0.67,
+      "longitude": 23.47
+    },
+    {
+      "id": "schrodinger-basin",
+      "name": "Schr\u00f6dinger Basin (Blue Ghost M2 / Far Side)",
+      "region": "South Polar Far Side",
+      "latitude": -75.0,
+      "longitude": 132.4
+    }
+  ],
+  "challengeSites": [
+    {
+      "id": "mons-mouton",
+      "name": "Mons Mouton (IM-2 Athena)",
+      "category": "CLPS",
+      "agency": "NASA CLPS \u00b7 Intuitive Machines",
+      "latitude": -84.79,
+      "longitude": 29.2,
+      "landerId": "nova-c",
+      "summary": "Approximate south-polar reference near the IM-2 Athena landing region; Sun and Earth geometry depends on the selected time and local skyline.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "mare-crisium",
+      "name": "Mare Crisium (Blue Ghost M1)",
+      "category": "CLPS",
+      "agency": "NASA CLPS \u00b7 Firefly Aerospace",
+      "latitude": 18.56,
+      "longitude": 61.81,
+      "landerId": "blue-ghost",
+      "summary": "Nearside mare reference close to Blue Ghost Mission 1. Illumination depends on the selected landing time.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "malapert-a",
+      "name": "Malapert Massif (IM-1 Odysseus)",
+      "category": "CLPS",
+      "agency": "NASA CLPS \u00b7 Intuitive Machines",
+      "latitude": -80.13,
+      "longitude": 1.44,
+      "landerId": "nova-c",
+      "summary": "Reference near the IM-1 Odysseus landing region in the south-polar highlands.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "nobile-rim",
+      "name": "Nobile Crater Rim (Griffin M1)",
+      "category": "CLPS",
+      "agency": "NASA CLPS \u00b7 Astrobotic",
+      "latitude": -85.28,
+      "longitude": 53.5,
+      "landerId": "generic-clps-100kg",
+      "summary": "Approximate Nobile south-polar regional candidate, not a verified terminal landing site.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "reiner-gamma",
+      "name": "Reiner Gamma Swirl (IM-3)",
+      "category": "CLPS",
+      "agency": "NASA CLPS / CSA LEAP \u00b7 Intuitive Machines",
+      "latitude": 7.5,
+      "longitude": -59,
+      "landerId": "nova-c",
+      "summary": "Approximate centre of the lunar swirl identified as an IM-3 target; assess local hazards separately.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "shackleton-ridge",
+      "name": "Shackleton Connecting Ridge",
+      "category": "Artemis",
+      "agency": "NASA Artemis reference region",
+      "latitude": -89.45,
+      "longitude": -137,
+      "landerId": "nova-c",
+      "summary": "Illustrative south-polar coordinate near Shackleton; not a certified Artemis landing site.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "leibnitz-beta",
+      "name": "Leibnitz Beta Plateau",
+      "category": "Artemis",
+      "agency": "NASA Artemis III Candidate",
+      "latitude": -85.4,
+      "longitude": 31.8,
+      "landerId": "nova-c",
+      "summary": "Illustrative south-polar plateau reference for site and illumination comparisons.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "apollo-11",
+      "name": "Tranquility Base (Apollo 11)",
+      "category": "Apollo",
+      "agency": "NASA Apollo Heritage (1969)",
+      "latitude": 0.67,
+      "longitude": 23.47,
+      "landerId": "apollo-lm",
+      "summary": "Historic Apollo 11 reference in Mare Tranquillitatis; coordinates are rounded.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "apollo-17",
+      "name": "Taurus-Littrow Valley (Apollo 17)",
+      "category": "Apollo",
+      "agency": "NASA Apollo Heritage (1972)",
+      "latitude": 20.19,
+      "longitude": 30.77,
+      "landerId": "apollo-lm",
+      "summary": "Historic Apollo 17 reference in the Taurus-Littrow valley; coordinates are rounded.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "shiv-shakti",
+      "name": "Shiv Shakti Point (Chandrayaan-3)",
+      "category": "International",
+      "agency": "ISRO \u00b7 Vikram Lander (2023)",
+      "latitude": -69.37,
+      "longitude": 32.32,
+      "landerId": "vikram-class",
+      "summary": "Rounded reference near the Chandrayaan-3 Vikram landing site in the southern high latitudes.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "slim-shioli",
+      "name": "Shioli Crater Rim (JAXA SLIM)",
+      "category": "International",
+      "agency": "JAXA \u00b7 Pinpoint Lander (2024)",
+      "latitude": -13.32,
+      "longitude": 25.25,
+      "landerId": "generic-clps-100kg",
+      "summary": "Rounded reference near the JAXA SLIM landing site at Shioli crater.",
+      "precision": "approximate planning reference"
+    },
+    {
+      "id": "schrodinger-farside",
+      "name": "Schr\u00f6dinger Basin (Far Side)",
+      "category": "International",
+      "agency": "CLPS / International Far-Side Target",
+      "latitude": -75,
+      "longitude": 132.4,
+      "landerId": "blue-ghost",
+      "summary": "Representative far-side basin reference; direct-to-Earth visibility depends on the actual site and horizon.",
+      "precision": "approximate planning reference"
+    }
+  ]
+}
