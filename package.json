@@ -2,6 +2,7 @@
   "name": "clps-lunar-browser",
   "private": true,
   "version": "0.1.0",
+  "type": "module",
   "description": "SELENARA X \u2014 a modified lunar landing site navigator: NASA-grounded Earth \u2192 Moon \u2192 Lunar Surface \u2192 CLPS dynamic environment",
   "workspaces": [
     "apps/*",
@@ -16,7 +17,9 @@
     "dev:api": "npm run build:ai && npm run dev -w services/api",
     "dev:web": "npm run dev -w apps/web",
     "dev": "concurrently -n api,web,research -c cyan,magenta,yellow \"npm run dev:api\" \"npm run dev:web\" \"npm run dev:research\"",
-    "build": "npm run build:ai && npm run build -w services/api && npm run build -w apps/web",
+    "dev:node": "concurrently -n api,web -c cyan,magenta \"npm run dev:api\" \"npm run dev:web\"",
+    "build": "npm run build:ai && npm run build -w services/api && npm run build -w apps/web && node -e \"fs.cpSync('assets', 'apps/web/dist/assets', {recursive: true})\"",
+    "start": "node services/api/dist/server.js",
     "typecheck": "npm run build:ai && npm run typecheck -w services/api && npm run typecheck -w apps/web",
     "dev:research": "python services/research-engine/server.py 8790",
     "train:research": "python services/research-engine/train.py",
