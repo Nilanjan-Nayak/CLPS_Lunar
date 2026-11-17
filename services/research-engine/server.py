@@ -10,7 +10,7 @@ Consumed exclusively by the Fastify API (proxied under /api/v1/research/*) — t
   POST /batch {scenarios: [...]}                        → batch scenario evaluation (up to 12 scenarios)
   POST /report {latitude, longitude, landerId, ...}     → unified Mission Decision & Confidence Report (plan + resilience + Pareto alternatives)
   POST /journey {spec} | {planInput, launchSite}        → Earth-launch → Moon-landing route (event-anchored two-body model)"""
-import json, sys, traceback
+import json, os, sys, traceback
 from collections import OrderedDict
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -21,7 +21,8 @@ from engine import dem, dem_polar, ephem, horizons, journey, model, mission, pow
 from engine.landers import LANDERS, LAUNCH_VEHICLES, TRANSFERS
 
 HERE = Path(__file__).parent
-PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8790
+PORT = int(os.environ.get("PORT") or (sys.argv[1] if len(sys.argv) > 1 else 8790))
+HOST = os.environ.get("RESEARCH_ENGINE_HOST", "127.0.0.1")
 SOURCES = json.loads((HERE / "dataset" / "sources.json").read_text())
 # Curated comparison coordinates are backend data, never a CLPS database in React.
 CHALLENGE_SITES = json.loads((HERE / "dataset" / "challenge_sites.json").read_text())["sites"]
@@ -209,5 +210,5 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     model.load_model()  # trains on first start if model/model.json is missing
-    print(f"research-engine listening on 127.0.0.1:{PORT}", flush=True)
-    ThreadingHTTPServer(("127.0.0.1", PORT), Handler).serve_forever()
+    print(f"research-engine listening on {HOST}:{PORT}", flush=True)
+    ThreadingHTTPServer((HOST, PORT), Handler).serve_forever()

@@ -192,7 +192,7 @@ Everything is lazy-loaded, LRU-cached (LOD1 tiles 18, imagery 72) and disposed o
 
 ### Vercel deployment
 
-Vercel runs the Node API and static web app, but it does not start the long-running Python service. Deploy `services/research-engine/server.py` separately (with its Python dependencies and `assets/` available), then add the resulting HTTPS base URL as the Vercel environment variable `RESEARCH_ENGINE_URL` for the **Production** environment. Redeploy after saving the variable. Without it, local development uses `http://127.0.0.1:8790`, while Vercel returns a clear `503` configuration error instead of trying to call localhost.
+Vercel runs the Node API and static web app, but it does not start the long-running Python service. Deploy `services/research-engine` separately using its [`Dockerfile`](services/research-engine/Dockerfile) with the repository root as the Docker build context. The image includes the research-engine dependencies and required `assets/` data, and accepts the platform-provided `PORT`. Add the resulting HTTPS base URL as the Vercel environment variable `RESEARCH_ENGINE_URL` for the **Production** environment, then redeploy. Without it, local development uses `http://127.0.0.1:8790`, while Vercel returns a clear `503` configuration error instead of trying to call localhost.
 
 | Endpoint (via API proxy `/api/v1/research/…`) | What it returns |
 |---|---|
