@@ -190,6 +190,10 @@ Everything is lazy-loaded, LRU-cached (LOD1 tiles 18, imagery 72) and disposed o
 
 `services/research-engine` is a Python 3 service (stdlib + numpy/Pillow for the DEMs; no web framework). It reads two **separate** scientific inputs — never the visual assets: the CGI Moon Kit LOLA-derived global DEM (16 px/deg ≈ 1.9 km) and, for |lat| ≥ 75°, the **PDS LOLA GDR polar stereographic DEMs at 240 m/px** (`ldem_75s_240m` / `ldem_75n_240m`, PDS Geosciences Node, auto-downloaded to `assets/.cache/raw/`). Each plan says which one it used (`site.terrain.grade` = `science (LOLA GDR)` or `regional (…16 px/deg)`).
 
+### Vercel deployment
+
+Vercel runs the Node API and static web app, but it does not start the long-running Python service. Deploy `services/research-engine/server.py` separately (with its Python dependencies and `assets/` available), then add the resulting HTTPS base URL as the Vercel environment variable `RESEARCH_ENGINE_URL` for the **Production** environment. Redeploy after saving the variable. Without it, local development uses `http://127.0.0.1:8790`, while Vercel returns a clear `503` configuration error instead of trying to call localhost.
+
 | Endpoint (via API proxy `/api/v1/research/…`) | What it returns |
 |---|---|
 | `GET /missions` | 47 lunar landing attempts 1959 → 2025 (NSSDCA Master Catalog + timeline; coordinates flagged `published` / `approx` / none) |

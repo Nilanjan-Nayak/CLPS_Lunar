@@ -188,9 +188,17 @@ export function registerRoutes(app: FastifyInstance, { repo, terrain, imagery }:
   app.get(`${v1}/lunar/imagery/tilesets`, async () => imagery.index());
 
   // ---- research engine (Python service) — proxied so the browser only ever talks to this API -------------------------
-  const RESEARCH = process.env.RESEARCH_ENGINE_URL ?? 'http://127.0.0.1:8790';
+  const configuredResearchUrl = process.env.RESEARCH_ENGINE_URL?.trim().replace(/\/+$/, '');
+  const isProduction = process.env.VERCEL === '1' || process.env.NODE_ENV === 'production';
+  const RESEARCH = configuredResearchUrl || 'http://127.0.0.1:8790';
+  const researchConfigurationError = isProduction && !configuredResearchUrl
+    ? 'RESEARCH_ENGINE_URL must point to the deployed research-engine service in Vercel'
+    : null;
   registerAiRoutes(app, repo, RESEARCH);
   const forward = async (reply: { code: (n: number) => { send: (b: unknown) => unknown } }, path: string, init?: RequestInit) => {
+    if (researchConfigurationError) {
+      return reply.code(503).send({ error: 'research engine is not configured', detail: researchConfigurationError });
+    }
     try {
       const res = await fetch(`${RESEARCH}${path}`, { ...init, signal: AbortSignal.timeout(60_000) });
       const body = await res.json().catch(() => ({ error: 'invalid response from research engine' }));
@@ -236,8 +244,10 @@ export function registerRoutes(app: FastifyInstance, { repo, terrain, imagery }:
     journeys: repo.missions().map((m) => {
       const p = repo.flightProfile(m.id);
       const pad = p ? repo.launchSite(p.launchSiteId) : undefined;
-      return { missionId: m.id, name: m.name, shortName: m.shortName, status: m.status, available: !!p, fidelity: p?.fidelity ?? null, profile: p?.profile ?? null,
-        launchSiteId: p?.launchSiteId ?? null, launchSite: pad?.shortName ?? null, launchUtc: p?.launchUtc ?? null, illustrativeDate: !!p?.illustrativeDate, landingSiteId: m.landingSiteId };
+      return {
+        missionId: m.id, name: m.name, shortName: m.shortName, status: m.status, available: !!p, fidelity: p?.fidelity ?? null, profile: p?.profile ?? null,
+        launchSiteId: p?.launchSiteId ?? null, launchSite: pad?.shortName ?? null, launchUtc: p?.launchUtc ?? null, illustrativeDate: !!p?.illustrativeDate, landingSiteId: m.landingSiteId
+      };
     }),
   }));
   app.get<{ Params: { id: string } }>(`${v1}/launch-sites/:id`, async (req, reply) => {
@@ -250,8 +260,10 @@ export function registerRoutes(app: FastifyInstance, { repo, terrain, imagery }:
     if (!mission) return notFound(reply, 'mission', req.params.id);
     const profile = repo.flightProfile(mission.id);
     if (!profile) {
-      return reply.code(404).send({ error: `no flight profile for mission '${mission.id}'`, reason: 'no-profile',
-        detail: 'No published launch/arrival anchors are available for this mission (or it was cancelled), so no route is drawn — routes are never invented.' });
+      return reply.code(404).send({
+        error: `no flight profile for mission '${mission.id}'`, reason: 'no-profile',
+        detail: 'No published launch/arrival anchors are available for this mission (or it was cancelled), so no route is drawn — routes are never invented.'
+      });
     }
     const launchSite = repo.launchSite(profile.launchSiteId);
     if (!launchSite) return reply.code(500).send({ error: `launch site '${profile.launchSiteId}' missing` });
@@ -272,8 +284,10 @@ export function registerRoutes(app: FastifyInstance, { repo, terrain, imagery }:
       if (res.ok) {
         const body = await res.json().catch(() => null);
         if (body && !body.error) {
-          const out = { ...(body as Record<string, unknown>), mission: { id: mission.id, name: mission.name, shortName: mission.shortName, status: mission.status },
-            sources: (profile.sourceIds ?? []).map((id) => repo.source(id)).filter(Boolean) };
+          const out = {
+            ...(body as Record<string, unknown>), mission: { id: mission.id, name: mission.name, shortName: mission.shortName, status: mission.status },
+            sources: (profile.sourceIds ?? []).map((id) => repo.source(id)).filter(Boolean)
+          };
           journeyCache.set(mission.id, { at: Date.now(), body: out, status: res.status });
           return reply.code(res.status).send(out);
         }
@@ -297,8 +311,10 @@ export function registerRoutes(app: FastifyInstance, { repo, terrain, imagery }:
     }
     const launchSite = repo.launchSite(req.body.launchSiteId ?? 'ksc-lc-39a');
     if (!launchSite) return notFound(reply, 'launch site', String(req.body.launchSiteId));
-    return forward(reply, '/journey', { method: 'POST', headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ planInput, launchSite: { id: launchSite.id, name: launchSite.name, shortName: launchSite.shortName, latitude: launchSite.latitude, longitude: launchSite.longitude, altitudeM: launchSite.altitudeM } }) });
+    return forward(reply, '/journey', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ planInput, launchSite: { id: launchSite.id, name: launchSite.name, shortName: launchSite.shortName, latitude: launchSite.latitude, longitude: launchSite.longitude, altitudeM: launchSite.altitudeM } })
+    });
   });
 
   app.get<{ Params: { layer: string; z: string; y: string; x: string } }>(`${v1}/lunar/imagery/:layer/:z/:y/:x.jpg`, async (req, reply) => {
